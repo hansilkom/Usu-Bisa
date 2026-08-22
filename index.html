@@ -7,10 +7,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         /* ============================================================
-           ROOT — Design System V3
+           ROOT — Design System V4
            ============================================================ */
         :root {
             --color-primary: #0a2e24;
@@ -41,7 +43,7 @@
             --radius-lg: 24px;
             --radius-full: 9999px;
             --font: 'Inter', system-ui, -apple-system, sans-serif;
-            --header-h: 64px;
+            --header-h: 60px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
             --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -67,7 +69,7 @@
             padding: 10px;
             padding-bottom: calc(10px + var(--safe-bottom));
             color: var(--color-white);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .hidden {
@@ -97,20 +99,20 @@
 
         .landing-brand {
             display: inline-block;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
         .landing-brand svg {
-            width: 112px;
-            height: 112px;
+            width: 104px;
+            height: 104px;
             filter: drop-shadow(0 8px 28px rgba(0, 0, 0, 0.35));
             transition: transform 0.3s ease;
         }
         .landing-brand:hover svg {
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
 
         .landing-title {
-            font-size: 2.1rem;
+            font-size: 2rem;
             font-weight: 800;
             color: var(--color-gold-light);
             letter-spacing: -0.5px;
@@ -118,55 +120,55 @@
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
         }
         .landing-sub {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 28px;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 26px;
             letter-spacing: 0.3px;
         }
 
         .landing-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 480px;
-            margin: 0 auto 32px;
+            gap: 10px;
+            max-width: 420px;
+            margin: 0 auto 28px;
         }
         .landing-stat {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(8px);
             border-radius: var(--radius-md);
-            padding: 14px 8px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
             transition: background 0.2s;
         }
         .landing-stat:hover {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.10);
         }
         .landing-stat .num {
-            font-size: 1.7rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--color-gold-light);
         }
         .landing-stat .label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.6px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.55);
             margin-top: 2px;
         }
 
         .landing-menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 10px;
         }
         .landing-menu .menu-btn {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             border: 2px solid var(--color-gold);
             color: var(--color-gold);
-            padding: 14px 10px;
+            padding: 12px 8px;
             border-radius: var(--radius-md);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -175,8 +177,12 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            min-height: 56px;
+            min-height: 52px;
             letter-spacing: 0.2px;
+            font-family: var(--font);
+        }
+        .landing-menu .menu-btn i {
+            font-size: 1.2rem;
         }
         .landing-menu .menu-btn:hover,
         .landing-menu .menu-btn:focus-visible {
@@ -187,10 +193,6 @@
         }
         .landing-menu .menu-btn:active {
             transform: translateY(0) scale(0.97);
-        }
-        .landing-menu .menu-btn .icon {
-            font-size: 1.2rem;
-            line-height: 1;
         }
 
         /* ============================================================
@@ -219,13 +221,13 @@
            ============================================================ */
         .header {
             background: var(--color-white);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-bottom: 1px solid var(--color-border);
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
             min-height: var(--header-h);
             position: sticky;
             top: 0;
@@ -234,7 +236,7 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
             min-width: 0;
         }
@@ -242,18 +244,21 @@
             background: none;
             border: none;
             color: var(--color-text-secondary);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             cursor: pointer;
             padding: 2px 6px;
             border-radius: var(--radius-sm);
             transition: background 0.15s;
             line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .header-back:hover {
             background: var(--color-border);
         }
         .header-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--color-primary);
             white-space: nowrap;
@@ -263,23 +268,27 @@
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex-shrink: 0;
         }
         .header-btn {
             background: var(--color-primary);
             color: #fff;
             border: none;
-            padding: 8px 18px;
+            padding: 7px 16px;
             border-radius: var(--radius-full);
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             white-space: nowrap;
+            font-family: var(--font);
+        }
+        .header-btn i {
+            font-size: 1rem;
         }
         .header-btn:hover {
             background: var(--color-primary-light);
@@ -297,17 +306,13 @@
         .header-btn.outline:hover {
             background: var(--color-border);
         }
-        .header-btn .icon {
-            font-size: 1.1rem;
-            line-height: 1;
-        }
 
         /* ============================================================
            SEARCH
            ============================================================ */
         .search-wrap {
             background: var(--color-white);
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-bottom: 1px solid var(--color-border);
             flex-shrink: 0;
             display: none;
@@ -320,7 +325,7 @@
             align-items: center;
             background: var(--color-bg);
             border-radius: var(--radius-full);
-            padding: 0 16px;
+            padding: 0 14px;
             border: 2px solid transparent;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
@@ -330,15 +335,17 @@
         }
         .search-bar .search-icon {
             color: var(--color-text-muted);
-            font-size: 1.1rem;
-            margin-right: 10px;
+            font-size: 1rem;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
         }
         .search-bar input {
             flex: 1;
             border: none;
             background: transparent;
-            padding: 11px 0;
-            font-size: 0.9rem;
+            padding: 9px 0;
+            font-size: 0.85rem;
             font-family: var(--font);
             outline: none;
             min-width: 0;
@@ -352,9 +359,10 @@
             border: none;
             color: var(--color-text-muted);
             cursor: pointer;
-            font-size: 1.2rem;
-            padding: 4px 8px;
+            font-size: 1.1rem;
+            padding: 4px 6px;
             display: none;
+            line-height: 1;
         }
         .search-bar .clear-btn.visible {
             display: block;
@@ -364,20 +372,24 @@
             color: #fff;
             border: none;
             border-radius: var(--radius-full);
-            padding: 7px 18px;
+            padding: 6px 16px;
             font-weight: 600;
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             cursor: pointer;
             transition: background 0.2s;
             flex-shrink: 0;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .search-bar .search-submit:hover {
             background: var(--color-primary-light);
         }
         .search-result-info {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: var(--color-text-muted);
-            padding: 6px 4px 0;
+            padding: 4px 4px 0;
         }
 
         /* ============================================================
@@ -385,12 +397,12 @@
            ============================================================ */
         .content {
             flex: 1;
-            padding: 20px 20px 30px;
+            padding: 16px 18px 24px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
         .content::-webkit-scrollbar {
-            width: 5px;
+            width: 4px;
         }
         .content::-webkit-scrollbar-thumb {
             background: var(--color-border);
@@ -405,16 +417,16 @@
            ============================================================ */
         .dash-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 14px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
         }
         .dash-card {
             background: var(--color-card);
-            border-radius: var(--radius-md);
-            padding: 18px 14px;
+            border-radius: var(--radius-sm);
+            padding: 14px 10px;
             box-shadow: var(--shadow-sm);
-            border-left: 5px solid var(--color-gold);
+            border-left: 4px solid var(--color-gold);
             text-align: center;
             transition: transform 0.15s, box-shadow 0.15s;
         }
@@ -423,46 +435,46 @@
             box-shadow: var(--shadow-md);
         }
         .dash-card .num {
-            font-size: 1.9rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--color-primary);
             line-height: 1.2;
         }
         .dash-card .label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             color: var(--color-text-muted);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         .dash-section {
             background: var(--color-card);
-            border-radius: var(--radius-md);
-            padding: 18px 20px;
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
             box-shadow: var(--shadow-sm);
-            margin-bottom: 18px;
+            margin-bottom: 14px;
             transition: box-shadow 0.2s;
         }
         .dash-section:hover {
             box-shadow: var(--shadow-md);
         }
         .dash-section h3 {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: var(--color-primary);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             border-bottom: 1px solid var(--color-border);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         .dash-section h3 .badge {
             background: var(--color-gold-bg);
             color: var(--color-primary);
-            font-size: 0.65rem;
-            padding: 2px 12px;
+            font-size: 0.6rem;
+            padding: 1px 10px;
             border-radius: var(--radius-full);
             margin-left: auto;
             font-weight: 600;
@@ -471,21 +483,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #f1f3f6;
-            gap: 12px;
+            gap: 10px;
         }
         .dash-item:last-child {
             border-bottom: none;
         }
         .dash-item .dash-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--color-text-secondary);
             flex: 1;
             word-break: break-word;
         }
         .dash-item .dash-value {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--color-text);
             text-align: right;
@@ -500,62 +512,65 @@
         }
         .dash-empty {
             color: var(--color-text-muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-align: center;
-            padding: 20px 0;
+            padding: 16px 0;
         }
 
         /* --- Briefing --- */
         .briefing-card {
             background: var(--color-card);
-            border-radius: var(--radius-md);
-            padding: 20px 22px;
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
             box-shadow: var(--shadow-md);
-            margin-bottom: 24px;
-            border-left: 6px solid var(--color-gold);
+            margin-bottom: 18px;
+            border-left: 5px solid var(--color-gold);
             transition: all 0.2s;
         }
         .briefing-card .greeting {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: var(--color-primary);
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .briefing-card .date {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             color: var(--color-text-muted);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
         .briefing-card .summary {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px 24px;
-            margin-bottom: 16px;
-            padding-bottom: 14px;
+            gap: 8px 18px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
             border-bottom: 1px solid var(--color-border);
         }
         .briefing-card .summary-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
+            gap: 4px;
+            font-size: 0.8rem;
             color: var(--color-text-secondary);
         }
         .briefing-card .summary-item .num {
             font-weight: 700;
             color: var(--color-text);
         }
+        .briefing-card .summary-item i {
+            font-size: 0.9rem;
+        }
 
         .reminder-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;
         }
         .reminder-item {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            padding: 10px 14px;
+            gap: 10px;
+            padding: 8px 12px;
             background: var(--color-bg);
             border-radius: var(--radius-sm);
             border-left: 4px solid var(--color-info);
@@ -574,9 +589,11 @@
             border-left-color: var(--color-info);
         }
         .reminder-item .icon {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
-            margin-top: 2px;
+            margin-top: 1px;
+            display: flex;
+            align-items: center;
         }
         .reminder-item .content {
             flex: 1;
@@ -587,67 +604,203 @@
         }
         .reminder-item .content .title {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             color: var(--color-text);
         }
         .reminder-item .content .desc {
-            font-size: 0.8rem;
+            font-size: 0.74rem;
             color: var(--color-text-secondary);
-            margin-top: 2px;
+            margin-top: 1px;
             word-break: break-word;
         }
         .reminder-item .content .meta {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--color-text-muted);
-            margin-top: 4px;
+            margin-top: 3px;
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 4px;
         }
         .reminder-item .content .meta .tag {
             background: var(--color-white);
-            padding: 1px 10px;
+            padding: 1px 8px;
             border-radius: var(--radius-full);
             border: 1px solid var(--color-border);
         }
         .reminder-item .action-link {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: var(--color-primary);
             cursor: pointer;
             background: none;
             border: none;
-            padding: 4px 10px;
+            padding: 2px 8px;
             border-radius: var(--radius-sm);
             transition: background 0.15s;
             flex-shrink: 0;
+            font-family: var(--font);
         }
         .reminder-item .action-link:hover {
             background: var(--color-gold-bg);
         }
         .reminder-empty {
             color: var(--color-text-muted);
-            font-size: 0.9rem;
-            padding: 10px 0;
+            font-size: 0.82rem;
+            padding: 8px 0;
             text-align: center;
         }
 
         .briefing-dismiss {
             text-align: right;
-            margin-top: 14px;
+            margin-top: 10px;
         }
         .briefing-dismiss button {
             background: none;
             border: none;
             color: var(--color-text-muted);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: var(--radius-sm);
             transition: background 0.15s;
+            font-family: var(--font);
         }
         .briefing-dismiss button:hover {
             background: var(--color-border);
+        }
+
+        /* IPK Target */
+        .ipk-tracker {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .ipk-tracker .ipk-input {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ipk-tracker .ipk-input label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+        }
+        .ipk-tracker .ipk-input input {
+            width: 70px;
+            padding: 4px 8px;
+            border: 1.5px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-family: var(--font);
+            text-align: center;
+            font-weight: 600;
+            color: var(--color-text);
+            transition: border-color 0.2s;
+        }
+        .ipk-tracker .ipk-input input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+        .ipk-tracker .ipk-bar-wrap {
+            flex: 1;
+            min-width: 100px;
+        }
+        .ipk-tracker .ipk-bar {
+            height: 6px;
+            background: var(--color-border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            position: relative;
+        }
+        .ipk-tracker .ipk-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-success), var(--color-gold));
+            border-radius: var(--radius-full);
+            transition: width 0.6s ease;
+            width: 0%;
+        }
+        .ipk-tracker .ipk-label {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            white-space: nowrap;
+        }
+
+        /* Notes */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .note-card {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+        .note-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            border-color: var(--color-gold);
+        }
+        .note-card .note-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--color-text);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .note-card .note-title .del-note {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 0 4px;
+            transition: color 0.15s;
+        }
+        .note-card .note-title .del-note:hover {
+            color: var(--color-danger);
+        }
+        .note-card .note-preview {
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .note-card .note-date {
+            font-size: 0.6rem;
+            color: var(--color-text-muted);
+            margin-top: 6px;
+        }
+        .note-add-btn {
+            background: var(--color-white);
+            border: 2px dashed var(--color-primary);
+            color: var(--color-primary);
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .note-add-btn:hover {
+            background: var(--color-gold-bg);
+            border-style: solid;
         }
 
         /* ============================================================
@@ -655,19 +808,19 @@
            ============================================================ */
         .module-list {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
         }
         .list-card {
             background: var(--color-card);
             border: 1px solid var(--color-border);
-            border-radius: var(--radius-md);
-            padding: 16px;
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             box-shadow: var(--shadow-sm);
             position: relative;
             overflow: hidden;
@@ -676,7 +829,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-sm);
             opacity: 0;
             background: linear-gradient(135deg, rgba(245, 179, 0, 0.04), transparent);
             transition: opacity 0.3s;
@@ -687,22 +840,22 @@
         }
         .list-card:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: var(--color-gold);
         }
         .list-card:active {
             transform: scale(0.98);
         }
         .list-avatar {
-            width: 48px;
-            height: 48px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--color-primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
             flex-shrink: 0;
             overflow: hidden;
@@ -719,24 +872,24 @@
         }
         .list-info .primary {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--color-text);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .list-info .secondary {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--color-text-muted);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .list-badge {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             background: var(--color-gold-bg);
             color: var(--color-primary);
-            padding: 2px 14px;
+            padding: 1px 12px;
             border-radius: var(--radius-full);
             font-weight: 600;
             flex-shrink: 0;
@@ -744,26 +897,26 @@
         }
         .list-empty {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
             color: var(--color-text-muted);
         }
         .list-empty .icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
+            font-size: 2.4rem;
+            margin-bottom: 12px;
             opacity: 0.4;
         }
         .list-empty p {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--color-text-secondary);
         }
         .list-empty .sub {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--color-text-muted);
         }
         .list-back-btn {
             display: inline-block;
-            margin-top: 16px;
-            padding: 8px 24px;
+            margin-top: 12px;
+            padding: 6px 20px;
             background: var(--color-primary);
             color: #fff;
             border: none;
@@ -771,6 +924,8 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
+            font-family: var(--font);
+            font-size: 0.8rem;
         }
         .list-back-btn:hover {
             background: var(--color-primary-light);
@@ -791,27 +946,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
             border-bottom: 1px solid var(--color-border);
             text-align: center;
         }
         .detail-photo {
-            width: 100px;
-            height: 100px;
+            width: 84px;
+            height: 84px;
             border-radius: 50%;
             background: var(--color-primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             font-weight: 700;
             overflow: hidden;
             border: 3px solid var(--color-gold);
             box-shadow: var(--shadow-md);
             flex-shrink: 0;
+            position: relative;
         }
         .detail-photo img {
             width: 100%;
@@ -819,63 +975,63 @@
             object-fit: cover;
         }
         .detail-name h2 {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--color-text);
         }
         .detail-name .sub {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             color: var(--color-text-muted);
         }
 
         .detail-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
         }
         .detail-item {
             background: var(--color-card);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
-            padding: 12px 14px;
+            padding: 10px 12px;
             box-shadow: var(--shadow-sm);
         }
         .detail-item .label {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
             color: var(--color-text-muted);
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .detail-item .value {
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             font-weight: 500;
             color: var(--color-text);
             word-break: break-word;
         }
 
         .detail-relations {
-            margin-top: 20px;
-            padding-top: 18px;
+            margin-top: 14px;
+            padding-top: 14px;
             border-top: 1px solid var(--color-border);
         }
         .detail-relations h4 {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--color-primary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .relation-chip {
             display: inline-block;
             background: var(--color-gold-bg);
             color: var(--color-primary);
-            padding: 4px 18px;
+            padding: 3px 16px;
             border-radius: var(--radius-full);
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             font-weight: 500;
-            margin: 3px 4px 3px 0;
+            margin: 2px 4px 2px 0;
             cursor: pointer;
             transition: all 0.15s;
             border: 1px solid transparent;
@@ -888,23 +1044,24 @@
         .detail-actions {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-top: 24px;
-            padding-top: 18px;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 14px;
             border-top: 1px solid var(--color-border);
             flex-wrap: wrap;
         }
         .detail-actions button {
-            padding: 10px 28px;
+            padding: 8px 22px;
             border-radius: var(--radius-sm);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s;
             border: none;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            font-family: var(--font);
         }
         .btn-edit {
             background: var(--color-primary);
@@ -937,14 +1094,14 @@
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .form-group label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.74rem;
             font-weight: 600;
             color: var(--color-text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
             letter-spacing: 0.2px;
         }
         .form-group label .required {
@@ -955,10 +1112,10 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border: 1.5px solid var(--color-border);
             border-radius: var(--radius-sm);
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             font-family: var(--font);
             background: var(--color-white);
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -973,7 +1130,7 @@
         }
         .form-group textarea {
             resize: vertical;
-            min-height: 60px;
+            min-height: 50px;
         }
         .form-group input[readonly] {
             background: var(--color-bg);
@@ -982,24 +1139,24 @@
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 12px;
         }
         .form-section {
-            margin-top: 20px;
-            padding-top: 18px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 1px dashed var(--color-border);
         }
         .form-section h4 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--color-primary);
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .photo-upload {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
         .photo-upload input[type="file"] {
@@ -1008,39 +1165,68 @@
         .photo-upload .upload-btn {
             background: var(--color-primary);
             color: #fff;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 500;
             transition: background 0.2s;
             border: none;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .photo-upload .upload-btn:hover {
             background: var(--color-primary-light);
         }
         .photo-upload .photo-name {
-            font-size: 0.78rem;
+            font-size: 0.72rem;
             color: var(--color-text-muted);
+        }
+        .photo-upload .photo-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .photo-upload .photo-actions button {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s, color 0.15s;
+            font-family: var(--font);
+        }
+        .photo-upload .photo-actions button:hover {
+            background: var(--color-border);
+        }
+        .photo-upload .photo-actions .del-photo-btn {
+            color: var(--color-danger);
+        }
+        .photo-upload .photo-actions .del-photo-btn:hover {
+            background: var(--color-danger);
+            color: #fff;
         }
 
         .dynamic-fields {
-            margin-top: 20px;
-            padding-top: 16px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 1px dashed var(--color-border);
         }
         .dynamic-fields h4 {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: var(--color-primary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .dynamic-field {
             background: var(--color-card);
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
-            padding: 14px 16px;
-            margin-bottom: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
             transition: border-color 0.2s;
         }
         .dynamic-field:hover {
@@ -1050,10 +1236,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .dynamic-field-header strong {
-            font-size: 0.8rem;
+            font-size: 0.74rem;
             color: var(--color-text-secondary);
         }
         .dynamic-field-header .delete-field {
@@ -1061,11 +1247,12 @@
             border: none;
             color: var(--color-danger);
             font-weight: 600;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             cursor: pointer;
-            padding: 4px 10px;
+            padding: 2px 8px;
             border-radius: var(--radius-sm);
             transition: background 0.15s, color 0.15s;
+            font-family: var(--font);
         }
         .dynamic-field-header .delete-field:hover {
             background: var(--color-danger);
@@ -1075,13 +1262,18 @@
             background: var(--color-white);
             border: 2px dashed var(--color-primary);
             color: var(--color-primary);
-            padding: 12px;
+            padding: 10px;
             border-radius: var(--radius-sm);
             cursor: pointer;
             width: 100%;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 500;
             transition: all 0.2s;
+            font-family: var(--font);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
         .add-field-btn:hover {
             background: var(--color-gold-bg);
@@ -1090,20 +1282,21 @@
 
         .form-actions {
             display: flex;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 10px;
+            margin-top: 18px;
             flex-wrap: wrap;
         }
         .form-actions button {
-            padding: 10px 28px;
+            padding: 8px 22px;
             border-radius: var(--radius-sm);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.82rem;
             cursor: pointer;
             transition: all 0.2s;
             border: none;
             flex: 1;
-            min-width: 100px;
+            min-width: 90px;
+            font-family: var(--font);
         }
         .btn-primary {
             background: var(--color-primary);
@@ -1153,8 +1346,8 @@
         .modal {
             background: var(--color-card);
             border-radius: var(--radius-md);
-            padding: 26px 24px;
-            max-width: 420px;
+            padding: 22px 20px;
+            max-width: 400px;
             width: 100%;
             box-shadow: var(--shadow-xl);
             animation: scaleIn 0.25s ease;
@@ -1170,29 +1363,30 @@
             }
         }
         .modal h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--color-text);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .modal p {
             color: var(--color-text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 0.9rem;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            font-size: 0.85rem;
         }
         .modal-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: flex-end;
         }
         .modal-buttons button {
-            padding: 8px 22px;
+            padding: 6px 18px;
             border-radius: var(--radius-sm);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.2s;
             border: none;
+            font-family: var(--font);
         }
         .modal-cancel {
             background: var(--color-white);
@@ -1215,28 +1409,28 @@
            ============================================================ */
         .notif-container {
             position: fixed;
-            top: 16px;
-            right: 16px;
+            top: 14px;
+            right: 14px;
             z-index: 3000;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             pointer-events: none;
-            max-width: 360px;
-            width: calc(100% - 32px);
+            max-width: 340px;
+            width: calc(100% - 28px);
         }
         .notif {
             background: var(--color-text);
             color: #fff;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-lg);
             pointer-events: auto;
             animation: slideRight 0.3s ease;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .notif.success {
             background: var(--color-success);
@@ -1252,11 +1446,12 @@
             background: none;
             border: none;
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             padding: 0 4px;
             margin-left: auto;
             opacity: 0.7;
             transition: opacity 0.15s;
+            line-height: 1;
         }
         .notif .close:hover {
             opacity: 1;
@@ -1273,6 +1468,33 @@
         }
 
         /* ============================================================
+           FOOTER
+           ============================================================ */
+        .app-footer {
+            text-align: center;
+            padding: 14px 0 6px;
+            border-top: 1px solid var(--color-border);
+            margin-top: 12px;
+            color: var(--color-text-muted);
+            font-size: 0.7rem;
+        }
+        .app-footer a {
+            color: var(--color-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .app-footer a:hover {
+            color: var(--color-gold);
+        }
+        .app-footer a i {
+            font-size: 1rem;
+        }
+
+        /* ============================================================
            RESPONSIVE
            ============================================================ */
         @media (max-width: 640px) {
@@ -1280,61 +1502,64 @@
                 padding: 4px;
             }
             .landing-title {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
             }
             .landing-stats {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
+                gap: 6px;
             }
             .landing-stat .num {
-                font-size: 1.2rem;
+                font-size: 1.1rem;
             }
             .landing-menu {
                 grid-template-columns: 1fr 1fr;
-                gap: 8px;
+                gap: 6px;
             }
             .landing-menu .menu-btn {
-                font-size: 0.75rem;
-                padding: 12px 6px;
-                min-height: 48px;
+                font-size: 0.7rem;
+                padding: 10px 4px;
+                min-height: 44px;
+            }
+            .landing-menu .menu-btn i {
+                font-size: 1rem;
             }
             .header {
-                padding: 8px 14px;
-                min-height: 56px;
+                padding: 6px 12px;
+                min-height: 50px;
             }
             .header-title {
-                font-size: 0.95rem;
+                font-size: 0.85rem;
             }
             .header-btn {
-                font-size: 0.7rem;
-                padding: 6px 12px;
+                font-size: 0.65rem;
+                padding: 5px 10px;
             }
             .header-btn .btn-label {
                 display: none;
             }
-            .header-btn .icon {
-                font-size: 1rem;
+            .header-btn i {
+                font-size: 0.9rem;
             }
             .search-wrap {
-                padding: 8px 14px;
+                padding: 6px 12px;
             }
             .search-bar input {
-                font-size: 0.85rem;
-                padding: 10px 0;
+                font-size: 0.8rem;
+                padding: 8px 0;
             }
             .search-bar .search-submit {
-                padding: 6px 14px;
-                font-size: 0.75rem;
+                padding: 5px 12px;
+                font-size: 0.68rem;
             }
             .content {
-                padding: 14px 14px 24px;
+                padding: 10px 12px 18px;
             }
             .dash-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                gap: 8px;
             }
             .dash-card .num {
-                font-size: 1.4rem;
+                font-size: 1.2rem;
             }
             .module-list {
                 grid-template-columns: 1fr;
@@ -1346,21 +1571,24 @@
                 grid-template-columns: 1fr;
             }
             .detail-photo {
-                width: 80px;
-                height: 80px;
-                font-size: 1.8rem;
+                width: 68px;
+                height: 68px;
+                font-size: 1.6rem;
             }
             .modal {
-                padding: 18px 16px;
+                padding: 16px 14px;
             }
             .list-card {
-                padding: 14px;
+                padding: 10px 12px;
             }
             .briefing-card {
-                padding: 16px;
+                padding: 12px 14px;
             }
             .reminder-item {
-                padding: 8px 12px;
+                padding: 6px 10px;
+            }
+            .notes-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
         @media (max-width: 400px) {
@@ -1368,15 +1596,18 @@
                 grid-template-columns: 1fr 1fr;
             }
             .landing-menu .menu-btn {
-                font-size: 0.7rem;
-                padding: 10px 4px;
-                min-height: 44px;
+                font-size: 0.65rem;
+                padding: 8px 4px;
+                min-height: 40px;
             }
             .dash-card {
-                padding: 12px 8px;
+                padding: 10px 6px;
             }
             .dash-card .num {
-                font-size: 1.2rem;
+                font-size: 1rem;
+            }
+            .notes-grid {
+                grid-template-columns: 1fr;
             }
         }
         @media (min-width: 641px) {
@@ -1419,12 +1650,12 @@
         </div>
 
         <div class="landing-menu">
-            <button class="menu-btn" data-module="dashboard"><span class="icon">📊</span> Dashboard</button>
-            <button class="menu-btn" data-module="dosen"><span class="icon">👨‍🏫</span> Dosen</button>
-            <button class="menu-btn" data-module="matkul"><span class="icon">📚</span> Mata Kuliah</button>
-            <button class="menu-btn" data-module="kontrak"><span class="icon">📋</span> Kontrak</button>
-            <button class="menu-btn" data-module="tugas"><span class="icon">📝</span> Tugas</button>
-            <button class="menu-btn" data-module="jadwal"><span class="icon">📅</span> Jadwal</button>
+            <button class="menu-btn" data-module="dashboard"><i class="bi bi-grid"></i> Dashboard</button>
+            <button class="menu-btn" data-module="dosen"><i class="bi bi-person-badge"></i> Dosen</button>
+            <button class="menu-btn" data-module="matkul"><i class="bi bi-book"></i> Mata Kuliah</button>
+            <button class="menu-btn" data-module="kontrak"><i class="bi bi-clipboard"></i> Kontrak</button>
+            <button class="menu-btn" data-module="tugas"><i class="bi bi-file-text"></i> Tugas</button>
+            <button class="menu-btn" data-module="jadwal"><i class="bi bi-calendar"></i> Jadwal</button>
         </div>
     </div>
 
@@ -1436,12 +1667,12 @@
         <!-- HEADER -->
         <div class="header">
             <div class="header-left">
-                <button class="header-back" id="backBtn" title="Kembali">←</button>
+                <button class="header-back" id="backBtn" title="Kembali"><i class="bi bi-arrow-left"></i></button>
                 <span class="header-title" id="headerTitle">Dashboard</span>
             </div>
             <div class="header-actions">
                 <button class="header-btn" id="actionBtn">
-                    <span class="icon">+</span>
+                    <i class="bi bi-plus-lg"></i>
                     <span class="btn-label" id="actionLabel">Tambah</span>
                 </button>
             </div>
@@ -1450,16 +1681,23 @@
         <!-- SEARCH -->
         <div class="search-wrap" id="searchWrap">
             <div class="search-bar">
-                <span class="search-icon">🔍</span>
+                <span class="search-icon"><i class="bi bi-search"></i></span>
                 <input type="text" id="globalSearch" placeholder="Cari dosen, mata kuliah, kontrak..." />
-                <button class="clear-btn" id="clearSearch">✕</button>
-                <button class="search-submit" id="searchSubmit">Cari</button>
+                <button class="clear-btn" id="clearSearch"><i class="bi bi-x-lg"></i></button>
+                <button class="search-submit" id="searchSubmit"><i class="bi bi-search"></i> Cari</button>
             </div>
             <div class="search-result-info" id="searchInfo"></div>
         </div>
 
         <!-- CONTENT -->
         <div class="content" id="content"></div>
+
+        <!-- FOOTER -->
+        <div class="app-footer" id="appFooter">
+            <a href="https://www.instagram.com/hans_taf?igsi=MWVuZmo5MWlycDViZQ==" target="_blank" rel="noopener noreferrer">
+                <i class="bi bi-instagram"></i> @hans_taf
+            </a>
+        </div>
     </div>
 
     <!-- ============================================================
@@ -1482,30 +1720,31 @@
     <div class="notif-container" id="notifContainer"></div>
 
     <!-- ============================================================
-    JAVASCRIPT — APLIKASI V3
+    JAVASCRIPT — APLIKASI V4
     ============================================================ -->
     <script>
         /**
          * ================================================================
-         *  ACADEMIC PERSONAL CENTER — V3
+         *  ACADEMIC PERSONAL CENTER — V4
          *  Arsitektur modular dengan state management terpusat
          *  ================================================================
          */
 
         // ---- STORE KEYS ----
         const STORE_KEYS = {
-            dosen: 'apc_dosen_v3',
-            matkul: 'apc_matkul_v3',
-            kontrak: 'apc_kontrak_v3',
-            tugas: 'apc_tugas_v3',
-            jadwal: 'apc_jadwal_v3'
+            dosen: 'apc_dosen_v4',
+            matkul: 'apc_matkul_v4',
+            kontrak: 'apc_kontrak_v4',
+            tugas: 'apc_tugas_v4',
+            jadwal: 'apc_jadwal_v4',
+            notes: 'apc_notes_v4',
+            settings: 'apc_settings_v4'
         };
 
         // ---- UTILITIES ----
         const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
         const findById = (arr, id) => arr.find(item => item.id === id);
         const findIndexById = (arr, id) => arr.findIndex(item => item.id === id);
-        const isPlainObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
 
         // ---- STORAGE ----
         const Storage = {
@@ -1529,12 +1768,22 @@
                 for (const [k, v] of Object.entries(STORE_KEYS)) {
                     this.save(v, data[k] || []);
                 }
+            },
+            loadSettings() {
+                try {
+                    const raw = localStorage.getItem(STORE_KEYS.settings);
+                    return raw ? JSON.parse(raw) : {};
+                } catch { return {}; }
+            },
+            saveSettings(settings) {
+                localStorage.setItem(STORE_KEYS.settings, JSON.stringify(settings));
             }
         };
 
         // ---- STATE ----
         const AppState = {
             data: Storage.loadAll(),
+            settings: Storage.loadSettings(),
 
             get(module) { return this.data[module] || []; },
             set(module, items) { this.data[module] = items;
@@ -1564,7 +1813,6 @@
             find(module, id) {
                 return findById(this.get(module), id);
             },
-            // Relasi: dapatkan dosen dari matkulId
             getDosenByMatkul(matkulId) {
                 const m = this.find('matkul', matkulId);
                 if (!m) return null;
@@ -1582,15 +1830,23 @@
             getJadwalByHari(hari) {
                 return this.get('jadwal').filter(j => j.hari === hari);
             },
-            // Statistik landing
             stats() {
                 return {
                     dosen: this.get('dosen').length,
                     matkul: this.get('matkul').length,
                     tugas: this.get('tugas').length,
                     kontrak: this.get('kontrak').length,
-                    jadwal: this.get('jadwal').length
+                    jadwal: this.get('jadwal').length,
+                    notes: this.get('notes').length
                 };
+            },
+            getSettings() {
+                return this.settings;
+            },
+            updateSettings(payload) {
+                this.settings = { ...this.settings, ...payload };
+                Storage.saveSettings(this.settings);
+                return this.settings;
             }
         };
 
@@ -1602,8 +1858,10 @@
                 while (container.children.length >= 3) container.removeChild(container.firstChild);
                 const el = document.createElement('div');
                 el.className = `notif ${type}`;
+                const icons = { success: 'bi-check-circle', error: 'bi-exclamation-circle', info: 'bi-info-circle' };
+                const icon = icons[type] || 'bi-info-circle';
                 el.innerHTML =
-                `<span>${message}</span><button class="close" onclick="this.parentElement.remove()">✕</button>`;
+                    `<i class="bi ${icon}"></i><span>${message}</span><button class="close" onclick="this.parentElement.remove()"><i class="bi bi-x-lg"></i></button>`;
                 container.appendChild(el);
                 setTimeout(() => { if (el.parentElement) el.remove(); }, 4000);
             },
@@ -1644,11 +1902,11 @@
             }
         };
 
-        // ---- ROUTER / NAVIGATION ----
+        // ---- ROUTER ----
         const Router = {
             state: {
                 module: 'dashboard',
-                view: 'list', // list | detail | form
+                view: 'list',
                 selectedId: null,
                 editingId: null,
                 searchQuery: '',
@@ -1663,11 +1921,11 @@
                 matkul: 'Mata Kuliah',
                 kontrak: 'Kontrak Kuliah',
                 tugas: 'Tugas',
-                jadwal: 'Jadwal'
+                jadwal: 'Jadwal',
+                notes: 'Catatan'
             },
 
             init() {
-                // Landing menu
                 document.querySelectorAll('.landing-menu .menu-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const mod = btn.dataset.module;
@@ -1675,13 +1933,9 @@
                     });
                 });
 
-                // Header back
                 document.getElementById('backBtn').addEventListener('click', () => this.goBack());
-
-                // Action button
                 document.getElementById('actionBtn').addEventListener('click', () => this.handleAction());
 
-                // Search
                 document.getElementById('searchSubmit').addEventListener('click', () => this.performSearch());
                 document.getElementById('globalSearch').addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') { e.preventDefault();
@@ -1689,7 +1943,6 @@
                 });
                 document.getElementById('clearSearch').addEventListener('click', () => this.clearSearch());
 
-                // Popstate
                 window.addEventListener('popstate', (e) => {
                     if (this.state.navStack.length > 1) {
                         this.state.navStack.pop();
@@ -1711,21 +1964,22 @@
                     }
                 });
 
-                // Check briefing dismiss
                 this._checkBriefingDismiss();
-
-                // Update landing stats
                 this.updateLandingStats();
-
-                // Init modal
                 Modal.init();
 
-                console.log('✅ Academic Personal Center V3 siap.');
+                // Load IPK target from settings
+                const settings = AppState.getSettings();
+                if (settings.ipkTarget) {
+                    this._ipkTarget = settings.ipkTarget;
+                }
+
+                console.log('✅ Academic Personal Center V4 siap.');
             },
 
             _checkBriefingDismiss() {
                 try {
-                    const val = localStorage.getItem('apc_briefing_dismissed');
+                    const val = localStorage.getItem('apc_briefing_dismissed_v4');
                     if (val) {
                         const ts = parseInt(val);
                         const now = new Date();
@@ -1733,7 +1987,7 @@
                         if (dismissDate.toDateString() === now.toDateString()) {
                             this.state.briefingDismissed = true;
                         } else {
-                            localStorage.removeItem('apc_briefing_dismissed');
+                            localStorage.removeItem('apc_briefing_dismissed_v4');
                             this.state.briefingDismissed = false;
                         }
                     }
@@ -1789,7 +2043,6 @@
                         return;
                     }
                 }
-                // Back to landing
                 document.getElementById('mainContainer').classList.remove('active');
                 document.getElementById('landing').classList.remove('hidden');
                 this.state.navStack = [];
@@ -1798,7 +2051,11 @@
 
             handleAction() {
                 const mod = this.state.module;
-                if (mod === 'dashboard') return;
+                if (mod === 'dashboard') {
+                    // On dashboard, show a quick action hint or open notes
+                    Notif.info('Gunakan menu di bawah untuk mengelola data.');
+                    return;
+                }
                 if (this.state.view === 'list') {
                     this.state.view = 'form';
                     this.state.editingId = null;
@@ -1867,25 +2124,33 @@
                 const mod = this.state.module;
                 const view = this.state.view;
 
-                // Header
                 let title = this.moduleLabels[mod] || 'Module';
                 let actionLabel = 'Tambah';
-                let actionIcon = '+';
+                let actionIcon = 'bi-plus-lg';
                 if (view === 'detail') {
                     title = 'Detail';
                     actionLabel = 'Edit';
-                    actionIcon = '✎';
+                    actionIcon = 'bi-pencil';
                 } else if (view === 'form') {
                     title = this.state.editingId ? 'Edit' : 'Tambah';
                     actionLabel = 'Simpan';
-                    actionIcon = '✓';
+                    actionIcon = 'bi-check-lg';
                 }
                 document.getElementById('headerTitle').textContent = title;
                 document.getElementById('actionLabel').textContent = actionLabel;
-                document.getElementById('actionBtn').querySelector('.icon').textContent = actionIcon;
+                document.getElementById('actionBtn').querySelector('i').className = `bi ${actionIcon}`;
 
-                // Search bar
-                document.getElementById('searchWrap').classList.toggle('visible', mod !== 'dashboard' && view === 'list');
+                // Show search bar only on list view for data modules
+                const showSearch = mod !== 'dashboard' && view === 'list';
+                document.getElementById('searchWrap').classList.toggle('visible', showSearch);
+
+                // Show/hide action button on dashboard
+                const actionBtn = document.getElementById('actionBtn');
+                if (mod === 'dashboard') {
+                    actionBtn.style.display = 'none';
+                } else {
+                    actionBtn.style.display = 'flex';
+                }
 
                 if (mod === 'dashboard') {
                     this._renderDashboard(container);
@@ -1977,7 +2242,6 @@
                     }
                 });
 
-                // Build reminders
                 let reminders = [];
                 todaySchedule.forEach(j => {
                     const matkul = AppState.find('matkul', j.matkulId);
@@ -1987,7 +2251,7 @@
                     reminders.push({
                         id: 'jadwal-' + j.id,
                         priority: 'urgent',
-                        icon: '📚',
+                        icon: 'bi-calendar-event',
                         title: `${j.jamMulai || ''} - ${j.jamSelesai || ''}`,
                         description: desc,
                         sourceType: 'jadwal',
@@ -2001,8 +2265,8 @@
                     reminders.push({
                         id: 'tugas-' + t.id,
                         priority: 'urgent',
-                        icon: '⚠️',
-                        title: `📝 ${t.nama || 'Tugas'}`,
+                        icon: 'bi-exclamation-triangle-fill',
+                        title: `${t.nama || 'Tugas'}`,
                         description: `Deadline hari ini — ${namaMatkul}`,
                         sourceType: 'tugas',
                         sourceId: t.id,
@@ -2015,8 +2279,8 @@
                     reminders.push({
                         id: 'tugas-' + t.id + '-tomorrow',
                         priority: 'important',
-                        icon: '📌',
-                        title: `📝 ${t.nama || 'Tugas'}`,
+                        icon: 'bi-exclamation-circle-fill',
+                        title: `${t.nama || 'Tugas'}`,
                         description: `Deadline besok — ${namaMatkul}`,
                         sourceType: 'tugas',
                         sourceId: t.id,
@@ -2031,8 +2295,8 @@
                         reminders.push({
                             id: 'tugas-' + t.id + '-near',
                             priority: 'reminder',
-                            icon: '📅',
-                            title: `📝 ${t.nama || 'Tugas'}`,
+                            icon: 'bi-clock',
+                            title: `${t.nama || 'Tugas'}`,
                             description: `Deadline ${diff} hari lagi — ${namaMatkul}`,
                             sourceType: 'tugas',
                             sourceId: t.id,
@@ -2044,8 +2308,8 @@
                     reminders.push({
                         id: 'catatan-' + c.id + '-' + Date.now(),
                         priority: 'reminder',
-                        icon: '💡',
-                        title: `📌 Dari ${c.source}`,
+                        icon: 'bi-lightbulb',
+                        title: `Dari ${c.source}`,
                         description: c.text.length > 80 ? c.text.slice(0, 80) + '…' : c.text,
                         sourceType: c.type,
                         sourceId: c.id,
@@ -2059,8 +2323,18 @@
                 });
                 if (reminders.length > 10) reminders = reminders.slice(0, 10);
 
-                // ---- HTML ----
                 const stats = AppState.stats();
+
+                // IPK Target
+                const settings = AppState.getSettings();
+                const ipkTarget = settings.ipkTarget || 3.5;
+                const ipkCurrent = settings.ipkCurrent || 3.0;
+                const ipkPercent = Math.min(100, Math.max(0, (ipkCurrent / ipkTarget) * 100));
+
+                // Notes
+                const notes = AppState.get('notes');
+                const recentNotes = notes.slice(-3).reverse();
+
                 let html = `
                     <div class="dash-grid">
                         <div class="dash-card"><div class="num">${stats.dosen}</div><div class="label">Dosen</div></div>
@@ -2086,20 +2360,19 @@
 
                 html += `<div class="summary">`;
                 html +=
-                    `<span class="summary-item">🔴 <span class="num">${urgentCount}</span> Urgent</span>`;
+                    `<span class="summary-item"><i class="bi bi-exclamation-triangle-fill" style="color:var(--color-danger)"></i> <span class="num">${urgentCount}</span> Urgent</span>`;
                 html +=
-                    `<span class="summary-item">🟠 <span class="num">${importantCount}</span> Penting</span>`;
+                    `<span class="summary-item"><i class="bi bi-exclamation-circle-fill" style="color:var(--color-warning)"></i> <span class="num">${importantCount}</span> Penting</span>`;
                 html +=
-                    `<span class="summary-item">🟡 <span class="num">${reminderCount}</span> Pengingat</span>`;
+                    `<span class="summary-item"><i class="bi bi-clock" style="color:var(--color-info)"></i> <span class="num">${reminderCount}</span> Pengingat</span>`;
                 if (todaySchedule.length > 0) {
                     html +=
-                        `<span class="summary-item">📚 <span class="num">${todaySchedule.length}</span> Kuliah</span>`;
+                        `<span class="summary-item"><i class="bi bi-calendar-event"></i> <span class="num">${todaySchedule.length}</span> Kuliah</span>`;
                 }
                 html += `</div>`;
 
                 if (reminders.length === 0) {
-                    html +=
-                    `<div class="reminder-empty">✨ Tidak ada pengingat untuk hari ini. Selamat belajar!</div>`;
+                    html += `<div class="reminder-empty">Tidak ada pengingat untuk hari ini.</div>`;
                 } else {
                     html += `<div class="reminder-list">`;
                     reminders.forEach(r => {
@@ -2108,16 +2381,29 @@
                         let actionHtml = '';
                         if (r.module) {
                             actionHtml =
-                                `<button class="action-link" onclick="Router.openDetail('${r.module}','${r.sourceId}')">Lihat →</button>`;
+                                `<button class="action-link" onclick="Router.openDetail('${r.module}','${r.sourceId}')">Lihat <i class="bi bi-chevron-right"></i></button>`;
                         }
+                        const iconMap = {
+                            'bi-calendar-event': 'bi-calendar-event',
+                            'bi-exclamation-triangle-fill': 'bi-exclamation-triangle-fill',
+                            'bi-exclamation-circle-fill': 'bi-exclamation-circle-fill',
+                            'bi-clock': 'bi-clock',
+                            'bi-lightbulb': 'bi-lightbulb'
+                        };
+                        const iconClass = iconMap[r.icon] || 'bi-bell';
+                        const colorMap = {
+                            urgent: 'var(--color-danger)',
+                            important: 'var(--color-warning)',
+                            reminder: 'var(--color-info)'
+                        };
                         html += `
                             <div class="reminder-item ${cls}">
-                                <span class="icon">${r.icon}</span>
+                                <span class="icon"><i class="bi ${iconClass}" style="color:${colorMap[cls]||'var(--color-info)'}"></i></span>
                                 <div class="content">
                                     <div class="title">${r.title}</div>
                                     <div class="desc">${r.description}</div>
                                     <div class="meta">
-                                        <span class="tag">${r.priority === 'urgent' ? '🔴 Urgent' : r.priority === 'important' ? '🟠 Penting' : '🟡 Pengingat'}</span>
+                                        <span class="tag">${cls === 'urgent' ? 'Urgent' : cls === 'important' ? 'Penting' : 'Pengingat'}</span>
                                     </div>
                                 </div>
                                 ${actionHtml}
@@ -2133,9 +2419,33 @@
                     </div>
                 </div>`;
 
+                // IPK Tracker
+                html += `
+                    <div class="dash-section">
+                        <h3><i class="bi bi-graph-up-arrow"></i> Target IPK</h3>
+                        <div class="ipk-tracker">
+                            <div class="ipk-input">
+                                <label>Target</label>
+                                <input type="number" id="ipkTargetInput" step="0.1" min="0" max="4" value="${ipkTarget}" />
+                            </div>
+                            <div class="ipk-input">
+                                <label>Saat Ini</label>
+                                <input type="number" id="ipkCurrentInput" step="0.1" min="0" max="4" value="${ipkCurrent}" />
+                                <button class="header-btn" style="padding:4px 12px;font-size:0.65rem;" onclick="Router.updateIpk()">Update</button>
+                            </div>
+                            <div class="ipk-bar-wrap">
+                                <div class="ipk-bar">
+                                    <div class="fill" style="width:${ipkPercent}%;"></div>
+                                </div>
+                                <div class="ipk-label">${ipkCurrent} dari ${ipkTarget} (${Math.round(ipkPercent)}%)</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
                 // Jadwal hari ini
                 html +=
-                    `<div class="dash-section"><h3>📅 Jadwal Hari Ini (${todayName}) <span class="badge">${todaySchedule.length}</span></h3>`;
+                    `<div class="dash-section"><h3><i class="bi bi-calendar"></i> Jadwal Hari Ini (${todayName}) <span class="badge">${todaySchedule.length}</span></h3>`;
                 if (todaySchedule.length === 0) {
                     html += `<div class="dash-empty">Tidak ada jadwal hari ini.</div>`;
                 } else {
@@ -2156,7 +2466,7 @@
 
                 // Tugas mendekati deadline
                 html +=
-                    `<div class="dash-section"><h3>📝 Tugas Mendekati Deadline <span class="badge">${nearTasks.length}</span></h3>`;
+                    `<div class="dash-section"><h3><i class="bi bi-file-text"></i> Tugas Mendekati Deadline <span class="badge">${nearTasks.length}</span></h3>`;
                 if (nearTasks.length === 0) {
                     html += `<div class="dash-empty">Tidak ada tugas yang mendekati deadline.</div>`;
                 } else {
@@ -2176,8 +2486,38 @@
                 }
                 html += `</div>`;
 
+                // Catatan cepat
+                html += `
+                    <div class="dash-section">
+                        <h3><i class="bi bi-pencil-square"></i> Catatan Cepat <span class="badge">${notes.length}</span></h3>
+                        <div class="notes-grid">
+                `;
+                if (recentNotes.length === 0) {
+                    html += `<div class="dash-empty" style="grid-column:1/-1;">Belum ada catatan.</div>`;
+                } else {
+                    recentNotes.forEach(n => {
+                        const preview = n.content ? n.content.slice(0, 60) + (n.content.length > 60 ? '…' : '') :
+                            '';
+                        html += `
+                            <div class="note-card" onclick="Router.openDetail('notes','${n.id}')">
+                                <div class="note-title">
+                                    <span>${n.title || 'Catatan'}</span>
+                                    <button class="del-note" onclick="event.stopPropagation();Router.confirmDelete('notes','${n.id}')"><i class="bi bi-x-lg"></i></button>
+                                </div>
+                                <div class="note-preview">${preview || '(kosong)'}</div>
+                                <div class="note-date">${n.createdAt ? new Date(n.createdAt).toLocaleDateString('id-ID') : ''}</div>
+                            </div>
+                        `;
+                    });
+                }
+                html += `
+                        </div>
+                        <button class="note-add-btn" onclick="Router.navigate('notes','form')"><i class="bi bi-plus-lg"></i> Tambah Catatan</button>
+                    </div>
+                `;
+
                 // Dosen terbaru
-                html += `<div class="dash-section"><h3>👨‍🏫 Dosen Terbaru</h3>`;
+                html += `<div class="dash-section"><h3><i class="bi bi-person-badge"></i> Dosen Terbaru</h3>`;
                 const recentDosen = [...AppState.get('dosen')].reverse().slice(0, 5);
                 if (recentDosen.length === 0) {
                     html += `<div class="dash-empty">Belum ada dosen.</div>`;
@@ -2202,30 +2542,54 @@
             },
 
             _getGreeting(hour) {
-                if (hour < 6) return '🌙 Selamat malam';
-                if (hour < 10) return '🌅 Selamat pagi';
-                if (hour < 14) return '☀️ Selamat siang';
-                if (hour < 18) return '🌤️ Selamat sore';
-                return '🌙 Selamat malam';
+                if (hour < 6) return 'Selamat malam';
+                if (hour < 10) return 'Selamat pagi';
+                if (hour < 14) return 'Selamat siang';
+                if (hour < 18) return 'Selamat sore';
+                return 'Selamat malam';
             },
 
             dismissBriefing() {
                 this.state.briefingDismissed = true;
                 const briefing = document.getElementById('briefingCard');
                 if (briefing) briefing.style.display = 'none';
-                try { localStorage.setItem('apc_briefing_dismissed', Date.now().toString()); } catch {}
+                try { localStorage.setItem('apc_briefing_dismissed_v4', Date.now().toString()); } catch {}
+            },
+
+            updateIpk() {
+                const target = parseFloat(document.getElementById('ipkTargetInput')?.value);
+                const current = parseFloat(document.getElementById('ipkCurrentInput')?.value);
+                if (isNaN(target) || target <= 0 || target > 4) {
+                    Notif.error('Target IPK harus antara 0-4.');
+                    return;
+                }
+                if (isNaN(current) || current < 0 || current > 4) {
+                    Notif.error('IPK saat ini harus antara 0-4.');
+                    return;
+                }
+                AppState.updateSettings({ ipkTarget: target, ipkCurrent: current });
+                Notif.success('Target IPK diperbarui.');
+                this.render();
             },
 
             // ---- LIST ----
             _renderList(container, mod, items) {
                 const isSearch = this.state.searchQuery.trim() !== '' && this.state.searchResults !== null;
                 if (items.length === 0) {
+                    const iconMap = {
+                        dosen: 'bi-person-badge',
+                        matkul: 'bi-book',
+                        kontrak: 'bi-clipboard',
+                        tugas: 'bi-file-text',
+                        jadwal: 'bi-calendar',
+                        notes: 'bi-pencil-square'
+                    };
                     container.innerHTML = `
                         <div class="list-empty">
-                            <div class="icon">📭</div>
+                            <div class="icon"><i class="bi ${iconMap[mod] || 'bi-folder'}"></i></div>
                             <p>${isSearch ? 'Tidak ada hasil pencarian.' : 'Belum ada data.'}</p>
                             <div class="sub">${isSearch ? 'Coba kata kunci lain.' : 'Tambahkan data baru melalui tombol + di atas.'}</div>
-                            ${isSearch ? `<button class="list-back-btn" onclick="Router.clearSearch()">← Kembali ke daftar</button>` : ''}
+                            ${isSearch ? `<button class="list-back-btn" onclick="Router.clearSearch()">Kembali ke daftar</button>` : ''}
                         </div>
                     `;
                     return;
@@ -2233,11 +2597,28 @@
 
                 let html = `<div class="module-list">`;
                 items.forEach(item => {
-                    const primary = item.nama || item.judul || item.matkul || 'Tanpa nama';
-                    const secondary = item.kode || item.dosen || item.fakultas || '';
-                    const badge = item.sks ? `${item.sks} SKS` : (item.status || '');
+                    const primary = item.nama || item.judul || item.matkul || item.title || 'Tanpa nama';
+                    const secondary = item.kode || item.dosen || item.fakultas || item.content ? (item.content
+                        .slice(0, 40) + (item.content.length > 40 ? '…' : '')) : '';
+                    const badge = item.sks ? `${item.sks} SKS` : (item.status || (item.priority ? item.priority :
+                    ''));
                     const avatarChar = primary.charAt(0).toUpperCase();
                     const avatarImg = item.foto ? `<img src="${item.foto}" alt="${primary}">` : avatarChar;
+
+                    // For notes, use a different display
+                    if (mod === 'notes') {
+                        html += `
+                            <div class="list-card" onclick="Router.openDetail('notes','${item.id}')">
+                                <div class="list-avatar"><i class="bi bi-pencil-square" style="font-size:1.2rem;"></i></div>
+                                <div class="list-info">
+                                    <div class="primary">${item.title || 'Tanpa judul'}</div>
+                                    <div class="secondary">${item.content ? item.content.slice(0, 40) + (item.content.length > 40 ? '…' : '') : ''}</div>
+                                </div>
+                                ${item.createdAt ? `<span class="list-badge">${new Date(item.createdAt).toLocaleDateString('id-ID')}</span>` : ''}
+                            </div>
+                        `;
+                        return;
+                    }
 
                     html += `
                         <div class="list-card" onclick="Router.openDetail('${mod}','${item.id}')">
@@ -2254,7 +2635,7 @@
 
                 if (isSearch) {
                     html +=
-                        `<div style="text-align:center;margin-top:16px;"><button class="list-back-btn" onclick="Router.clearSearch()">← Kembali ke daftar</button></div>`;
+                        `<div style="text-align:center;margin-top:12px;"><button class="list-back-btn" onclick="Router.clearSearch()">Kembali ke daftar</button></div>`;
                 }
 
                 container.innerHTML = html;
@@ -2269,12 +2650,34 @@
                     return;
                 }
 
+                // Special handling for notes
+                if (mod === 'notes') {
+                    container.innerHTML = `
+                        <div class="detail-view active">
+                            <div class="detail-header">
+                                <div class="detail-name">
+                                    <h2>${item.title || 'Tanpa judul'}</h2>
+                                    <div class="sub">${item.createdAt ? new Date(item.createdAt).toLocaleDateString('id-ID', {day:'numeric',month:'long',year:'numeric'}) : ''}</div>
+                                </div>
+                            </div>
+                            <div style="background:var(--color-card);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--shadow-sm);white-space:pre-wrap;font-size:0.9rem;line-height:1.7;color:var(--color-text);">
+                                ${item.content || '(kosong)'}
+                            </div>
+                            <div class="detail-actions">
+                                <button class="btn-edit" onclick="Router.editItem('notes','${item.id}')"><i class="bi bi-pencil"></i> Edit</button>
+                                <button class="btn-delete" onclick="Router.confirmDelete('notes','${item.id}')"><i class="bi bi-trash"></i> Hapus</button>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
                 const exclude = ['id', 'foto', 'dynamicFields', 'createdAt'];
                 let infoHtml = '';
                 const keys = Object.keys(item).filter(k => !exclude.includes(k) && item[k] !== undefined && item[k] !==
                     null && item[k] !== '');
                 const priority = ['nama', 'judul', 'kode', 'dosen', 'matkul', 'sks', 'semester', 'kelas', 'ruangan',
-                    'hari', 'jamMulai', 'jamSelesai', 'status', 'deadline'
+                    'hari', 'jamMulai', 'jamSelesai', 'status', 'deadline', 'prioritas', 'link'
                 ];
                 keys.sort((a, b) => {
                     const ia = priority.indexOf(a),
@@ -2317,7 +2720,7 @@
                     if (matkulAmpu.length > 0) {
                         relHtml += `
                             <div class="detail-relations">
-                                <h4>📚 Mata Kuliah yang Diampu</h4>
+                                <h4>Mata Kuliah yang Diampu</h4>
                                 ${matkulAmpu.map(m => `<span class="relation-chip" onclick="Router.openDetail('matkul','${m.id}')">${m.nama || m.kode || 'Mata Kuliah'}</span>`).join('')}
                             </div>
                         `;
@@ -2328,7 +2731,7 @@
                     if (kontrakRel.length > 0) {
                         relHtml += `
                             <div class="detail-relations">
-                                <h4>📋 Kontrak Kuliah</h4>
+                                <h4>Kontrak Kuliah</h4>
                                 ${kontrakRel.map(k => `<span class="relation-chip" onclick="Router.openDetail('kontrak','${k.id}')">${k.judul || k.matkul || 'Kontrak'}</span>`).join('')}
                             </div>
                         `;
@@ -2340,7 +2743,7 @@
                         if (matkul) {
                             relHtml += `
                                 <div class="detail-relations">
-                                    <h4>📚 Mata Kuliah Terkait</h4>
+                                    <h4>Mata Kuliah Terkait</h4>
                                     <span class="relation-chip" onclick="Router.openDetail('matkul','${matkul.id}')">${matkul.nama || matkul.kode || 'Mata Kuliah'}</span>
                                 </div>
                             `;
@@ -2363,8 +2766,8 @@
                         <div class="detail-grid">${infoHtml}</div>
                         ${relHtml}
                         <div class="detail-actions">
-                            <button class="btn-edit" onclick="Router.editItem('${mod}','${item.id}')">✎ Edit</button>
-                            <button class="btn-delete" onclick="Router.confirmDelete('${mod}','${item.id}')">🗑 Hapus</button>
+                            <button class="btn-edit" onclick="Router.editItem('${mod}','${item.id}')"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn-delete" onclick="Router.confirmDelete('${mod}','${item.id}')"><i class="bi bi-trash"></i> Hapus</button>
                         </div>
                     </div>
                 `;
@@ -2374,6 +2777,30 @@
             _renderForm(container, mod) {
                 const isEdit = this.state.editingId !== null;
                 const item = isEdit ? AppState.find(mod, this.state.editingId) : null;
+
+                // Special handling for notes
+                if (mod === 'notes') {
+                    const v = (key) => item ? (item[key] || '') : '';
+                    container.innerHTML = `
+                        <div class="form-view active">
+                            <form id="moduleForm" onsubmit="Router.saveForm(event)">
+                                <div class="form-group">
+                                    <label>Judul <span class="required">*</span></label>
+                                    <input type="text" id="inputTitle" value="${v('title')}" placeholder="Judul catatan..." required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Isi Catatan</label>
+                                    <textarea id="inputContent" rows="6" placeholder="Tulis catatan Anda di sini...">${v('content')}</textarea>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">${isEdit ? 'Simpan' : 'Tambah'}</button>
+                                    <button type="button" class="btn-secondary" onclick="Router.cancelForm()">Batal</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+                    return;
+                }
 
                 let fieldsHtml = '';
                 let dynamicHtml = '';
@@ -2433,9 +2860,40 @@
                                 window._photoData = ev.target.result;
                                 const nameSpan = document.getElementById('photoName');
                                 if (nameSpan) nameSpan.textContent = file.name;
+                                const preview = document.getElementById('photoPreview');
+                                if (preview) preview.src = ev.target.result;
                             };
                             reader.readAsDataURL(file);
                         }
+                    });
+                }
+
+                // Delete photo
+                const delPhotoBtn = document.getElementById('delPhotoBtn');
+                if (delPhotoBtn) {
+                    delPhotoBtn.addEventListener('click', () => {
+                        window._photoData = null;
+                        document.getElementById('photoName').textContent = 'Tidak ada file';
+                        const preview = document.getElementById('photoPreview');
+                        if (preview) preview.src = '';
+                        const fileInput2 = document.getElementById('inputFoto');
+                        if (fileInput2) fileInput2.value = '';
+                    });
+                }
+
+                // Reset photo
+                const resetPhotoBtn = document.getElementById('resetPhotoBtn');
+                if (resetPhotoBtn) {
+                    resetPhotoBtn.addEventListener('click', () => {
+                        window._photoData = null;
+                        document.getElementById('photoName').textContent = 'Tidak ada file';
+                        const preview = document.getElementById('photoPreview');
+                        if (preview) preview.src = '';
+                        const fileInput2 = document.getElementById('inputFoto');
+                        if (fileInput2) fileInput2.value = '';
+                        // Set default avatar
+                        const avatarPreview = document.getElementById('photoPreview');
+                        if (avatarPreview) avatarPreview.src = '';
                     });
                 }
 
@@ -2456,11 +2914,12 @@
             // ---- FORM BUILDERS ----
             _buildDosenForm(item) {
                 const v = (key) => item ? (item[key] || '') : '';
+                const hasPhoto = item && item.foto;
                 return `
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nama Lengkap <span class="required">*</span></label>
-                            <input type="text" id="inputNama" value="${v('nama')}" placeholder="Dr. Ahmad Subarjo, M.Sc." required>
+                            <input type="text" id="inputNama" value="${v('nama')}" placeholder="Andi Saputra" required>
                         </div>
                         <div class="form-group">
                             <label>Gelar</label>
@@ -2480,17 +2939,17 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" id="inputEmail" value="${v('email')}" placeholder="nama@usu.ac.id">
+                            <input type="email" id="inputEmail" value="${v('email')}" placeholder="nama@example.com">
                         </div>
                         <div class="form-group">
                             <label>Telepon</label>
-                            <input type="tel" id="inputTelepon" value="${v('telepon')}" placeholder="0812-3456-7890">
+                            <input type="tel" id="inputTelepon" value="${v('telepon')}" placeholder="081234567890">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Fakultas</label>
-                            <input type="text" id="inputFakultas" value="${v('fakultas')}" placeholder="Fakultas ...">
+                            <input type="text" id="inputFakultas" value="${v('fakultas')}" placeholder="Fakultas Ilmu Komputer">
                         </div>
                         <div class="form-group">
                             <label>Program Studi</label>
@@ -2500,7 +2959,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Jabatan</label>
-                            <input type="text" id="inputJabatan" value="${v('jabatan')}" placeholder="Dosen / Kepala Lab">
+                            <input type="text" id="inputJabatan" value="${v('jabatan')}" placeholder="Dosen">
                         </div>
                         <div class="form-group">
                             <label>NIP/NIDN/NIDK</label>
@@ -2509,7 +2968,7 @@
                     </div>
                     <div class="form-group">
                         <label>Bidang Keahlian</label>
-                        <input type="text" id="inputKeahlian" value="${v('keahlian')}" placeholder="Machine Learning, NLP, ...">
+                        <input type="text" id="inputKeahlian" value="${v('keahlian')}" placeholder="Machine Learning, NLP">
                     </div>
                     <div class="form-group">
                         <label>Ruang Kerja</label>
@@ -2540,10 +2999,15 @@
                     <div class="form-group">
                         <label>Foto Profil</label>
                         <div class="photo-upload">
-                            <label for="inputFoto" class="upload-btn">Pilih Foto</label>
+                            <label for="inputFoto" class="upload-btn"><i class="bi bi-upload"></i> Pilih Foto</label>
                             <input type="file" id="inputFoto" accept="image/*">
-                            <span class="photo-name" id="photoName">${item && item.foto ? 'Foto sudah diunggah' : 'Tidak ada file'}</span>
+                            <span class="photo-name" id="photoName">${hasPhoto ? 'Foto sudah diunggah' : 'Tidak ada file'}</span>
+                            <div class="photo-actions">
+                                <button type="button" id="resetPhotoBtn" title="Reset ke avatar default"><i class="bi bi-arrow-counterclockwise"></i></button>
+                                ${hasPhoto ? `<button type="button" class="del-photo-btn" id="delPhotoBtn" title="Hapus foto"><i class="bi bi-trash"></i></button>` : ''}
+                            </div>
                         </div>
+                        ${hasPhoto ? `<div style="margin-top:6px;"><img id="photoPreview" src="${item.foto}" style="max-width:80px;max-height:80px;border-radius:50%;border:2px solid var(--color-border);"></div>` : `<div style="margin-top:6px;"><img id="photoPreview" src="" style="max-width:80px;max-height:80px;border-radius:50%;border:2px solid var(--color-border);display:none;"></div>`}
                     </div>
                 `;
             },
@@ -2597,7 +3061,7 @@
                     </div>
                     <div class="form-group">
                         <label>Status</label>
-                        <input type="text" id="inputStatus" value="${v('status')}" placeholder="Aktif / Selesai / Diambil">
+                        <input type="text" id="inputStatus" value="${v('status')}" placeholder="Aktif">
                     </div>
                 `;
             },
@@ -2778,12 +3242,12 @@
                 const fields = item && item.dynamicFields ? item.dynamicFields : [];
                 let html = `
                     <div class="dynamic-fields">
-                        <h4>📌 Informasi Tambahan</h4>
+                        <h4><i class="bi bi-plus-circle"></i> Informasi Tambahan</h4>
                         <div id="dynamicFieldsContainer">
                 `;
                 if (fields.length === 0) {
                     html +=
-                        `</div><button type="button" class="add-field-btn" id="addDynamicBtn">+ Tambah Kolom</button></div>`;
+                        `</div><button type="button" class="add-field-btn" id="addDynamicBtn"><i class="bi bi-plus-lg"></i> Tambah Kolom</button></div>`;
                     return html;
                 }
                 fields.forEach((f, idx) => {
@@ -2806,7 +3270,7 @@
                 });
                 html += `
                         </div>
-                        <button type="button" class="add-field-btn" id="addDynamicBtn">+ Tambah Kolom</button>
+                        <button type="button" class="add-field-btn" id="addDynamicBtn"><i class="bi bi-plus-lg"></i> Tambah Kolom</button>
                     </div>
                 `;
                 return html;
@@ -2865,6 +3329,34 @@
                 e.preventDefault();
                 const mod = this.state.module;
                 const isEdit = this.state.editingId !== null;
+
+                // Special handling for notes
+                if (mod === 'notes') {
+                    const title = document.getElementById('inputTitle')?.value?.trim() || '';
+                    const content = document.getElementById('inputContent')?.value || '';
+                    if (!title) {
+                        Notif.error('Judul catatan harus diisi.');
+                        return;
+                    }
+                    const payload = { title, content };
+                    if (isEdit) {
+                        const updated = AppState.update(mod, this.state.editingId, payload);
+                        if (updated) Notif.success('Catatan diperbarui.');
+                        else { Notif.error('Gagal memperbarui.'); return; }
+                    } else {
+                        payload.id = uid();
+                        payload.createdAt = new Date().toISOString();
+                        AppState.push(mod, payload);
+                        Notif.success('Catatan ditambahkan.');
+                    }
+                    this.state.view = 'list';
+                    this.state.editingId = null;
+                    this.pushNav(mod, 'list');
+                    this.render();
+                    this.updateLandingStats();
+                    return;
+                }
+
                 let payload = {};
 
                 if (mod === 'dosen') payload = this._collectDosenForm();
@@ -2924,6 +3416,8 @@
                     const value = f.querySelector('.dynamic-value')?.value || '';
                     if (label) dyn.push({ label, value });
                 });
+                const foto = window._photoData || null;
+                // If photo was removed, it's already null
                 return {
                     nama: document.getElementById('inputNama')?.value || '',
                     gelar: document.getElementById('inputGelar')?.value || '',
@@ -2942,7 +3436,7 @@
                     instagram: document.getElementById('inputInstagram')?.value || '',
                     twitter: document.getElementById('inputTwitter')?.value || '',
                     linkedIn: document.getElementById('inputLinkedIn')?.value || '',
-                    foto: window._photoData || null,
+                    foto: foto,
                     dynamicFields: dyn
                 };
             },
@@ -3021,7 +3515,7 @@
 
             confirmDelete(mod, id) {
                 const item = AppState.find(mod, id);
-                const name = item?.nama || item?.judul || item?.matkul || 'item';
+                const name = item?.nama || item?.judul || item?.matkul || item?.title || 'item';
                 Modal.open(
                     'Konfirmasi Hapus',
                     `Apakah Anda yakin ingin menghapus "${name}"? Tindakan ini tidak dapat dibatalkan.`,
@@ -3045,17 +3539,17 @@
 
         // ---- INIT ----
         document.addEventListener('DOMContentLoaded', () => {
-            // Migrasi data dari v2 jika ada
-            const migrateV2 = () => {
-                const v2Keys = {
-                    dosen: 'apc_dosen_v2',
-                    matkul: 'apc_matkul_v2',
-                    kontrak: 'apc_kontrak_v2',
-                    tugas: 'apc_tugas_v2',
-                    jadwal: 'apc_jadwal_v2'
+            // Migrasi data dari V3 jika ada
+            const migrateV3 = () => {
+                const v3Keys = {
+                    dosen: 'apc_dosen_v3',
+                    matkul: 'apc_matkul_v3',
+                    kontrak: 'apc_kontrak_v3',
+                    tugas: 'apc_tugas_v3',
+                    jadwal: 'apc_jadwal_v3'
                 };
                 let migrated = false;
-                for (const [k, oldKey] of Object.entries(v2Keys)) {
+                for (const [k, oldKey] of Object.entries(v3Keys)) {
                     try {
                         const oldData = localStorage.getItem(oldKey);
                         if (oldData) {
@@ -3067,21 +3561,32 @@
                         }
                     } catch {}
                 }
+                // Migrate notes from v3 if any
+                try {
+                    const oldNotes = localStorage.getItem('apc_notes_v3');
+                    if (oldNotes) {
+                        const parsed = JSON.parse(oldNotes);
+                        if (Array.isArray(parsed) && parsed.length > 0 && AppState.get('notes').length === 0) {
+                            AppState.set('notes', parsed);
+                            migrated = true;
+                        }
+                    }
+                } catch {}
                 if (migrated) {
-                    console.log('🔄 Data dari V2 berhasil dimigrasi.');
+                    console.log('🔄 Data dari V3 berhasil dimigrasi.');
                 }
             };
-            migrateV2();
+            migrateV3();
 
             // Inisialisasi Router
             Router.init();
 
-            // Ekspos Router ke global untuk inline onclick
+            // Ekspos Router ke global
             window.Router = Router;
             window.Notif = Notif;
 
-            console.log('✅ Academic Personal Center V3 siap digunakan.');
+            console.log('✅ Academic Personal Center V4 siap digunakan.');
         });
     </script>
 </body>
-</html>
+</html>w
