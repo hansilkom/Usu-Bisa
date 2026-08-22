@@ -11,7 +11,7 @@
 
     <style>
         /* ============================================================
-           ROOT — Design System V4 (FIXED)
+           ROOT — Design System V4 (Final Polish)
            ============================================================ */
         :root {
             --color-primary: #0a2e24;
@@ -252,6 +252,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
         .header-back:hover {
             background: var(--color-border);
@@ -285,6 +286,7 @@
             gap: 5px;
             white-space: nowrap;
             font-family: var(--font);
+            min-height: 36px;
         }
         .header-btn i {
             font-size: 1rem;
@@ -387,6 +389,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            min-height: 32px;
         }
         .search-bar .search-submit:hover {
             background: var(--color-primary-light);
@@ -484,13 +487,15 @@
             margin-left: auto;
             font-weight: 600;
         }
+
+        /* --- PERBAIKAN UTAMA: dash-item menggunakan grid --- */
         .dash-item {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px 12px;
             align-items: center;
             padding: 6px 0;
             border-bottom: 1px solid #f1f3f6;
-            gap: 10px;
         }
         .dash-item:last-child {
             border-bottom: none;
@@ -498,15 +503,14 @@
         .dash-item .dash-label {
             font-size: 0.8rem;
             color: var(--color-text-secondary);
-            flex: 1;
             word-break: break-word;
+            min-width: 0;
         }
         .dash-item .dash-value {
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--color-text);
             text-align: right;
-            flex-shrink: 0;
             white-space: nowrap;
         }
         .dash-item .dash-value.highlight {
@@ -515,6 +519,7 @@
         .dash-item .dash-value.success {
             color: var(--color-success);
         }
+
         .dash-empty {
             color: var(--color-text-muted);
             font-size: 0.8rem;
@@ -644,6 +649,7 @@
             transition: background 0.15s;
             flex-shrink: 0;
             font-family: var(--font);
+            white-space: nowrap;
         }
         .reminder-item .action-link:hover {
             background: var(--color-gold-bg);
@@ -1500,7 +1506,7 @@
         }
 
         /* ============================================================
-           RESPONSIVE
+           RESPONSIVE — MOBILE FIRST
            ============================================================ */
         @media (max-width: 640px) {
             body {
@@ -1537,13 +1543,17 @@
             }
             .header-btn {
                 font-size: 0.65rem;
-                padding: 5px 10px;
+                padding: 5px 12px;
+                min-height: 32px;
             }
             .header-btn .btn-label {
                 display: none;
             }
             .header-btn i {
                 font-size: 0.9rem;
+            }
+            .header-btn.danger {
+                padding: 5px 10px;
             }
             .search-wrap {
                 padding: 6px 12px;
@@ -1555,6 +1565,7 @@
             .search-bar .search-submit {
                 padding: 5px 12px;
                 font-size: 0.68rem;
+                min-height: 30px;
             }
             .content {
                 padding: 10px 12px 18px;
@@ -1565,6 +1576,15 @@
             }
             .dash-card .num {
                 font-size: 1.2rem;
+            }
+            .dash-item {
+                grid-template-columns: 1fr;
+                gap: 2px;
+                padding: 8px 0;
+            }
+            .dash-item .dash-value {
+                text-align: left;
+                white-space: normal;
             }
             .module-list {
                 grid-template-columns: 1fr;
@@ -1595,7 +1615,19 @@
             .notes-grid {
                 grid-template-columns: 1fr 1fr;
             }
+            .ipk-tracker {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .ipk-tracker .ipk-input {
+                justify-content: space-between;
+            }
+            .ipk-tracker .ipk-bar-wrap {
+                min-width: unset;
+            }
         }
+
         @media (max-width: 400px) {
             .landing-menu {
                 grid-template-columns: 1fr 1fr;
@@ -1615,6 +1647,7 @@
                 grid-template-columns: 1fr;
             }
         }
+
         @media (min-width: 641px) {
             .landing-menu {
                 grid-template-columns: repeat(3, 1fr);
@@ -1725,21 +1758,17 @@
     <div class="notif-container" id="notifContainer"></div>
 
     <!-- ============================================================
-    JAVASCRIPT — APLIKASI V4 (FIXED)
+    JAVASCRIPT — SAMA SEPERTI SEBELUMNYA (SUDAH DIPERBAIKI)
     ============================================================ -->
     <script>
         /**
          * ================================================================
-         *  ACADEMIC PERSONAL CENTER — V4 (FIXED)
-         *  Arsitektur modular dengan state management terpusat
+         *  ACADEMIC PERSONAL CENTER — V4 (FINAL POLISH)
+         *  Semua logika JS tetap sama seperti versi sebelumnya yang sudah
+         *  diperbaiki (reset search, navStack, tombol header, dsb.)
          *  ================================================================
-         *  PERBAIKAN:
-         *  1. Reset searchQuery saat navigasi list ↔ form
-         *  2. NavStack tidak menumpuk duplikasi
-         *  3. Tombol header di form berubah jadi "Batal"
-         *  4. Konsistensi data antara dashboard dan daftar
-         *  5. Perbaikan validasi dan error handling
-         *  6. Audit seluruh alur CRUD
+         *  Hanya perubahan CSS dan beberapa penyesuaian kecil pada markup
+         *  untuk meningkatkan kenyamanan visual.
          *  ================================================================
          */
 
@@ -1945,7 +1974,6 @@
                 notes: 'Catatan'
             },
 
-            // ---- INIT ----
             init() {
                 document.querySelectorAll('.landing-menu .menu-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
@@ -1994,7 +2022,7 @@
                     this._ipkTarget = settings.ipkTarget;
                 }
 
-                console.log('✅ Academic Personal Center V4 (Fixed) siap.');
+                console.log('✅ Academic Personal Center V4 (Final Polish) siap.');
             },
 
             _checkBriefingDismiss() {
@@ -2021,7 +2049,6 @@
                 document.getElementById('statTugas').textContent = s.tugas;
             },
 
-            // ---- NAVIGATION ----
             navigate(module, view = 'list', id = null) {
                 const landing = document.getElementById('landing');
                 const main = document.getElementById('mainContainer');
@@ -2031,7 +2058,6 @@
                     this.state.navStack = [];
                 }
 
-                // Reset search when navigating
                 if (view !== 'list') {
                     this.state.searchQuery = '';
                     this.state.searchResults = null;
@@ -2046,7 +2072,6 @@
                 this.state.editingId = null;
 
                 const navState = { module, view, id };
-                // Prevent duplicate nav entries
                 const last = this.state.navStack[this.state.navStack.length - 1];
                 if (!last || last.module !== module || last.view !== view || last.id !== id) {
                     this.state.navStack.push(navState);
@@ -2065,7 +2090,6 @@
                         this.state.view = prev.view;
                         this.state.selectedId = prev.id || null;
                         this.state.editingId = null;
-                        // Reset search when going back
                         this.state.searchQuery = '';
                         this.state.searchResults = null;
                         document.getElementById('globalSearch').value = '';
@@ -2081,7 +2105,6 @@
                 this.updateLandingStats();
             },
 
-            // ---- ACTION HANDLER ----
             handleAction() {
                 const mod = this.state.module;
                 const view = this.state.view;
@@ -2092,21 +2115,18 @@
                 }
 
                 if (view === 'list') {
-                    // Clear search before going to form
                     this.clearSearch();
                     this.state.view = 'form';
                     this.state.editingId = null;
                     this.pushNav(mod, 'form');
                     this.render();
                 } else if (view === 'detail') {
-                    // Clear search before going to form
                     this.clearSearch();
                     this.state.view = 'form';
                     this.state.editingId = this.state.selectedId;
                     this.pushNav(mod, 'form', this.state.selectedId);
                     this.render();
                 } else if (view === 'form') {
-                    // In form view, header button acts as "Batal"
                     this.cancelForm();
                 }
             },
@@ -2120,7 +2140,6 @@
                 }
             },
 
-            // ---- SEARCH ----
             performSearch() {
                 const input = document.getElementById('globalSearch');
                 const query = input.value.trim();
@@ -2155,7 +2174,6 @@
                 document.getElementById('clearSearch').classList.remove('visible');
             },
 
-            // ---- RENDER ----
             render() {
                 const container = document.getElementById('content');
                 const mod = this.state.module;
@@ -2172,7 +2190,6 @@
                     actionIcon = 'bi-pencil';
                 } else if (view === 'form') {
                     title = this.state.editingId ? 'Edit' : 'Tambah';
-                    // In form view, header button becomes "Batal"
                     actionLabel = 'Batal';
                     actionIcon = 'bi-x-lg';
                     actionClass = 'danger';
@@ -2184,11 +2201,9 @@
                 actionBtn.querySelector('i').className = `bi ${actionIcon}`;
                 actionBtn.className = `header-btn ${actionClass}`;
 
-                // Show search bar only on list view for data modules
                 const showSearch = mod !== 'dashboard' && view === 'list';
                 document.getElementById('searchWrap').classList.toggle('visible', showSearch);
 
-                // Show/hide action button on dashboard
                 if (mod === 'dashboard') {
                     actionBtn.style.display = 'none';
                 } else {
@@ -2204,7 +2219,6 @@
                 let listData = items;
                 const searchQ = this.state.searchQuery.trim().toLowerCase();
 
-                // Only filter if search is active and we're on list view
                 if (view === 'list' && searchQ) {
                     if (this.state.searchResults !== null) {
                         listData = this.state.searchResults;
@@ -2243,7 +2257,6 @@
                     return diff >= 0 && diff <= 7;
                 }).sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
-                // Reminder dari catatan
                 const reminderKeywords = ['ingat', 'jangan', 'lupa', 'bawa', 'persiapan', 'presentasi', 'tugas', 'deadline',
                     'penting', 'catatan'
                 ];
@@ -2561,7 +2574,7 @@
                     </div>
                 `;
 
-                // Dosen terbaru
+                // Dosen terbaru — menggunakan .dash-item yang sudah diperbaiki
                 html += `<div class="dash-section"><h3><i class="bi bi-person-badge"></i> Dosen Terbaru</h3>`;
                 const recentDosen = [...AppState.get('dosen')].reverse().slice(0, 5);
                 if (recentDosen.length === 0) {
@@ -3385,7 +3398,6 @@
                         AppState.push(mod, payload);
                         Notif.success('Catatan ditambahkan.');
                     }
-                    // Clear search before going back to list
                     this.clearSearch();
                     this.state.view = 'list';
                     this.state.editingId = null;
@@ -3431,7 +3443,6 @@
                     Notif.success('Data berhasil ditambahkan');
                 }
 
-                // Clear search before going back to list
                 this.clearSearch();
                 this.state.view = 'list';
                 this.state.editingId = null;
@@ -3542,7 +3553,6 @@
                 this.state.view = 'detail';
                 this.state.selectedId = id;
                 this.state.editingId = null;
-                // Reset search when viewing detail
                 this.clearSearch();
                 this.pushNav(mod, 'detail', id);
                 this.render();
@@ -3551,7 +3561,6 @@
             editItem(mod, id) {
                 this.state.view = 'form';
                 this.state.editingId = id;
-                // Reset search when editing
                 this.clearSearch();
                 this.pushNav(mod, 'form', id);
                 this.render();
@@ -3584,7 +3593,6 @@
 
         // ---- INIT ----
         document.addEventListener('DOMContentLoaded', () => {
-            // Migrasi data dari V3 jika ada
             const migrateV3 = () => {
                 const v3Keys = {
                     dosen: 'apc_dosen_v3',
@@ -3626,7 +3634,7 @@
             window.Router = Router;
             window.Notif = Notif;
 
-            console.log('✅ Academic Personal Center V4 (Fixed) siap digunakan.');
+            console.log('✅ Academic Personal Center V4 (Final Polish) siap digunakan.');
         });
     </script>
 </body>
