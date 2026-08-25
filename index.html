@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         /* ============================================================
-           ROOT — Design System v4.1 (Final Polish)
+           ROOT — Design System v4.3 (Final - tanpa PWA)
            ============================================================ */
         :root {
             --color-primary: #0a2e24;
@@ -994,11 +994,30 @@
             flex-shrink: 0;
             overflow: hidden;
             border: 2px solid var(--color-gold);
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+        .list-avatar:hover {
+            transform: scale(1.05);
         }
         .list-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+        .list-avatar .avatar-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            background: var(--color-primary-light);
+            text-transform: uppercase;
         }
         .list-info {
             flex: 1;
@@ -1104,11 +1123,29 @@
             box-shadow: var(--shadow-md);
             flex-shrink: 0;
             position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .detail-photo:hover {
+            transform: scale(1.04);
         }
         .detail-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+        .detail-photo .detail-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            background: var(--color-primary-light);
+            text-transform: uppercase;
         }
         .detail-name h2 {
             font-size: 1.05rem;
@@ -1629,6 +1666,66 @@
         }
 
         /* ============================================================
+           LIGHTBOX — PREVIEW FOTO
+           ============================================================ */
+        .photo-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            padding: 20px;
+            backdrop-filter: blur(12px);
+            animation: fadeIn 0.25s ease;
+            cursor: pointer;
+        }
+        .photo-lightbox.active {
+            display: flex;
+        }
+        .photo-lightbox .lightbox-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            cursor: default;
+            animation: scaleIn 0.25s ease;
+        }
+        .photo-lightbox .lightbox-content img {
+            display: block;
+            max-width: 90vw;
+            max-height: 85vh;
+            width: auto;
+            height: auto;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-xl);
+            border: 2px solid rgba(255,255,255,0.1);
+            object-fit: contain;
+        }
+        .photo-lightbox .lightbox-close {
+            position: absolute;
+            top: -44px;
+            right: 0;
+            background: rgba(0,0,0,0.6);
+            border: none;
+            color: #fff;
+            font-size: 1.6rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font);
+        }
+        .photo-lightbox .lightbox-close:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        /* ============================================================
            MODAL
            ============================================================ */
         .modal-overlay {
@@ -1976,6 +2073,17 @@
                 font-size: 0.55rem;
                 padding: 2px 8px;
             }
+            .photo-lightbox .lightbox-content img {
+                max-width: 95vw;
+                max-height: 80vh;
+            }
+            .photo-lightbox .lightbox-close {
+                top: -36px;
+                right: 4px;
+                width: 32px;
+                height: 32px;
+                font-size: 1.2rem;
+            }
         }
 
         @media (max-width: 400px) {
@@ -2183,20 +2291,35 @@
     </div>
 
     <!-- ============================================================
+    LIGHTBOX — PREVIEW FOTO
+    ============================================================ -->
+    <div class="photo-lightbox" id="photoLightbox" role="dialog" aria-modal="true" aria-label="Preview foto">
+        <div class="lightbox-content">
+            <img id="lightboxImg" src="" alt="Preview foto">
+            <button class="lightbox-close" id="lightboxClose" aria-label="Tutup preview"><i class="bi bi-x-lg"></i></button>
+        </div>
+    </div>
+
+    <!-- ============================================================
     NOTIFICATIONS
     ============================================================ -->
     <div class="notif-container" id="notifContainer" role="status" aria-live="polite"></div>
 
     <!-- ============================================================
-    JAVASCRIPT — USU BISA v4.1 (Final)
+    JAVASCRIPT — USU BISA v4.3 (Final - tanpa PWA)
     ============================================================ -->
     <script>
         /**
          * ================================================================
-         *  USU BISA — v4.1 (Final)
-         *  - Search now keeps module intact (no forced switch)
-         *  - All previous fixes retained (XSS, import validation, crop, etc.)
-         *  - Clean, stable, production-ready
+         *  USU BISA — v4.3 (Final - tanpa PWA)
+         *  - Semua fitur CRUD, Dashboard, Reminder (hari+jam)
+         *  - Mata kuliah dengan hari wajib
+         *  - Jam selesai otomatis
+         *  - Import/Export kompatibel
+         *  - Foto profil dapat diklik (lightbox)
+         *  - Sinkronisasi foto dosen ke mata kuliah
+         *  - Daftar dosen: hanya Nama + NIP (tidak ada fakultas/jabatan)
+         *  - Tidak ada ketergantungan PWA
          *  ================================================================
          */
         (function() {
@@ -2220,6 +2343,8 @@
                 jadwal: 'bi-calendar',
                 notes: 'bi-pencil-square'
             };
+
+            const DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
             const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
             const findById = (arr, id) => arr.find(item => item.id === id);
@@ -2294,12 +2419,56 @@
                 }
             };
 
+            // ================================================================
+            //  APP STATE
+            // ================================================================
             class AppState {
                 constructor() {
                     this.data = Storage.loadAll();
                     this.settings = Storage.loadSettings();
                     this._ipkTarget = this.settings.ipkTarget || 3.5;
                     this._ipkCurrent = this.settings.ipkCurrent || 3.0;
+                    this.migrateAll();
+                }
+
+                migrateAll() {
+                    const matkuls = this.get('matkul');
+                    let changed = false;
+                    matkuls.forEach(m => {
+                        if (!('jamMasuk' in m)) { m.jamMasuk = null;
+                            changed = true; }
+                        if (!('jamSelesai' in m)) { m.jamSelesai = null;
+                            changed = true; }
+                        if (!('hari' in m)) { m.hari = null;
+                            changed = true; }
+                        if (m.jamMasuk && typeof m.jamMasuk === 'string' && m.jamMasuk.includes('.')) {
+                            m.jamMasuk = m.jamMasuk.replace('.', ':');
+                            changed = true;
+                            if (m.sks) {
+                                m.jamSelesai = this._calculateEndTime(m.jamMasuk, m.sks);
+                            }
+                        }
+                        if (m.jamMasuk && m.sks && !m.jamSelesai) {
+                            m.jamSelesai = this._calculateEndTime(m.jamMasuk, m.sks);
+                            changed = true;
+                        }
+                    });
+                    if (changed) {
+                        this.set('matkul', matkuls);
+                    }
+                }
+
+                _calculateEndTime(startTime, sks) {
+                    if (!startTime || !sks) return null;
+                    const parts = startTime.split(':');
+                    if (parts.length !== 2) return null;
+                    let hours = parseInt(parts[0]);
+                    let minutes = parseInt(parts[1]);
+                    if (isNaN(hours) || isNaN(minutes)) return null;
+                    const totalMinutes = hours * 60 + minutes + sks * 50;
+                    const endHours = Math.floor(totalMinutes / 60) % 24;
+                    const endMinutes = totalMinutes % 60;
+                    return `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`;
                 }
 
                 get(module) { return this.data[module] || []; }
@@ -2369,9 +2538,26 @@
                 exportModule(module) {
                     return this.get(module);
                 }
+
                 importModule(module, data) {
                     if (!Array.isArray(data)) throw new Error('Data harus berupa array.');
-                    const valid = data.every(item => typeof item === 'object' && item !== null && item.id);
+                    const migrated = data.map(item => {
+                        const newItem = { ...item };
+                        if (module === 'matkul') {
+                            if (!('jamMasuk' in newItem)) newItem.jamMasuk = null;
+                            if (!('jamSelesai' in newItem)) newItem.jamSelesai = null;
+                            if (!('hari' in newItem)) newItem.hari = null;
+                            if (newItem.jamMasuk && typeof newItem.jamMasuk === 'string' && newItem.jamMasuk
+                                .includes('.')) {
+                                newItem.jamMasuk = newItem.jamMasuk.replace('.', ':');
+                            }
+                            if (newItem.jamMasuk && newItem.sks) {
+                                newItem.jamSelesai = this._calculateEndTime(newItem.jamMasuk, newItem.sks);
+                            }
+                        }
+                        return newItem;
+                    });
+                    const valid = migrated.every(item => item && typeof item === 'object' && item.id);
                     if (!valid) {
                         throw new Error(
                             'Format data tidak valid. Setiap item harus memiliki properti "id".');
@@ -2379,7 +2565,7 @@
                     const existing = this.get(module);
                     const existingIds = new Set(existing.map(item => item.id));
                     let added = 0;
-                    data.forEach(item => {
+                    migrated.forEach(item => {
                         if (!existingIds.has(item.id)) {
                             existing.push(item);
                             added++;
@@ -2390,6 +2576,9 @@
                 }
             }
 
+            // ================================================================
+            //  NOTIF, MODAL, CROP, LIGHTBOX
+            // ================================================================
             const Notif = {
                 container: document.getElementById('notifContainer'),
                 show(message, type = 'info') {
@@ -2623,6 +2812,44 @@
                 }
             };
 
+            // ================================================================
+            //  LIGHTBOX
+            // ================================================================
+            const Lightbox = {
+                overlay: document.getElementById('photoLightbox'),
+                img: document.getElementById('lightboxImg'),
+                closeBtn: document.getElementById('lightboxClose'),
+
+                init() {
+                    this.closeBtn.addEventListener('click', () => this.close());
+                    this.overlay.addEventListener('click', (e) => {
+                        if (e.target === this.overlay) this.close();
+                    });
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape' && this.overlay.classList.contains('active')) {
+                            this.close();
+                        }
+                    });
+                },
+
+                open(src, alt = 'Foto') {
+                    this.img.src = src;
+                    this.img.alt = alt || 'Foto';
+                    this.overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(() => this.closeBtn.focus(), 50);
+                },
+
+                close() {
+                    this.overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    this.img.src = '';
+                }
+            };
+
+            // ================================================================
+            //  APP
+            // ================================================================
             class App {
                 constructor() {
                     this.state = new AppState();
@@ -2707,7 +2934,8 @@
                     this.updateLandingStats();
                     Modal.init();
                     CropTool.init();
-                    console.log('✅ USU BISA v4.1 (Final) siap.');
+                    Lightbox.init();
+                    console.log('✅ USU BISA v4.3 (Final - tanpa PWA) siap digunakan.');
                 }
 
                 _checkBriefingDismiss() {
@@ -2853,18 +3081,11 @@
                         `Ditemukan ${results.length} hasil untuk "${escapeHTML(query)}"`;
                     document.getElementById('clearSearch').classList.add('visible');
 
-                    // Jika modul saat ini adalah dashboard, kita tetap di dashboard (tidak bisa menampilkan list)
-                    // Tapi untuk UX, kita alihkan ke modul 'dosen' jika dashboard karena dashboard tidak punya list.
-                    // Namun instruksi terakhir meminta agar search tidak mengubah modul. Saya akan tetap di modul saat ini.
-                    // Jika modul saat ini adalah dashboard, kita tampilkan hasil di dashboard? Tidak mungkin.
-                    // Maka kita tetap di dashboard, tapi hasil tidak tampil. Lebih baik kita alihkan ke 'dosen' sebagai fallback.
-                    // Tapi untuk memenuhi instruksi "tidak mengubah modul", saya akan menampilkan notifikasi bahwa hasil tidak dapat ditampilkan di dashboard.
                     if (this.currentModule === 'dashboard') {
                         Notif.info('Pencarian hanya tersedia di modul data (Dosen, Mata Kuliah, dll).');
                         this.clearSearch();
                         return;
                     }
-                    // Tetap di modul saat ini, tampilkan hasil
                     this.currentView = 'list';
                     this.pushNav(this.currentModule, 'list');
                     this.render();
@@ -2951,110 +3172,146 @@
                 // ---- DASHBOARD ----
                 _renderDashboard(container) {
                     const now = new Date();
-                    const todayName = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][now.getDay()];
+                    const todayName = DAY_NAMES[now.getDay()];
                     const todayDateStr = now.toISOString().slice(0, 10);
+                    const tomorrowDateStr = new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
 
-                    const todaySchedule = this.state.getJadwalByHari(todayName);
-                    const tasks = this.state.get('tugas').filter(t => t.deadline);
-                    const todayTasks = tasks.filter(t => t.deadline === todayDateStr);
-                    const tomorrowTasks = tasks.filter(t => {
-                        const d2 = new Date(t.deadline);
-                        const diff = Math.ceil((d2 - now) / (1000 * 60 * 60 * 24));
-                        return diff === 1;
-                    });
-                    const nearTasks = tasks.filter(t => {
-                        if (t.status === 'Selesai') return false;
-                        const diff = Math.ceil((new Date(t.deadline) - now) / (1000 * 60 * 60 * 24));
-                        return diff >= 0 && diff <= 7;
-                    }).sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+                    const reminders = [];
 
-                    let reminders = [];
-                    todaySchedule.forEach(j => {
-                        const matkul = this.state.find('matkul', j.matkulId);
-                        const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(j.matkul ||
-                            'Mata Kuliah');
-                        const dosen = j.dosen || (matkul ? escapeHTML(this.state.find('dosen', matkul.dosenId)
-                            ?.nama) : '');
-                        let desc =
-                            `${namaMatkul}${dosen ? ' — '+dosen : ''}${j.ruangan ? ' Ruang: '+escapeHTML(j.ruangan) : ''}`;
-                        reminders.push({
-                            id: 'jadwal-' + j.id,
-                            priority: 'urgent',
-                            icon: 'bi-calendar-event',
-                            title: `${escapeHTML(j.jamMulai || '')} - ${escapeHTML(j.jamSelesai || '')}`,
-                            description: desc,
-                            module: 'jadwal',
-                            sourceId: j.id
-                        });
-                    });
-                    todayTasks.forEach(t => {
-                        const matkul = this.state.find('matkul', t.matkulId);
-                        const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul ||
-                            'Mata Kuliah');
-                        reminders.push({
-                            id: 'tugas-' + t.id,
-                            priority: 'urgent',
-                            icon: 'bi-exclamation-triangle-fill',
-                            title: `${escapeHTML(t.nama || 'Tugas')}`,
-                            description: `Deadline hari ini — ${namaMatkul}`,
-                            module: 'tugas',
-                            sourceId: t.id
-                        });
-                    });
-                    tomorrowTasks.forEach(t => {
-                        const matkul = this.state.find('matkul', t.matkulId);
-                        const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul ||
-                            'Mata Kuliah');
-                        reminders.push({
-                            id: 'tugas-' + t.id + '-tomorrow',
-                            priority: 'important',
-                            icon: 'bi-exclamation-circle-fill',
-                            title: `${escapeHTML(t.nama || 'Tugas')}`,
-                            description: `Deadline besok — ${namaMatkul}`,
-                            module: 'tugas',
-                            sourceId: t.id
-                        });
-                    });
-                    nearTasks.forEach(t => {
-                        const diff = Math.ceil((new Date(t.deadline) - now) / (1000 * 60 * 60 * 24));
-                        if (diff > 1) {
-                            const matkul = this.state.find('matkul', t.matkulId);
-                            const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul ||
-                                'Mata Kuliah');
+                    // 1. Mata Kuliah (hari+jam)
+                    const allMatkul = this.state.get('matkul');
+                    allMatkul.forEach(m => {
+                        if (!m.hari) return;
+                        const hariIdx = DAY_NAMES.indexOf(m.hari);
+                        if (hariIdx === -1) return;
+                        const todayIdx = now.getDay();
+                        const diff = (hariIdx - todayIdx + 7) % 7;
+                        const namaMatkul = escapeHTML(m.nama || 'Mata Kuliah');
+                        const jam = m.jamMasuk ? `pukul ${escapeHTML(m.jamMasuk)}` : '';
+                        const selesai = m.jamSelesai ? `–${escapeHTML(m.jamSelesai)}` : '';
+                        const dosen = m.dosenId ? escapeHTML(this.state.find('dosen', m.dosenId)?.nama) : '';
+                        const desc = `${dosen ? 'Dosen: '+dosen : ''} ${jam} ${selesai}`.trim();
+                        if (diff === 0) {
                             reminders.push({
-                                id: 'tugas-' + t.id + '-near',
-                                priority: 'reminder',
-                                icon: 'bi-clock',
-                                title: `${escapeHTML(t.nama || 'Tugas')}`,
-                                description: `Deadline ${diff} hari lagi — ${namaMatkul}`,
-                                module: 'tugas',
-                                sourceId: t.id
+                                id: 'matkul-' + m.id,
+                                priority: 0,
+                                sortKey: m.jamMasuk || '00:00',
+                                type: 'matkul',
+                                icon: 'bi-calendar-event',
+                                iconColor: 'var(--color-danger)',
+                                title: `Hari ini ada ${namaMatkul}`,
+                                description: desc,
+                                module: 'matkul',
+                                sourceId: m.id,
+                                tag: 'Hari Ini'
+                            });
+                        } else if (diff === 1) {
+                            reminders.push({
+                                id: 'matkul-' + m.id + '-tomorrow',
+                                priority: 1,
+                                sortKey: m.jamMasuk || '00:00',
+                                type: 'matkul',
+                                icon: 'bi-calendar-event',
+                                iconColor: 'var(--color-warning)',
+                                title: `Besok ada ${namaMatkul}`,
+                                description: desc,
+                                module: 'matkul',
+                                sourceId: m.id,
+                                tag: 'Besok'
                             });
                         }
                     });
-                    this.state.get('notes').forEach(n => {
-                        if (n.content && (n.content.toLowerCase().includes('ingat') ||
-                                n.content.toLowerCase().includes('deadline') ||
-                                n.content.toLowerCase().includes('penting'))) {
+
+                    // 2. Tugas
+                    const allTugas = this.state.get('tugas');
+                    allTugas.forEach(t => {
+                        if (!t.deadline) return;
+                        const deadline = t.deadline;
+                        const matkul = this.state.find('matkul', t.matkulId);
+                        const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul || 'Mata Kuliah');
+                        let isToday = deadline === todayDateStr;
+                        let isTomorrow = deadline === tomorrowDateStr;
+                        if (isToday) {
                             reminders.push({
-                                id: 'note-' + n.id,
-                                priority: 'reminder',
-                                icon: 'bi-lightbulb',
-                                title: escapeHTML(n.title || 'Catatan'),
-                                description: escapeHTML(n.content.slice(0, 80) + (n.content.length > 80 ?
-                                    '…' : '')),
-                                module: 'notes',
-                                sourceId: n.id
+                                id: 'tugas-' + t.id,
+                                priority: 0,
+                                sortKey: '00:00',
+                                type: 'tugas',
+                                icon: 'bi-exclamation-triangle-fill',
+                                iconColor: 'var(--color-danger)',
+                                title: `Deadline tugas: ${escapeHTML(t.nama || 'Tugas')}`,
+                                description: `${namaMatkul} — deadline hari ini`,
+                                module: 'tugas',
+                                sourceId: t.id,
+                                tag: 'Hari Ini'
+                            });
+                        } else if (isTomorrow) {
+                            reminders.push({
+                                id: 'tugas-' + t.id + '-tomorrow',
+                                priority: 1,
+                                sortKey: '00:00',
+                                type: 'tugas',
+                                icon: 'bi-exclamation-circle-fill',
+                                iconColor: 'var(--color-warning)',
+                                title: `Deadline tugas: ${escapeHTML(t.nama || 'Tugas')}`,
+                                description: `${namaMatkul} — deadline besok`,
+                                module: 'tugas',
+                                sourceId: t.id,
+                                tag: 'Besok'
+                            });
+                        }
+                    });
+
+                    // 3. Ulang Tahun Dosen
+                    const allDosen = this.state.get('dosen');
+                    allDosen.forEach(d => {
+                        if (!d.tanggalLahir) return;
+                        const tgl = new Date(d.tanggalLahir);
+                        if (isNaN(tgl.getTime())) return;
+                        const today = new Date();
+                        const isBirthdayToday = tgl.getMonth() === today.getMonth() && tgl.getDate() === today
+                            .getDate();
+                        const tomorrow = new Date(today.getTime() + 86400000);
+                        const isBirthdayTomorrow = tgl.getMonth() === tomorrow.getMonth() && tgl.getDate() ===
+                            tomorrow.getDate();
+                        const nama = escapeHTML(d.nama || 'Dosen');
+                        if (isBirthdayToday) {
+                            reminders.push({
+                                id: 'ultah-' + d.id,
+                                priority: 0,
+                                sortKey: '00:00',
+                                type: 'ultah',
+                                icon: 'bi-gift',
+                                iconColor: 'var(--color-gold)',
+                                title: `🎂 Hari ini ulang tahun ${nama}`,
+                                description: `Selamat ulang tahun, ${nama}!`,
+                                module: 'dosen',
+                                sourceId: d.id,
+                                tag: 'Hari Ini'
+                            });
+                        } else if (isBirthdayTomorrow) {
+                            reminders.push({
+                                id: 'ultah-' + d.id + '-tomorrow',
+                                priority: 1,
+                                sortKey: '00:00',
+                                type: 'ultah',
+                                icon: 'bi-gift',
+                                iconColor: 'var(--color-gold)',
+                                title: `🎂 Besok ulang tahun ${nama}`,
+                                description: `Jangan lupa ucapkan selamat!`,
+                                module: 'dosen',
+                                sourceId: d.id,
+                                tag: 'Besok'
                             });
                         }
                     });
 
                     reminders.sort((a, b) => {
-                        const order = { urgent: 0, important: 1, reminder: 2 };
-                        return (order[a.priority] || 3) - (order[b.priority] || 3);
+                        if (a.priority !== b.priority) return a.priority - b.priority;
+                        return a.sortKey.localeCompare(b.sortKey);
                     });
-                    if (reminders.length > 8) reminders = reminders.slice(0, 8);
 
+                    const allReminders = reminders;
                     const stats = this.state.stats();
                     const ipkTarget = this.state.ipkTarget;
                     const ipkCurrent = this.state.ipkCurrent;
@@ -3071,33 +3328,33 @@
                             <div class="dash-card"><div class="num">${stats.matkul}</div><div class="label">Mata Kuliah</div></div>
                             <div class="dash-card"><div class="num">${stats.kontrak}</div><div class="label">Kontrak</div></div>
                             <div class="dash-card"><div class="num">${stats.tugas}</div><div class="label">Tugas</div></div>
-                            <div class="dash-card"><div class="num">${nearTasks.length}</div><div class="label">Tugas < 7 hari</div></div>
-                            <div class="dash-card"><div class="num">${todaySchedule.length}</div><div class="label">Jadwal Hari Ini</div></div>
+                            <div class="dash-card"><div class="num">${allReminders.filter(r=>r.priority===0).length}</div><div class="label">Pengingat Hari Ini</div></div>
+                            <div class="dash-card"><div class="num">${allReminders.filter(r=>r.priority===1).length}</div><div class="label">Pengingat Besok</div></div>
                         </div>
                         <div class="briefing-card" id="briefingCard">
                             <div class="greeting">${escapeHTML(greeting)}</div>
                             <div class="date">${escapeHTML(dateStr)}</div>
                             <div class="summary">
-                                <span class="summary-item"><i class="bi bi-exclamation-triangle-fill" style="color:var(--color-danger)"></i> <span class="num">${reminders.filter(r=>r.priority==='urgent').length}</span> Urgent</span>
-                                <span class="summary-item"><i class="bi bi-exclamation-circle-fill" style="color:var(--color-warning)"></i> <span class="num">${reminders.filter(r=>r.priority==='important').length}</span> Penting</span>
-                                <span class="summary-item"><i class="bi bi-clock" style="color:var(--color-info)"></i> <span class="num">${reminders.filter(r=>r.priority==='reminder').length}</span> Pengingat</span>
-                                ${todaySchedule.length > 0 ? `<span class="summary-item"><i class="bi bi-calendar-event"></i> <span class="num">${todaySchedule.length}</span> Kuliah</span>` : ''}
+                                <span class="summary-item"><i class="bi bi-calendar-event" style="color:var(--color-danger)"></i> <span class="num">${allReminders.filter(r=>r.type==='matkul' && r.priority===0).length}</span> Kuliah hari ini</span>
+                                <span class="summary-item"><i class="bi bi-file-text" style="color:var(--color-danger)"></i> <span class="num">${allReminders.filter(r=>r.type==='tugas' && r.priority===0).length}</span> Tugas hari ini</span>
+                                <span class="summary-item"><i class="bi bi-gift" style="color:var(--color-gold)"></i> <span class="num">${allReminders.filter(r=>r.type==='ultah' && r.priority===0).length}</span> Ultah hari ini</span>
                             </div>
-                            ${reminders.length === 0 ? '<div class="reminder-empty">Tidak ada pengingat untuk hari ini.</div>' :
-                            `<div class="reminder-list">${reminders.map(r => {
-                                const cls = r.priority === 'urgent' ? 'urgent' : (r.priority === 'important' ? 'important' : 'reminder');
-                                const colorMap = { urgent: 'var(--color-danger)', important: 'var(--color-warning)', reminder: 'var(--color-info)' };
+                            ${allReminders.length === 0 ? '<div class="reminder-empty">Tidak ada pengingat untuk hari ini atau besok.</div>' :
+                            `<div class="reminder-list">${allReminders.slice(0, 15).map(r => {
+                                const cls = r.priority === 0 ? 'urgent' : 'important';
+                                const iconHtml = `<i class="bi ${r.icon}" style="color:${r.iconColor}"></i>`;
                                 const actionHtml = r.module ? `<button class="action-link" onclick="app.openDetail('${r.module}','${r.sourceId}')">Lihat <i class="bi bi-chevron-right"></i></button>` : '';
                                 return `<div class="reminder-item ${cls}">
-                                    <span class="icon"><i class="bi ${r.icon}" style="color:${colorMap[cls]||'var(--color-info)'}"></i></span>
+                                    <span class="icon">${iconHtml}</span>
                                     <div class="r-content">
                                         <div class="title">${r.title}</div>
                                         <div class="desc">${r.description}</div>
-                                        <div class="meta"><span class="tag">${cls === 'urgent' ? 'Urgent' : cls === 'important' ? 'Penting' : 'Pengingat'}</span></div>
+                                        <div class="meta"><span class="tag">${r.tag}</span> <span class="tag">${r.type === 'matkul' ? 'Mata Kuliah' : r.type === 'tugas' ? 'Tugas' : 'Ulang Tahun'}</span></div>
                                     </div>
                                     ${actionHtml}
                                 </div>`;
                             }).join('')}</div>`}
+                            ${allReminders.length > 15 ? '<div style="text-align:center;font-size:0.6rem;color:var(--color-text-muted);margin-top:4px;">... dan '+(allReminders.length-15)+' pengingat lainnya</div>' : ''}
                             <div class="briefing-dismiss"><button onclick="app.dismissBriefing()">Sembunyikan briefing hari ini</button></div>
                         </div>
                         <div class="dash-section">
@@ -3109,7 +3366,8 @@
                                 <div class="ipk-bar-wrap"><div class="ipk-bar"><div class="fill" style="width:${ipkPercent}%;"></div></div><div class="ipk-label">${ipkCurrent} dari ${ipkTarget} (${Math.round(ipkPercent)}%)</div></div>
                             </div>
                         </div>
-                        <div class="dash-section"><h3><i class="bi bi-calendar"></i> Jadwal Hari Ini (${escapeHTML(todayName)}) <span class="badge">${todaySchedule.length}</span></h3>`;
+                        <div class="dash-section"><h3><i class="bi bi-calendar"></i> Jadwal Hari Ini (${escapeHTML(todayName)}) <span class="badge">${this.state.getJadwalByHari(todayName).length}</span></h3>`;
+                    const todaySchedule = this.state.getJadwalByHari(todayName);
                     if (todaySchedule.length === 0) {
                         html += `<div class="dash-empty">Tidak ada jadwal hari ini.</div>`;
                     } else {
@@ -3120,38 +3378,18 @@
                                 'Mata Kuliah');
                             const dosen = j.dosen || (matkul ? escapeHTML(this.state.find('dosen', matkul
                                 .dosenId)?.nama) : '');
+                            const jamSelesai = matkul?.jamSelesai ? ` - ${escapeHTML(matkul.jamSelesai)}` :
+                                '';
                             html += `
                                 <div class="dash-item">
                                     <span class="dash-label">${namaMatkul}${dosen ? ' — '+dosen : ''}</span>
-                                    <span class="dash-value">${escapeHTML(j.jamMulai || '')} - ${escapeHTML(j.jamSelesai || '')}</span>
+                                    <span class="dash-value">${escapeHTML(j.jamMulai || '')}${jamSelesai}</span>
                                 </div>
                             `;
                         });
                     }
                     html += `</div>
-                        <div class="dash-section"><h3><i class="bi bi-file-text"></i> Tugas Mendekati Deadline <span class="badge">${nearTasks.length}</span></h3>`;
-                    if (nearTasks.length === 0) {
-                        html += `<div class="dash-empty">Tidak ada tugas yang mendekati deadline.</div>`;
-                    } else {
-                        nearTasks.forEach(t => {
-                            const diff = Math.ceil((new Date(t.deadline) - now) / (1000 * 60 * 60 * 24));
-                            const label = diff === 0 ? 'Hari ini' : (diff === 1 ? 'Besok' :
-                                `${diff} hari lagi`);
-                            const cls = diff <= 2 ? 'highlight' : '';
-                            const matkul = this.state.find('matkul', t.matkulId);
-                            const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul ||
-                                'Mata Kuliah');
-                            html += `
-                                <div class="dash-item">
-                                    <span class="dash-label">${escapeHTML(t.nama || 'Tugas')} — ${namaMatkul}</span>
-                                    <span class="dash-value ${cls}">${label}</span>
-                                </div>
-                            `;
-                        });
-                    }
-                    html += `</div>
-                        <div class="dash-section">
-                            <h3><i class="bi bi-pencil-square"></i> Catatan Cepat <span class="badge">${notes.length}</span></h3>
+                        <div class="dash-section"><h3><i class="bi bi-pencil-square"></i> Catatan Cepat <span class="badge">${notes.length}</span></h3>
                             <div class="notes-grid">`;
                     if (recentNotes.length === 0) {
                         html += `<div class="dash-empty" style="grid-column:1/-1;">Belum ada catatan.</div>`;
@@ -3234,7 +3472,24 @@
                     this.render();
                 }
 
-                // ---- LIST ----
+                // =============================================================
+                //  HELPERS UNTUK FOTO DOSEN
+                // =============================================================
+                _getDosenPhoto(dosenId) {
+                    if (!dosenId) return null;
+                    const dosen = this.state.find('dosen', dosenId);
+                    return dosen && dosen.foto ? dosen.foto : null;
+                }
+
+                _getDosenName(dosenId) {
+                    if (!dosenId) return '';
+                    const dosen = this.state.find('dosen', dosenId);
+                    return dosen ? dosen.nama : '';
+                }
+
+                // =============================================================
+                //  LIST — khusus untuk dosen, tampilkan Nama + NIP
+                // =============================================================
                 _renderList(container, mod, items) {
                     const isSearch = this.searchQuery.trim() !== '' && this.searchResults !== null;
                     let html = `<div class="module-list">`;
@@ -3254,17 +3509,59 @@
                     }
 
                     items.forEach(item => {
-                        const primary = escapeHTML(item.nama || item.judul || item.matkul || item.title ||
+                        // Primary: selalu nama / judul
+                        let primary = escapeHTML(item.nama || item.judul || item.matkul || item.title ||
                             'Tanpa nama');
-                        const secondary = escapeHTML(item.kode || item.dosen || item.fakultas || (item.content ?
-                            (item.content.slice(0, 40) + (item.content.length > 40 ? '…' : '')) : ''));
-                        const badge = escapeHTML(item.sks ? `${item.sks} SKS` : (item.status || (item
-                            .priority ? item.priority : '')));
-                        const avatarChar = primary.charAt(0).toUpperCase();
-                        const avatarImg = item.foto ? `<img src="${escapeHTML(item.foto)}" alt="${primary}">` :
-                            avatarChar;
+                        let secondary = '';
+                        let badge = '';
 
-                        if (mod === 'notes') {
+                        // ===== PENANGANAN KHUSUS UNTUK DOSEN =====
+                        if (mod === 'dosen') {
+                            // Tampilkan NIP sebagai secondary, jika ada
+                            secondary = item.nip ? escapeHTML(item.nip) : '';
+                            // Tidak tampilkan badge (jabatan) di daftar
+                            badge = '';
+                        } else {
+                            // Modul lain: secondary & badge seperti biasa
+                            secondary = escapeHTML(item.kode || item.dosen || item.fakultas || (item.content ?
+                                (item.content.slice(0, 40) + (item.content.length > 40 ? '…' : '')) : ''));
+                            badge = escapeHTML(item.sks ? `${item.sks} SKS` : (item.status || (item
+                                .priority ? item.priority : '')));
+                        }
+
+                        // ===== AVATAR =====
+                        let avatarContent = '';
+                        let avatarImg = '';
+                        let avatarFallback = '';
+                        let avatarClick = '';
+
+                        if (mod === 'matkul') {
+                            const dosenId = item.dosenId;
+                            const dosenNama = this._getDosenName(dosenId);
+                            const foto = this._getDosenPhoto(dosenId);
+                            if (foto) {
+                                avatarImg = `<img src="${escapeHTML(foto)}" alt="${escapeHTML(dosenNama || primary)}" loading="lazy">`;
+                            } else {
+                                const initial = dosenNama ? dosenNama.charAt(0).toUpperCase() : primary.charAt(0)
+                                    .toUpperCase();
+                                avatarFallback =
+                                    `<span class="avatar-fallback">${escapeHTML(initial)}</span>`;
+                            }
+                            if (dosenNama && !secondary) {
+                                secondary = escapeHTML(dosenNama);
+                            }
+                            avatarClick = `onclick="event.stopPropagation();app._openPhoto('${foto ? escapeHTML(foto) : ''}','${escapeHTML(dosenNama || primary)}')"`;
+                        } else if (mod === 'dosen') {
+                            const foto = item.foto;
+                            if (foto) {
+                                avatarImg = `<img src="${escapeHTML(foto)}" alt="${escapeHTML(primary)}" loading="lazy">`;
+                            } else {
+                                avatarFallback =
+                                    `<span class="avatar-fallback">${primary.charAt(0).toUpperCase()}</span>`;
+                            }
+                            avatarClick = `onclick="event.stopPropagation();app._openPhoto('${foto ? escapeHTML(foto) : ''}','${escapeHTML(primary)}')"`;
+                        } else if (mod === 'notes') {
+                            // Notes tanpa avatar foto
                             html += `
                                 <div class="list-card" onclick="app.openDetail('notes','${item.id}')">
                                     <div class="list-avatar"><i class="bi bi-pencil-square" style="font-size:0.9rem;"></i></div>
@@ -3276,11 +3573,33 @@
                                 </div>
                             `;
                             return;
+                        } else {
+                            // Modul lain: kontrak, tugas, jadwal
+                            const iconMap = {
+                                kontrak: 'bi-clipboard',
+                                tugas: 'bi-file-text',
+                                jadwal: 'bi-calendar'
+                            };
+                            const icon = iconMap[mod] || 'bi-folder';
+                            avatarFallback = `<span class="avatar-fallback"><i class="bi ${icon}"></i></span>`;
+                            avatarClick = '';
+                        }
+
+                        // Build avatar
+                        let avatarHtml = '';
+                        if (avatarImg) {
+                            avatarHtml = avatarImg;
+                        } else if (avatarFallback) {
+                            avatarHtml = avatarFallback;
+                        } else {
+                            avatarHtml = `<span class="avatar-fallback">${primary.charAt(0).toUpperCase()}</span>`;
                         }
 
                         html += `
                             <div class="list-card" onclick="app.openDetail('${mod}','${item.id}')">
-                                <div class="list-avatar">${avatarImg}</div>
+                                <div class="list-avatar" ${avatarClick} role="button" tabindex="0" aria-label="Foto profil">
+                                    ${avatarHtml}
+                                </div>
                                 <div class="list-info">
                                     <div class="primary">${primary}</div>
                                     <div class="secondary">${secondary}</div>
@@ -3432,16 +3751,59 @@
                         }
                     }
 
-                    const photoHtml = item.foto ? `<img src="${escapeHTML(item.foto)}" alt="${escapeHTML(item.nama || 'Foto')}">` : (item.nama ? escapeHTML(item
-                        .nama.charAt(0).toUpperCase()) : '?');
+                    // ===== FOTO HEADER =====
+                    let photoHtml = '';
+                    let photoClick = '';
+                    let fallbackChar = '?';
+                    let fotoSrc = '';
+
+                    if (mod === 'dosen') {
+                        fotoSrc = item.foto || '';
+                        fallbackChar = item.nama ? item.nama.charAt(0).toUpperCase() : '?';
+                    } else if (mod === 'matkul') {
+                        const dosenId = item.dosenId;
+                        const dosenNama = this._getDosenName(dosenId);
+                        fotoSrc = this._getDosenPhoto(dosenId) || '';
+                        fallbackChar = dosenNama ? dosenNama.charAt(0).toUpperCase() : (item.nama ? item.nama.charAt(0)
+                            .toUpperCase() : '?');
+                    } else {
+                        fotoSrc = '';
+                        fallbackChar = item.nama ? item.nama.charAt(0).toUpperCase() : '?';
+                    }
+
+                    if (fotoSrc) {
+                        photoHtml =
+                            `<img src="${escapeHTML(fotoSrc)}" alt="Foto profil" loading="lazy" onclick="app._openPhoto('${escapeHTML(fotoSrc)}','${escapeHTML(item.nama || 'Foto')}')">`;
+                    } else {
+                        photoHtml = `<span class="detail-fallback">${escapeHTML(fallbackChar)}</span>`;
+                    }
+
+                    // Nama di header
+                    let headerName = '';
+                    let headerSub = '';
+                    if (mod === 'dosen') {
+                        headerName = escapeHTML(item.nama || 'Tanpa nama');
+                        headerSub = escapeHTML(item.jabatan || '') + (item.fakultas ? ' · ' + escapeHTML(item
+                            .fakultas) : '');
+                    } else if (mod === 'matkul') {
+                        headerName = escapeHTML(item.nama || 'Mata Kuliah');
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        headerSub = (dosenNama ? 'Dosen: ' + escapeHTML(dosenNama) : '') +
+                            (item.kode ? ' · ' + escapeHTML(item.kode) : '');
+                    } else {
+                        headerName = escapeHTML(item.nama || item.judul || item.matkul || 'Detail');
+                        headerSub = escapeHTML(item.kode || item.dosen || item.fakultas || '');
+                    }
 
                     container.innerHTML = `
                         <div class="detail-view active">
                             <div class="detail-header">
-                                <div class="detail-photo">${photoHtml}</div>
+                                <div class="detail-photo" onclick="app._openPhoto('${escapeHTML(fotoSrc)}','${escapeHTML(headerName)}')" role="button" tabindex="0" aria-label="Foto profil">
+                                    ${photoHtml}
+                                </div>
                                 <div class="detail-name">
-                                    <h2>${escapeHTML(item.nama || item.judul || item.matkul || 'Detail')}</h2>
-                                    <div class="sub">${escapeHTML(item.kode || item.fakultas || item.dosen || '')}</div>
+                                    <h2>${headerName}</h2>
+                                    <div class="sub">${headerSub}</div>
                                 </div>
                             </div>
                             <div class="detail-grid">${infoHtml}</div>
@@ -3515,6 +3877,21 @@
 
                     this._initPhotoUpload(item);
 
+                    if (mod === 'matkul') {
+                        const jamMasuk = document.getElementById('inputJamMasuk');
+                        const sksInput = document.getElementById('inputSks');
+                        const jamSelesai = document.getElementById('inputJamSelesai');
+                        const updateJam = () => {
+                            const start = jamMasuk ? jamMasuk.value : '';
+                            const sks = parseInt(sksInput ? sksInput.value : 0) || 0;
+                            const end = this._calculateEndTime(start, sks);
+                            if (jamSelesai) jamSelesai.value = end || '';
+                        };
+                        if (jamMasuk) jamMasuk.addEventListener('input', updateJam);
+                        if (sksInput) sksInput.addEventListener('input', updateJam);
+                        setTimeout(updateJam, 50);
+                    }
+
                     const tglInput = document.getElementById('inputTanggalLahir');
                     if (tglInput) {
                         tglInput.addEventListener('change', () => this._calcAge());
@@ -3555,82 +3932,8 @@
                     }
                 }
 
-                _initPhotoUpload(item) {
-                    const photoData = item && item.foto ? item.foto : null;
-                    const previewImg = document.getElementById('photoPreviewImg');
-                    const placeholder = document.getElementById('photoPlaceholder');
-                    const fileName = document.getElementById('photoFileName');
-                    const fileInput = document.getElementById('inputFoto');
-                    const cropBtn = document.getElementById('photoCropBtn');
-                    const resetBtn = document.getElementById('photoResetBtn');
-                    const removeBtn = document.getElementById('photoRemoveBtn');
-
-                    let currentFileData = photoData;
-
-                    const updatePreview = (data) => {
-                        if (data) {
-                            previewImg.src = data;
-                            previewImg.style.display = 'block';
-                            if (placeholder) placeholder.style.display = 'none';
-                            fileName.textContent = 'Foto siap';
-                            currentFileData = data;
-                            this._photoData = data;
-                        } else {
-                            previewImg.style.display = 'none';
-                            if (placeholder) placeholder.style.display = 'flex';
-                            fileName.textContent = 'Belum ada foto';
-                            currentFileData = null;
-                            this._photoData = null;
-                        }
-                    };
-
-                    updatePreview(photoData);
-
-                    if (fileInput) {
-                        fileInput.addEventListener('change', (e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                                const reader = new FileReader();
-                                reader.onload = async (ev) => {
-                                    CropTool.open(ev.target.result, async (cropped) => {
-                                        const compressed = await compressImage(cropped, 200);
-                                        updatePreview(compressed);
-                                        Notif.success('Foto berhasil diatur.');
-                                    });
-                                };
-                                reader.readAsDataURL(file);
-                                fileInput.value = '';
-                            }
-                        });
-                    }
-
-                    if (cropBtn) {
-                        cropBtn.addEventListener('click', () => {
-                            if (currentFileData) {
-                                CropTool.open(currentFileData, async (cropped) => {
-                                    const compressed = await compressImage(cropped, 200);
-                                    updatePreview(compressed);
-                                    Notif.success('Foto berhasil diatur.');
-                                });
-                            } else {
-                                Notif.error('Upload foto terlebih dahulu.');
-                            }
-                        });
-                    }
-
-                    if (resetBtn) {
-                        resetBtn.addEventListener('click', () => {
-                            updatePreview(null);
-                            Notif.info('Foto direset.');
-                        });
-                    }
-
-                    if (removeBtn) {
-                        removeBtn.addEventListener('click', () => {
-                            updatePreview(null);
-                            Notif.info('Foto dihapus.');
-                        });
-                    }
+                _calculateEndTime(startTime, sks) {
+                    return this.state._calculateEndTime(startTime, sks);
                 }
 
                 // ---- Form Builders ----
@@ -3747,6 +4050,9 @@
                     const dosenOpts = this.state.get('dosen').map(d =>
                         `<option value="${d.id}" ${d.id === v('dosenId') ? 'selected' : ''}>${escapeHTML(d.nama)}</option>`
                     ).join('');
+                    const hariOpts = DAY_NAMES.map(h =>
+                        `<option value="${h}" ${h === v('hari') ? 'selected' : ''}>${h}</option>`
+                    ).join('');
                     return `
                         <div class="form-row">
                             <div class="form-group">
@@ -3760,12 +4066,31 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>SKS</label>
-                                <input type="number" id="inputSks" value="${v('sks')}" placeholder="3" min="1" max="6">
+                                <label>SKS <span class="required">*</span></label>
+                                <input type="number" id="inputSks" value="${v('sks')}" placeholder="3" min="1" max="6" required>
                             </div>
                             <div class="form-group">
                                 <label>Semester</label>
                                 <input type="text" id="inputSemester" value="${v('semester')}" placeholder="Ganjil 2024/2025">
+                            </div>
+                        </div>
+                        <!-- HARI KULIAH (WAJIB) -->
+                        <div class="form-group">
+                            <label>Hari Kuliah <span class="required">*</span></label>
+                            <select id="inputHari" required>
+                                <option value="">-- Pilih Hari --</option>
+                                ${hariOpts}
+                            </select>
+                        </div>
+                        <!-- JAM MASUK & JAM SELESAI OTOMATIS -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Jam Masuk</label>
+                                <input type="time" id="inputJamMasuk" value="${v('jamMasuk')}" step="600">
+                            </div>
+                            <div class="form-group">
+                                <label>Jam Selesai (Otomatis)</label>
+                                <input type="text" id="inputJamSelesai" value="${v('jamSelesai')}" readonly placeholder="Otomatis">
                             </div>
                         </div>
                         <div class="form-group">
@@ -3920,8 +4245,7 @@
                     const matkulOpts = this.state.get('matkul').map(m =>
                         `<option value="${m.id}" ${m.id === v('matkulId') ? 'selected' : ''}>${escapeHTML(m.nama || m.kode || 'Mata Kuliah')}</option>`
                     ).join('');
-                    const hariOpts = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
-                    const hariOptions = hariOpts.map(h =>
+                    const hariOpts = DAY_NAMES.map(h =>
                         `<option value="${h}" ${h === v('hari') ? 'selected' : ''}>${h}</option>`
                     ).join('');
                     return `
@@ -3940,7 +4264,7 @@
                             <label>Hari <span class="required">*</span></label>
                             <select id="inputHari" required>
                                 <option value="">-- Pilih Hari --</option>
-                                ${hariOptions}
+                                ${hariOpts}
                             </select>
                         </div>
                         <div class="form-row">
@@ -4108,6 +4432,10 @@
                         Notif.error('Nama tugas harus diisi');
                         return;
                     }
+                    if (mod === 'matkul' && !payload.hari) {
+                        Notif.error('Hari kuliah harus dipilih');
+                        return;
+                    }
 
                     if (mod === 'dosen' && this._photoData) {
                         payload.foto = this._photoData;
@@ -4175,16 +4503,22 @@
                 }
 
                 _collectMatkulForm() {
+                    const jamMasuk = document.getElementById('inputJamMasuk')?.value || '';
+                    const sks = parseInt(document.getElementById('inputSks')?.value) || 0;
+                    const jamSelesai = this._calculateEndTime(jamMasuk, sks) || '';
                     return {
                         nama: document.getElementById('inputNama')?.value || '',
                         kode: document.getElementById('inputKode')?.value || '',
-                        sks: parseInt(document.getElementById('inputSks')?.value) || 0,
+                        sks: sks,
                         semester: document.getElementById('inputSemester')?.value || '',
                         dosenId: document.getElementById('inputDosenId')?.value || '',
                         kelas: document.getElementById('inputKelas')?.value || '',
                         ruangan: document.getElementById('inputRuangan')?.value || '',
                         deskripsi: document.getElementById('inputDeskripsi')?.value || '',
-                        status: document.getElementById('inputStatus')?.value || ''
+                        status: document.getElementById('inputStatus')?.value || '',
+                        hari: document.getElementById('inputHari')?.value || '',
+                        jamMasuk: jamMasuk,
+                        jamSelesai: jamSelesai
                     };
                 }
 
@@ -4314,12 +4648,100 @@
                         }
                     );
                 }
+
+                // ---- Photo ----
+                _initPhotoUpload(item) {
+                    const photoData = item && item.foto ? item.foto : null;
+                    const previewImg = document.getElementById('photoPreviewImg');
+                    const placeholder = document.getElementById('photoPlaceholder');
+                    const fileName = document.getElementById('photoFileName');
+                    const fileInput = document.getElementById('inputFoto');
+                    const cropBtn = document.getElementById('photoCropBtn');
+                    const resetBtn = document.getElementById('photoResetBtn');
+                    const removeBtn = document.getElementById('photoRemoveBtn');
+
+                    let currentFileData = photoData;
+
+                    const updatePreview = (data) => {
+                        if (data) {
+                            previewImg.src = data;
+                            previewImg.style.display = 'block';
+                            if (placeholder) placeholder.style.display = 'none';
+                            fileName.textContent = 'Foto siap';
+                            currentFileData = data;
+                            this._photoData = data;
+                        } else {
+                            previewImg.style.display = 'none';
+                            if (placeholder) placeholder.style.display = 'flex';
+                            fileName.textContent = 'Belum ada foto';
+                            currentFileData = null;
+                            this._photoData = null;
+                        }
+                    };
+
+                    updatePreview(photoData);
+
+                    if (fileInput) {
+                        fileInput.addEventListener('change', (e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                                const reader = new FileReader();
+                                reader.onload = async (ev) => {
+                                    CropTool.open(ev.target.result, async (cropped) => {
+                                        const compressed = await compressImage(cropped, 200);
+                                        updatePreview(compressed);
+                                        Notif.success('Foto berhasil diatur.');
+                                    });
+                                };
+                                reader.readAsDataURL(file);
+                                fileInput.value = '';
+                            }
+                        });
+                    }
+
+                    if (cropBtn) {
+                        cropBtn.addEventListener('click', () => {
+                            if (currentFileData) {
+                                CropTool.open(currentFileData, async (cropped) => {
+                                    const compressed = await compressImage(cropped, 200);
+                                    updatePreview(compressed);
+                                    Notif.success('Foto berhasil diatur.');
+                                });
+                            } else {
+                                Notif.error('Upload foto terlebih dahulu.');
+                            }
+                        });
+                    }
+
+                    if (resetBtn) {
+                        resetBtn.addEventListener('click', () => {
+                            updatePreview(null);
+                            Notif.info('Foto direset.');
+                        });
+                    }
+
+                    if (removeBtn) {
+                        removeBtn.addEventListener('click', () => {
+                            updatePreview(null);
+                            Notif.info('Foto dihapus.');
+                        });
+                    }
+                }
+
+                // ---- LIGHTBOX ----
+                _openPhoto(src, alt = 'Foto') {
+                    if (!src) {
+                        Notif.info('Tidak ada foto untuk ditampilkan.');
+                        return;
+                    }
+                    Lightbox.open(src, alt);
+                }
             }
 
             // ---- BOOT ----
             let app;
             document.addEventListener('DOMContentLoaded', () => {
-                // Clean up old keys
+                // Bersihkan key lama
                 const oldKeys = ['usu_bisa_settings_v2', 'usu_bisa_settings_v3'];
                 oldKeys.forEach(key => {
                     if (localStorage.getItem(key)) {
@@ -4334,7 +4756,7 @@
                 app = new App();
                 window.app = app;
                 window.Notif = Notif;
-                console.log('✅ USU BISA v4.1 (Final) siap digunakan.');
+                console.log('✅ USU BISA v4.3 (Final - tanpa PWA) siap digunakan.');
             });
         })();
     </script>
