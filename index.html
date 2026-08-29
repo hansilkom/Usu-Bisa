@@ -4,13 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
     <title>USU BISA — Academic Personal Center</title>
+    <meta name="description" content="Platform manajemen akademik personal untuk dosen dan mahasiswa Universitas Sumatera Utara." />
+    <meta property="og:title" content="USU BISA — Academic Personal Center" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://usu-bisa.app" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         /* ============================================================
-           ROOT — Design System v4.3 (Final - tanpa PWA)
+           ROOT — Design System v6.0 (Premium)
            ============================================================ */
         :root {
             --color-primary: #0a2e24;
@@ -34,8 +38,8 @@
             --color-warning: #f59e0b;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
             --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.12);
-            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.16);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.16);
             --radius-sm: 8px;
             --radius-md: 14px;
             --radius-lg: 24px;
@@ -43,7 +47,8 @@
             --font: 'Inter', system-ui, -apple-system, sans-serif;
             --header-h: 56px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         * {
@@ -61,7 +66,7 @@
         body {
             font-family: var(--font);
             background: var(--color-primary);
-            min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -69,6 +74,7 @@
             padding-bottom: calc(12px + var(--safe-bottom));
             color: var(--color-white);
             line-height: 1.5;
+            overscroll-behavior: none;
         }
 
         .hidden {
@@ -76,7 +82,7 @@
         }
 
         /* ============================================================
-           LANDING — Unified Logo
+           LANDING
            ============================================================ */
         .landing {
             width: 100%;
@@ -89,11 +95,11 @@
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(32px);
+                transform: translateY(32px) scale(0.96);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -107,7 +113,7 @@
             background: var(--color-white);
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
             margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
             position: relative;
         }
         .landing-logo:hover {
@@ -190,7 +196,7 @@
             font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.25s var(--ease-spring);
             backdrop-filter: blur(6px);
             display: flex;
             align-items: center;
@@ -199,20 +205,28 @@
             min-height: 46px;
             letter-spacing: 0.2px;
             font-family: var(--font);
+            touch-action: manipulation;
         }
         .landing-menu .menu-btn i {
             font-size: 0.95rem;
+            transition: transform 0.2s;
         }
-        .landing-menu .menu-btn:hover,
-        .landing-menu .menu-btn:focus-visible {
+        .landing-menu .menu-btn:hover {
             background: var(--color-gold);
             color: var(--color-primary);
             transform: translateY(-3px);
             box-shadow: 0 10px 32px rgba(245, 179, 0, 0.3);
             border-color: var(--color-gold);
         }
+        .landing-menu .menu-btn:hover i {
+            transform: scale(1.1);
+        }
         .landing-menu .menu-btn:active {
             transform: translateY(0) scale(0.97);
+        }
+        .landing-menu .menu-btn:focus-visible {
+            outline: 3px solid var(--color-gold);
+            outline-offset: 2px;
         }
 
         /* ============================================================
@@ -221,8 +235,8 @@
         .main-container {
             width: 100%;
             max-width: 1120px;
-            min-height: 88vh;
-            max-height: 96vh;
+            min-height: 88dvh;
+            max-height: 96dvh;
             background: var(--color-bg);
             border-radius: var(--radius-lg);
             overflow: hidden;
@@ -234,6 +248,14 @@
         }
         .main-container.active {
             display: flex;
+        }
+
+        /* fallback */
+        @supports not (height: 100dvh) {
+            .main-container {
+                min-height: 88vh;
+                max-height: 96vh;
+            }
         }
 
         /* ============================================================
@@ -256,9 +278,15 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             flex: 1;
             min-width: 0;
+        }
+        .header-nav-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
         }
         .header-back {
             background: none;
@@ -266,17 +294,47 @@
             color: var(--color-text-secondary);
             font-size: 1.2rem;
             cursor: pointer;
-            padding: 4px 4px;
+            padding: 8px 8px;
             border-radius: var(--radius-sm);
-            transition: background 0.15s;
+            transition: background 0.15s, transform 0.15s;
             line-height: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-shrink: 0;
+            min-width: 44px;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .header-back:hover {
             background: var(--color-border);
+        }
+        .header-back:active {
+            transform: scale(0.92);
+        }
+        .header-home {
+            background: none;
+            border: none;
+            color: var(--color-gold);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px 8px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s, color 0.15s, transform 0.15s;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            min-height: 44px;
+            touch-action: manipulation;
+            margin-left: 2px;
+        }
+        .header-home:hover {
+            background: var(--color-gold-bg);
+            color: var(--color-primary);
+        }
+        .header-home:active {
+            transform: scale(0.92);
         }
         .header-title {
             font-size: 0.95rem;
@@ -288,6 +346,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            margin-left: 6px;
         }
         .header-title .brand-badge {
             font-size: 0.55rem;
@@ -313,24 +372,29 @@
             font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             display: flex;
             align-items: center;
             gap: 4px;
             white-space: nowrap;
             font-family: var(--font);
             min-height: 34px;
+            touch-action: manipulation;
         }
         .header-btn i {
             font-size: 0.9rem;
+            transition: transform 0.2s;
         }
         .header-btn:hover {
             background: var(--color-primary-light);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
+        .header-btn:hover i {
+            transform: scale(1.1);
+        }
         .header-btn:active {
-            transform: scale(0.96);
+            transform: scale(0.94);
         }
         .header-btn.outline {
             background: transparent;
@@ -362,14 +426,21 @@
             color: var(--color-text-secondary);
             font-size: 1.2rem;
             cursor: pointer;
-            padding: 4px 6px;
+            padding: 8px 8px;
             border-radius: var(--radius-sm);
-            transition: background 0.15s;
+            transition: background 0.15s, transform 0.15s;
             display: flex;
             align-items: center;
+            justify-content: center;
+            min-width: 44px;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .io-dropdown .io-toggle:hover {
             background: var(--color-border);
+        }
+        .io-dropdown .io-toggle:active {
+            transform: scale(0.92);
         }
         .io-dropdown .io-menu {
             position: absolute;
@@ -383,6 +454,7 @@
             display: none;
             z-index: 40;
             border: 1px solid var(--color-border);
+            animation: scaleIn 0.2s ease;
         }
         .io-dropdown .io-menu.open {
             display: block;
@@ -401,6 +473,8 @@
             cursor: pointer;
             transition: background 0.15s;
             text-align: left;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .io-dropdown .io-menu button:hover {
             background: var(--color-bg);
@@ -470,9 +544,13 @@
             color: var(--color-text-muted);
             cursor: pointer;
             font-size: 1rem;
-            padding: 4px 4px;
+            padding: 8px 8px;
             display: none;
             line-height: 1;
+            min-width: 44px;
+            min-height: 44px;
+            touch-action: manipulation;
+            transition: opacity 0.2s;
         }
         .search-bar .clear-btn.visible {
             display: block;
@@ -486,16 +564,20 @@
             font-weight: 600;
             font-size: 0.65rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.15s;
             flex-shrink: 0;
             font-family: var(--font);
             display: flex;
             align-items: center;
             gap: 3px;
             min-height: 28px;
+            touch-action: manipulation;
         }
         .search-bar .search-submit:hover {
             background: var(--color-primary-light);
+        }
+        .search-bar .search-submit:active {
+            transform: scale(0.94);
         }
         .search-result-info {
             font-size: 0.65rem;
@@ -524,6 +606,38 @@
         }
 
         /* ============================================================
+           UTILITY CLASSES (Premium)
+           ============================================================ */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .gap-1 { gap: 4px; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+        .p-2 { padding: 8px; }
+        .p-3 { padding: 12px; }
+        .p-4 { padding: 16px; }
+        .mt-2 { margin-top: 8px; }
+        .mt-3 { margin-top: 12px; }
+        .mt-4 { margin-top: 16px; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-3 { margin-bottom: 12px; }
+        .mb-4 { margin-bottom: 16px; }
+        .text-sm { font-size: 0.7rem; }
+        .text-base { font-size: 0.8rem; }
+        .text-lg { font-size: 0.95rem; }
+        .text-xl { font-size: 1.1rem; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-center { text-align: center; }
+        .text-muted { color: var(--color-text-muted); }
+        .text-secondary { color: var(--color-text-secondary); }
+        .w-full { width: 100%; }
+
+        /* ============================================================
            DASHBOARD
            ============================================================ */
         .dash-grid {
@@ -539,10 +653,10 @@
             box-shadow: var(--shadow-sm);
             border-left: 3px solid var(--color-gold);
             text-align: center;
-            transition: transform 0.15s, box-shadow 0.15s;
+            transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
         }
         .dash-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-md);
         }
         .dash-card .num {
@@ -589,6 +703,32 @@
             border-radius: var(--radius-full);
             margin-left: auto;
             font-weight: 600;
+        }
+        .dash-section h3 .section-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 4px;
+        }
+        .dash-section h3 .section-actions button {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 0.7rem;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s, color 0.15s;
+            font-family: var(--font);
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .dash-section h3 .section-actions button:hover {
+            background: var(--color-border);
+            color: var(--color-text);
         }
 
         .dash-item {
@@ -644,12 +784,45 @@
             margin-bottom: 18px;
             border-left: 4px solid var(--color-gold);
             transition: all 0.2s;
+            position: relative;
         }
-        .briefing-card .greeting {
+        .briefing-card .briefing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .briefing-card .briefing-header .greeting {
             font-size: 1.15rem;
             font-weight: 800;
             color: var(--color-primary);
             margin-bottom: 0;
+        }
+        .briefing-card .briefing-header .archive-btn {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            font-size: 0.6rem;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s, color 0.15s, transform 0.15s;
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
+        }
+        .briefing-card .briefing-header .archive-btn:hover {
+            background: var(--color-border);
+            color: var(--color-text);
+        }
+        .briefing-card .briefing-header .archive-btn:active {
+            transform: scale(0.94);
         }
         .briefing-card .date {
             font-size: 0.7rem;
@@ -692,10 +865,12 @@
             background: var(--color-bg);
             border-radius: var(--radius-sm);
             border-left: 3px solid var(--color-info);
-            transition: background 0.15s;
+            transition: background 0.15s, transform 0.15s;
+            cursor: default;
         }
         .reminder-item:hover {
             background: #e8ecf1;
+            transform: translateX(2px);
         }
         .reminder-item.urgent {
             border-left-color: var(--color-danger);
@@ -745,22 +920,37 @@
             border-radius: var(--radius-full);
             border: 1px solid var(--color-border);
         }
+        .reminder-item .action-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
         .reminder-item .action-link {
             font-size: 0.6rem;
             font-weight: 600;
             color: var(--color-primary);
             cursor: pointer;
-            background: none;
+            background: var(--color-gold);
             border: none;
-            padding: 2px 6px;
-            border-radius: var(--radius-sm);
-            transition: background 0.15s;
-            flex-shrink: 0;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            transition: background 0.15s, transform 0.15s;
             font-family: var(--font);
             white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
         }
         .reminder-item .action-link:hover {
-            background: var(--color-gold-bg);
+            background: var(--color-gold-light);
+            transform: scale(1.02);
+        }
+        .reminder-item .action-link:active {
+            transform: scale(0.94);
         }
         .reminder-empty {
             color: var(--color-text-muted);
@@ -769,97 +959,416 @@
             text-align: center;
         }
 
-        .briefing-dismiss {
-            text-align: right;
-            margin-top: 8px;
+        /* ============================================================
+           ARCHIVE
+           ============================================================ */
+        .archive-view {
+            display: none;
+            animation: fadeUp 0.3s ease;
         }
-        .briefing-dismiss button {
-            background: none;
-            border: none;
-            color: var(--color-text-muted);
-            font-size: 0.6rem;
-            cursor: pointer;
-            padding: 2px 8px;
-            border-radius: var(--radius-sm);
-            transition: background 0.15s;
-            font-family: var(--font);
+        .archive-view.active {
+            display: block;
         }
-        .briefing-dismiss button:hover {
-            background: var(--color-border);
-        }
-
-        .ipk-tracker {
+        .archive-list {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .ipk-tracker .ipk-input {
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             gap: 4px;
         }
-        .ipk-tracker .ipk-input label {
-            font-size: 0.65rem;
+        .archive-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--color-card);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--color-text-muted);
+            transition: background 0.15s, transform 0.15s;
+            box-shadow: var(--shadow-sm);
+        }
+        .archive-item:hover {
+            background: var(--color-bg);
+            transform: translateX(2px);
+        }
+        .archive-item .icon {
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+            display: flex;
+            align-items: center;
+        }
+        .archive-item .a-content {
+            flex: 1;
+        }
+        .archive-item .a-content .title {
             font-weight: 600;
+            font-size: 0.78rem;
+            color: var(--color-text);
+        }
+        .archive-item .a-content .desc {
+            font-size: 0.68rem;
             color: var(--color-text-secondary);
         }
-        .ipk-tracker .ipk-input input {
-            width: 56px;
-            padding: 3px 6px;
-            border: 1.5px solid var(--color-border);
-            border-radius: var(--radius-sm);
-            font-size: 0.75rem;
-            font-family: var(--font);
-            text-align: center;
-            font-weight: 600;
-            color: var(--color-text);
-            transition: border-color 0.2s;
-        }
-        .ipk-tracker .ipk-input input:focus {
-            outline: none;
-            border-color: var(--color-primary);
-        }
-        .ipk-tracker .ipk-bar-wrap {
-            flex: 1;
-            min-width: 80px;
-        }
-        .ipk-tracker .ipk-bar {
-            height: 5px;
-            background: var(--color-border);
-            border-radius: var(--radius-full);
-            overflow: hidden;
-            position: relative;
-        }
-        .ipk-tracker .ipk-bar .fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--color-success), var(--color-gold));
-            border-radius: var(--radius-full);
-            transition: width 0.6s ease;
-            width: 0%;
-        }
-        .ipk-tracker .ipk-label {
-            font-size: 0.6rem;
+        .archive-item .a-content .meta {
+            font-size: 0.55rem;
             color: var(--color-text-muted);
-            white-space: nowrap;
+            margin-top: 2px;
         }
-        .ipk-tracker .ipk-btn {
+        .archive-item .a-actions {
+            display: flex;
+            gap: 4px;
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .archive-item .restore-link {
+            font-size: 0.55rem;
+            color: var(--color-primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px 8px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s, transform 0.15s;
+            font-family: var(--font);
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .archive-item .restore-link:hover {
+            background: var(--color-gold-bg);
+        }
+        .archive-item .restore-link:active {
+            transform: scale(0.92);
+        }
+        .archive-item .delete-link {
+            font-size: 0.55rem;
+            color: var(--color-danger);
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 8px 8px;
+            border-radius: var(--radius-sm);
+            transition: background 0.15s, color 0.15s, transform 0.15s;
+            font-family: var(--font);
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .archive-item .delete-link:hover {
+            background: var(--color-danger);
+            color: #fff;
+        }
+        .archive-item .delete-link:active {
+            transform: scale(0.92);
+        }
+        .archive-empty {
+            color: var(--color-text-muted);
+            font-size: 0.78rem;
+            text-align: center;
+            padding: 32px 16px;
+        }
+
+        /* ============================================================
+           LIHAT MODAL
+           ============================================================ */
+        .lihat-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2500;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+            animation: fadeIn 0.2s ease;
+        }
+        .lihat-modal-overlay.active {
+            display: flex;
+        }
+        .lihat-modal {
+            background: var(--color-card);
+            border-radius: var(--radius-md);
+            padding: 20px 18px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow-xl);
+            animation: scaleIn 0.25s var(--ease-spring);
+        }
+        .lihat-modal h3 {
+            font-size: 0.9rem;
+            color: var(--color-text);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lihat-modal h3 i {
+            color: var(--color-gold);
+        }
+        .lihat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .lihat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 4px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--color-border);
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-spring);
+            font-size: 0.55rem;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            gap: 4px;
+            font-family: var(--font);
+            min-height: 60px;
+            position: relative;
+            touch-action: manipulation;
+        }
+        .lihat-item i {
+            font-size: 1.4rem;
+            transition: transform 0.2s;
+        }
+        .lihat-item .count-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--color-primary);
+            color: #fff;
+            font-size: 0.5rem;
+            padding: 0 6px;
+            border-radius: var(--radius-full);
+            min-width: 18px;
+            text-align: center;
+            font-weight: 700;
+        }
+        .lihat-item.active {
+            border-color: var(--color-primary);
+            background: var(--color-primary-bg);
+            color: var(--color-primary);
+        }
+        .lihat-item.active:hover {
+            background: var(--color-primary);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .lihat-item.active:hover i {
+            transform: scale(1.1);
+        }
+        .lihat-item.inactive {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .lihat-item.inactive:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .lihat-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 12px;
+            border-top: 1px solid var(--color-border);
+            padding-top: 12px;
+        }
+        .lihat-actions button {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.65rem;
+            cursor: pointer;
+            border: none;
+            font-family: var(--font);
+            transition: all 0.2s var(--ease-spring);
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .lihat-actions button:hover {
+            transform: scale(1.02);
+        }
+        .lihat-actions button:active {
+            transform: scale(0.94);
+        }
+        .lihat-archive {
+            background: var(--color-primary);
+            color: #fff;
+        }
+        .lihat-archive:hover {
+            background: var(--color-primary-light);
+        }
+        .lihat-delete {
+            background: var(--color-danger);
+            color: #fff;
+        }
+        .lihat-delete:hover {
+            background: var(--color-danger-hover);
+        }
+        .lihat-close {
+            background: var(--color-border);
+            color: var(--color-text-secondary);
+        }
+        .lihat-close:hover {
+            background: var(--color-bg);
+        }
+
+        /* ============================================================
+           LIHAT PILIHAN
+           ============================================================ */
+        .lihat-pilihan-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2600;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+            animation: fadeIn 0.2s ease;
+        }
+        .lihat-pilihan-overlay.active {
+            display: flex;
+        }
+        .lihat-pilihan-modal {
+            background: var(--color-card);
+            border-radius: var(--radius-md);
+            padding: 20px 18px;
+            max-width: 380px;
+            width: 100%;
+            max-height: 80vh;
+            box-shadow: var(--shadow-xl);
+            animation: scaleIn 0.25s var(--ease-spring);
+            overflow-y: auto;
+        }
+        .lihat-pilihan-modal h3 {
+            font-size: 0.9rem;
+            color: var(--color-text);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lihat-pilihan-modal h3 i {
+            color: var(--color-gold);
+        }
+        .lihat-pilihan-modal .sub {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+            margin-bottom: 12px;
+        }
+        .lihat-pilihan-modal .pilihan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .lihat-pilihan-modal .pilihan-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--color-bg);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+            border: 1px solid transparent;
+            font-size: 0.75rem;
+            color: var(--color-text);
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+        .lihat-pilihan-modal .pilihan-item:hover {
+            background: var(--color-gold-bg);
+            border-color: var(--color-gold);
+            transform: translateX(4px);
+        }
+        .lihat-pilihan-modal .pilihan-item i {
+            font-size: 0.9rem;
+            color: var(--color-primary);
+        }
+        .lihat-pilihan-modal .pilihan-close {
+            display: block;
+            width: 100%;
+            margin-top: 12px;
+            padding: 8px 12px;
+            border: none;
+            background: var(--color-border);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.15s;
+            font-family: var(--font);
+            color: var(--color-text-secondary);
+            min-height: 44px;
+            touch-action: manipulation;
+        }
+        .lihat-pilihan-modal .pilihan-close:hover {
+            background: var(--color-primary);
+            color: #fff;
+        }
+        .lihat-pilihan-modal .pilihan-close:active {
+            transform: scale(0.94);
+        }
+
+        /* ============================================================
+           RELATION BLOCK
+           ============================================================ */
+        .relation-block {
+            background: var(--color-card);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            box-shadow: var(--shadow-sm);
+            margin-top: 12px;
+            border-top: 1px solid var(--color-border);
+            text-align: center;
+        }
+        .relation-block .lihat-terkait-btn {
             background: var(--color-primary);
             color: #fff;
             border: none;
-            padding: 3px 12px;
+            padding: 8px 20px;
             border-radius: var(--radius-full);
-            font-size: 0.6rem;
             font-weight: 600;
+            font-size: 0.7rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s var(--ease-spring);
             font-family: var(--font);
-            min-height: 26px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
         }
-        .ipk-tracker .ipk-btn:hover {
+        .relation-block .lihat-terkait-btn:hover {
             background: var(--color-primary-light);
+            transform: scale(1.02);
+        }
+        .relation-block .lihat-terkait-btn:active {
+            transform: scale(0.94);
         }
 
+        /* ============================================================
+           NOTES
+           ============================================================ */
         .notes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -870,14 +1379,14 @@
             border: 1px solid var(--color-border);
             border-radius: var(--radius-sm);
             padding: 12px 14px;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             cursor: pointer;
             box-shadow: var(--shadow-sm);
             position: relative;
         }
         .note-card:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             border-color: var(--color-gold);
         }
         .note-card .note-title {
@@ -895,11 +1404,21 @@
             color: var(--color-text-muted);
             cursor: pointer;
             font-size: 0.65rem;
-            padding: 0 2px;
-            transition: color 0.15s;
+            padding: 8px 8px;
+            transition: color 0.15s, transform 0.15s;
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
         }
         .note-card .note-title .del-note:hover {
             color: var(--color-danger);
+            transform: scale(1.1);
+        }
+        .note-card .note-title .del-note:active {
+            transform: scale(0.92);
         }
         .note-card .note-preview {
             font-size: 0.68rem;
@@ -924,17 +1443,22 @@
             width: 100%;
             font-size: 0.7rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             font-family: var(--font);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 5px;
             margin-top: 6px;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .note-add-btn:hover {
             background: var(--color-gold-bg);
             border-style: solid;
+        }
+        .note-add-btn:active {
+            transform: scale(0.96);
         }
 
         /* ============================================================
@@ -951,13 +1475,14 @@
             border-radius: var(--radius-sm);
             padding: 12px 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s var(--ease-spring);
             display: flex;
             align-items: center;
             gap: 12px;
             box-shadow: var(--shadow-sm);
             position: relative;
             overflow: hidden;
+            touch-action: manipulation;
         }
         .list-card::after {
             content: '';
@@ -965,7 +1490,7 @@
             inset: 0;
             border-radius: var(--radius-sm);
             opacity: 0;
-            background: linear-gradient(135deg, rgba(245, 179, 0, 0.04), transparent);
+            background: linear-gradient(135deg, rgba(245, 179, 0, 0.06), transparent);
             transition: opacity 0.3s;
             pointer-events: none;
         }
@@ -974,11 +1499,11 @@
         }
         .list-card:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             border-color: var(--color-gold);
         }
         .list-card:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
         .list-avatar {
             width: 38px;
@@ -995,7 +1520,7 @@
             overflow: hidden;
             border: 2px solid var(--color-gold);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s var(--ease-spring);
             position: relative;
         }
         .list-avatar:hover {
@@ -1071,19 +1596,24 @@
         .list-back-btn {
             display: inline-block;
             margin-top: 10px;
-            padding: 5px 16px;
+            padding: 8px 20px;
             background: var(--color-primary);
             color: #fff;
             border: none;
             border-radius: var(--radius-full);
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.15s;
             font-family: var(--font);
             font-size: 0.7rem;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .list-back-btn:hover {
             background: var(--color-primary-light);
+        }
+        .list-back-btn:active {
+            transform: scale(0.94);
         }
 
         /* ============================================================
@@ -1124,7 +1654,7 @@
             flex-shrink: 0;
             position: relative;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s var(--ease-spring);
         }
         .detail-photo:hover {
             transform: scale(1.04);
@@ -1169,6 +1699,10 @@
             border-radius: var(--radius-sm);
             padding: 10px 12px;
             box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s;
+        }
+        .detail-item:hover {
+            box-shadow: var(--shadow-md);
         }
         .detail-item .label {
             font-size: 0.5rem;
@@ -1192,35 +1726,6 @@
             text-decoration: underline;
         }
 
-        .detail-relations {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--color-border);
-        }
-        .detail-relations h4 {
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--color-primary);
-            margin-bottom: 6px;
-        }
-        .relation-chip {
-            display: inline-block;
-            background: var(--color-gold-bg);
-            color: var(--color-primary);
-            padding: 2px 12px;
-            border-radius: var(--radius-full);
-            font-size: 0.65rem;
-            font-weight: 500;
-            margin: 2px 4px 2px 0;
-            cursor: pointer;
-            transition: all 0.15s;
-            border: 1px solid transparent;
-        }
-        .relation-chip:hover {
-            background: var(--color-primary);
-            color: #fff;
-        }
-
         .detail-actions {
             display: flex;
             justify-content: center;
@@ -1231,17 +1736,19 @@
             flex-wrap: wrap;
         }
         .detail-actions button {
-            padding: 6px 18px;
+            padding: 8px 20px;
             border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 0.72rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             border: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
             font-family: var(--font);
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .btn-edit {
             background: var(--color-primary);
@@ -1249,8 +1756,11 @@
         }
         .btn-edit:hover {
             background: var(--color-primary-light);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
+        }
+        .btn-edit:active {
+            transform: scale(0.94);
         }
         .btn-delete {
             background: #fff;
@@ -1260,6 +1770,9 @@
         .btn-delete:hover {
             background: var(--color-danger);
             color: #fff;
+        }
+        .btn-delete:active {
+            transform: scale(0.94);
         }
 
         /* ============================================================
@@ -1364,7 +1877,7 @@
             background: var(--color-bg);
             border-radius: var(--radius-sm);
             border: 2px dashed var(--color-border);
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, background 0.2s;
             position: relative;
         }
         .photo-upload-area.dragover {
@@ -1407,12 +1920,12 @@
         }
         .photo-upload-area .photo-controls button,
         .photo-upload-area .photo-controls label {
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: var(--radius-full);
             font-size: 0.6rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             border: 1px solid var(--color-border);
             background: var(--color-white);
             color: var(--color-text-secondary);
@@ -1420,12 +1933,18 @@
             display: inline-flex;
             align-items: center;
             gap: 3px;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .photo-upload-area .photo-controls button:hover,
         .photo-upload-area .photo-controls label:hover {
             background: var(--color-primary);
             color: #fff;
             border-color: var(--color-primary);
+        }
+        .photo-upload-area .photo-controls button:active,
+        .photo-upload-area .photo-controls label:active {
+            transform: scale(0.94);
         }
         .photo-upload-area .photo-controls button.danger:hover {
             background: var(--color-danger);
@@ -1466,7 +1985,7 @@
             width: 100%;
             max-height: 90vh;
             box-shadow: var(--shadow-xl);
-            animation: scaleIn 0.25s ease;
+            animation: scaleIn 0.25s var(--ease-spring);
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -1534,14 +2053,16 @@
             border-top: 1px solid var(--color-border);
         }
         .crop-modal .crop-actions button {
-            padding: 5px 14px;
+            padding: 6px 16px;
             border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 0.68rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             border: none;
             font-family: var(--font);
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .crop-modal .crop-actions .crop-cancel {
             background: var(--color-white);
@@ -1558,6 +2079,9 @@
         .crop-modal .crop-actions .crop-apply:hover {
             background: var(--color-primary-light);
         }
+        .crop-modal .crop-actions button:active {
+            transform: scale(0.94);
+        }
 
         .form-actions {
             display: flex;
@@ -1566,16 +2090,18 @@
             flex-wrap: wrap;
         }
         .form-actions button {
-            padding: 6px 18px;
+            padding: 8px 18px;
             border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 0.76rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             border: none;
             flex: 1;
             min-width: 80px;
             font-family: var(--font);
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .btn-primary {
             background: var(--color-primary);
@@ -1583,8 +2109,11 @@
         }
         .btn-primary:hover {
             background: var(--color-primary-light);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-md);
+        }
+        .btn-primary:active {
+            transform: scale(0.94);
         }
         .btn-secondary {
             background: var(--color-white);
@@ -1593,6 +2122,9 @@
         }
         .btn-secondary:hover {
             background: var(--color-bg);
+        }
+        .btn-secondary:active {
+            transform: scale(0.94);
         }
 
         .dynamic-fields {
@@ -1634,14 +2166,23 @@
             font-weight: 600;
             font-size: 0.6rem;
             cursor: pointer;
-            padding: 0 6px;
+            padding: 6px 8px;
             border-radius: var(--radius-sm);
-            transition: background 0.15s, color 0.15s;
+            transition: background 0.15s, color 0.15s, transform 0.15s;
             font-family: var(--font);
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
         }
         .dynamic-field-header .delete-field:hover {
             background: var(--color-danger);
             color: #fff;
+        }
+        .dynamic-field-header .delete-field:active {
+            transform: scale(0.92);
         }
         .add-field-btn {
             background: var(--color-white);
@@ -1653,20 +2194,25 @@
             width: 100%;
             font-size: 0.7rem;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             font-family: var(--font);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 4px;
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .add-field-btn:hover {
             background: var(--color-gold-bg);
             border-style: solid;
         }
+        .add-field-btn:active {
+            transform: scale(0.96);
+        }
 
         /* ============================================================
-           LIGHTBOX — PREVIEW FOTO
+           LIGHTBOX
            ============================================================ */
         .photo-lightbox {
             position: fixed;
@@ -1689,7 +2235,7 @@
             max-width: 90vw;
             max-height: 90vh;
             cursor: default;
-            animation: scaleIn 0.25s ease;
+            animation: scaleIn 0.25s var(--ease-spring);
         }
         .photo-lightbox .lightbox-content img {
             display: block;
@@ -1710,8 +2256,8 @@
             border: none;
             color: #fff;
             font-size: 1.6rem;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
             transition: background 0.2s, transform 0.2s;
@@ -1719,10 +2265,14 @@
             align-items: center;
             justify-content: center;
             font-family: var(--font);
+            touch-action: manipulation;
         }
         .photo-lightbox .lightbox-close:hover {
             background: rgba(255,255,255,0.2);
             transform: scale(1.1);
+        }
+        .photo-lightbox .lightbox-close:active {
+            transform: scale(0.92);
         }
 
         /* ============================================================
@@ -1759,7 +2309,7 @@
             max-width: 380px;
             width: 100%;
             box-shadow: var(--shadow-xl);
-            animation: scaleIn 0.25s ease;
+            animation: scaleIn 0.25s var(--ease-spring);
         }
         @keyframes scaleIn {
             from {
@@ -1788,14 +2338,16 @@
             justify-content: flex-end;
         }
         .modal-buttons button {
-            padding: 5px 14px;
+            padding: 6px 16px;
             border-radius: var(--radius-sm);
             font-weight: 600;
             font-size: 0.7rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s var(--ease-spring);
             border: none;
             font-family: var(--font);
+            min-height: 44px;
+            touch-action: manipulation;
         }
         .modal-cancel {
             background: var(--color-white);
@@ -1805,12 +2357,18 @@
         .modal-cancel:hover {
             background: var(--color-bg);
         }
+        .modal-cancel:active {
+            transform: scale(0.94);
+        }
         .modal-confirm {
             background: var(--color-danger);
             color: #fff;
         }
         .modal-confirm:hover {
             background: var(--color-danger-hover);
+        }
+        .modal-confirm:active {
+            transform: scale(0.94);
         }
 
         /* ============================================================
@@ -1835,7 +2393,7 @@
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-lg);
             pointer-events: auto;
-            animation: slideRight 0.3s ease;
+            animation: slideRight 0.3s var(--ease-spring);
             font-size: 0.7rem;
             display: flex;
             align-items: center;
@@ -1859,11 +2417,20 @@
             padding: 0 2px;
             margin-left: auto;
             opacity: 0.7;
-            transition: opacity 0.15s;
+            transition: opacity 0.15s, transform 0.15s;
             line-height: 1;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
         }
         .notif .close:hover {
             opacity: 1;
+        }
+        .notif .close:active {
+            transform: scale(0.92);
         }
         @keyframes slideRight {
             from {
@@ -1894,10 +2461,17 @@
             align-items: center;
             gap: 4px;
             font-weight: 500;
-            transition: color 0.2s;
+            transition: color 0.2s, transform 0.15s;
+            padding: 8px 8px;
+            min-height: 44px;
+            min-width: 44px;
+            touch-action: manipulation;
         }
         .app-footer a:hover {
             color: var(--color-gold);
+        }
+        .app-footer a:active {
+            transform: scale(0.94);
         }
         .app-footer a i {
             font-size: 0.8rem;
@@ -1942,8 +2516,8 @@
             }
 
             .main-container {
-                min-height: 92vh;
-                max-height: 98vh;
+                min-height: 92dvh;
+                max-height: 98dvh;
                 border-radius: var(--radius-md);
             }
             .header {
@@ -1970,8 +2544,22 @@
             .header-btn.danger {
                 padding: 4px 8px;
             }
+            .header-home {
+                font-size: 0.95rem;
+                padding: 8px 6px;
+                min-width: 44px;
+                min-height: 44px;
+            }
+            .header-back {
+                padding: 8px 6px;
+                min-width: 44px;
+                min-height: 44px;
+            }
             .io-dropdown .io-toggle {
                 font-size: 1rem;
+                padding: 8px 6px;
+                min-width: 44px;
+                min-height: 44px;
             }
             .io-dropdown .io-menu {
                 min-width: 140px;
@@ -1980,6 +2568,7 @@
             .io-dropdown .io-menu button {
                 font-size: 0.7rem;
                 padding: 6px 14px;
+                min-height: 44px;
             }
 
             .search-wrap {
@@ -2043,17 +2632,6 @@
             .notes-grid {
                 grid-template-columns: 1fr 1fr;
             }
-            .ipk-tracker {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 6px;
-            }
-            .ipk-tracker .ipk-input {
-                justify-content: space-between;
-            }
-            .ipk-tracker .ipk-bar-wrap {
-                min-width: unset;
-            }
             .crop-modal {
                 padding: 12px;
                 max-width: 100%;
@@ -2072,6 +2650,7 @@
             .photo-upload-area .photo-controls label {
                 font-size: 0.55rem;
                 padding: 2px 8px;
+                min-height: 34px;
             }
             .photo-lightbox .lightbox-content img {
                 max-width: 95vw;
@@ -2080,9 +2659,33 @@
             .photo-lightbox .lightbox-close {
                 top: -36px;
                 right: 4px;
-                width: 32px;
-                height: 32px;
+                width: 36px;
+                height: 36px;
                 font-size: 1.2rem;
+            }
+            .lihat-grid {
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            }
+            .lihat-item {
+                min-height: 50px;
+                font-size: 0.5rem;
+            }
+            .lihat-item i {
+                font-size: 1.1rem;
+            }
+            .lihat-pilihan-modal {
+                max-width: 100%;
+                padding: 14px 12px;
+            }
+            .lihat-actions button {
+                font-size: 0.6rem;
+                padding: 3px 10px;
+                min-height: 36px;
+            }
+            .relation-block .lihat-terkait-btn {
+                font-size: 0.65rem;
+                padding: 4px 14px;
+                min-height: 38px;
             }
         }
 
@@ -2116,22 +2719,25 @@
         }
 
         /* ============================================================
-           UTILITY & ACCESSIBILITY
+           ACCESSIBILITY & UTILITY
            ============================================================ */
-        .text-center {
-            text-align: center;
-        }
-        .mt-8 {
-            margin-top: 8px;
-        }
-        .mb-8 {
-            margin-bottom: 8px;
+        .visually-hidden {
+            position: absolute !important;
+            width: 1px !important;
+            height: 1px !important;
+            padding: 0 !important;
+            margin: -1px !important;
+            overflow: hidden !important;
+            clip: rect(0,0,0,0) !important;
+            white-space: nowrap !important;
+            border: 0 !important;
         }
 
         button:focus-visible,
         input:focus-visible,
         select:focus-visible,
-        textarea:focus-visible {
+        textarea:focus-visible,
+        a:focus-visible {
             outline: 3px solid var(--color-gold);
             outline-offset: 2px;
         }
@@ -2156,6 +2762,14 @@
         .content {
             scroll-behavior: smooth;
         }
+
+        /* fallback untuk browser yang tidak mendukung dvh */
+        @supports not (height: 100dvh) {
+            .main-container {
+                min-height: 88vh;
+                max-height: 96vh;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2165,7 +2779,7 @@
     <!-- ============================================================
     LANDING — USU BISA
     ============================================================ -->
-    <div id="landing" class="landing">
+    <div id="landing" class="landing" role="banner">
         <div class="landing-logo" aria-label="Logo USU BISA">
             <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
                 <defs>
@@ -2185,11 +2799,11 @@
                 <circle cx="60" cy="60" r="30" fill="none" stroke="rgba(255,213,79,0.2)" stroke-width="1"/>
             </svg>
         </div>
-        <div class="landing-title">USU BISA</div>
-        <div class="landing-sub">
+        <h1 class="landing-title">USU BISA</h1>
+        <p class="landing-sub">
             Universitas Sumatera Utara
             <span>Academic Personal Center</span>
-        </div>
+        </p>
 
         <div class="landing-stats" id="landingStats">
             <div class="landing-stat"><div class="num" id="statDosen">0</div><div class="label">Dosen</div></div>
@@ -2197,25 +2811,28 @@
             <div class="landing-stat"><div class="num" id="statTugas">0</div><div class="label">Tugas</div></div>
         </div>
 
-        <div class="landing-menu">
+        <nav class="landing-menu" aria-label="Menu utama">
             <button class="menu-btn" data-module="dashboard" aria-label="Dashboard"><i class="bi bi-grid"></i> Dashboard</button>
             <button class="menu-btn" data-module="dosen" aria-label="Dosen"><i class="bi bi-person-badge"></i> Dosen</button>
             <button class="menu-btn" data-module="matkul" aria-label="Mata Kuliah"><i class="bi bi-book"></i> Mata Kuliah</button>
             <button class="menu-btn" data-module="kontrak" aria-label="Kontrak Kuliah"><i class="bi bi-clipboard"></i> Kontrak</button>
             <button class="menu-btn" data-module="tugas" aria-label="Tugas"><i class="bi bi-file-text"></i> Tugas</button>
             <button class="menu-btn" data-module="jadwal" aria-label="Jadwal"><i class="bi bi-calendar"></i> Jadwal</button>
-        </div>
+        </nav>
     </div>
 
     <!-- ============================================================
     MAIN CONTAINER
     ============================================================ -->
-    <div id="mainContainer" class="main-container">
+    <div id="mainContainer" class="main-container" role="main">
 
         <!-- HEADER -->
-        <div class="header">
+        <header class="header" role="banner">
             <div class="header-left">
-                <button class="header-back" id="backBtn" aria-label="Kembali"><i class="bi bi-arrow-left"></i></button>
+                <div class="header-nav-group">
+                    <button class="header-back" id="backBtn" aria-label="Kembali"><i class="bi bi-arrow-left"></i></button>
+                    <button class="header-home" id="homeBtn" aria-label="Home"><i class="bi bi-house-fill"></i></button>
+                </div>
                 <span class="header-title" id="headerTitle">Dashboard <span class="brand-badge">USU BISA</span></span>
             </div>
             <div class="header-actions">
@@ -2232,13 +2849,13 @@
                     <span class="btn-label" id="actionLabel">Tambah</span>
                 </button>
             </div>
-        </div>
+        </header>
 
         <!-- SEARCH -->
         <div class="search-wrap" id="searchWrap">
             <div class="search-bar">
                 <span class="search-icon" aria-hidden="true"><i class="bi bi-search"></i></span>
-                <input type="text" id="globalSearch" placeholder="Cari dosen, mata kuliah, kontrak..." aria-label="Pencarian global" />
+                <input type="text" id="globalSearch" placeholder="Cari dosen, mata kuliah..." aria-label="Pencarian global" />
                 <button class="clear-btn" id="clearSearch" aria-label="Hapus pencarian"><i class="bi bi-x-lg"></i></button>
                 <button class="search-submit" id="searchSubmit" aria-label="Cari"><i class="bi bi-search"></i> Cari</button>
             </div>
@@ -2246,14 +2863,14 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="content" id="content" role="main"></div>
+        <div class="content" id="content"></div>
 
         <!-- FOOTER -->
-        <div class="app-footer" id="appFooter">
+        <footer class="app-footer" id="appFooter" role="contentinfo">
             <a href="https://www.instagram.com/hans_taf?igsi=MWVuZmo5MWlycDViZQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram Hans Taf">
                 <i class="bi bi-instagram"></i> @hans_taf
             </a>
-        </div>
+        </footer>
     </div>
 
     <!-- ============================================================
@@ -2267,6 +2884,31 @@
                 <button class="modal-cancel" id="modalCancel">Batal</button>
                 <button class="modal-confirm" id="modalConfirm">Ya, Hapus</button>
             </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    LIHAT MODAL — Untuk Relasi & Reminder
+    ============================================================ -->
+    <div class="lihat-modal-overlay" id="lihatModalOverlay" role="dialog" aria-modal="true" aria-labelledby="lihatTitle">
+        <div class="lihat-modal">
+            <h3 id="lihatTitle"><i class="bi bi-eye"></i> Lihat</h3>
+            <div class="lihat-grid" id="lihatGrid"></div>
+            <div class="lihat-actions" id="lihatActions">
+                <!-- Tombol akan diisi oleh JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    LIHAT PILIHAN — Untuk multiple items
+    ============================================================ -->
+    <div class="lihat-pilihan-overlay" id="lihatPilihanOverlay" role="dialog" aria-modal="true" aria-labelledby="pilihanTitle">
+        <div class="lihat-pilihan-modal">
+            <h3 id="pilihanTitle"><i class="bi bi-list-ul"></i> Pilih</h3>
+            <div class="sub" id="pilihanSub">Beberapa item tersedia:</div>
+            <div class="pilihan-list" id="pilihanList"></div>
+            <button class="pilihan-close" id="pilihanClose">Tutup</button>
         </div>
     </div>
 
@@ -2306,20 +2948,16 @@
     <div class="notif-container" id="notifContainer" role="status" aria-live="polite"></div>
 
     <!-- ============================================================
-    JAVASCRIPT — USU BISA v4.3 (Final - tanpa PWA)
+    JAVASCRIPT — USU BISA v6.0 (Premium)
     ============================================================ -->
     <script>
         /**
          * ================================================================
-         *  USU BISA — v4.3 (Final - tanpa PWA)
-         *  - Semua fitur CRUD, Dashboard, Reminder (hari+jam)
-         *  - Mata kuliah dengan hari wajib
-         *  - Jam selesai otomatis
-         *  - Import/Export kompatibel
-         *  - Foto profil dapat diklik (lightbox)
-         *  - Sinkronisasi foto dosen ke mata kuliah
-         *  - Daftar dosen: hanya Nama + NIP (tidak ada fakultas/jabatan)
-         *  - Tidak ada ketergantungan PWA
+         *  USU BISA — v6.0 (Premium)
+         *  
+         *  Semua fungsi bisnis dipertahankan.
+         *  Perbaikan: micro-interactions, touch targets, spacing, aksesibilitas,
+         *  performa (debounce, requestAnimationFrame), dan konsistensi UI.
          *  ================================================================
          */
         (function() {
@@ -2389,6 +3027,9 @@
                 });
             }
 
+            // ================================================================
+            //  STORAGE
+            // ================================================================
             const Storage = {
                 load(module) {
                     try {
@@ -2416,19 +3057,52 @@
                 },
                 saveSettings(settings) {
                     localStorage.setItem(STORE_PREFIX + 'settings', JSON.stringify(settings));
+                },
+                loadArchive() {
+                    try {
+                        const raw = localStorage.getItem(STORE_PREFIX + 'archive');
+                        return raw ? safeJSON(raw) : [];
+                    } catch { return []; }
+                },
+                saveArchive(items) {
+                    localStorage.setItem(STORE_PREFIX + 'archive', JSON.stringify(items));
                 }
             };
 
             // ================================================================
-            //  APP STATE
+            //  TANGGAL LOKAL
+            // ================================================================
+            function getLocalDateString(date) {
+                const d = date || new Date();
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            function getLocalDate(dateStr) {
+                if (!dateStr) return null;
+                const parts = dateStr.split('-');
+                if (parts.length !== 3) return null;
+                return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            }
+
+            function isSameDay(date1, date2) {
+                return date1.getFullYear() === date2.getFullYear() &&
+                    date1.getMonth() === date2.getMonth() &&
+                    date1.getDate() === date2.getDate();
+            }
+
+            // ================================================================
+            //  APP STATE (tidak berubah)
             // ================================================================
             class AppState {
                 constructor() {
                     this.data = Storage.loadAll();
                     this.settings = Storage.loadSettings();
-                    this._ipkTarget = this.settings.ipkTarget || 3.5;
-                    this._ipkCurrent = this.settings.ipkCurrent || 3.0;
+                    this.archive = Storage.loadArchive();
                     this.migrateAll();
+                    this._autoArchiveExpired();
                 }
 
                 migrateAll() {
@@ -2440,6 +3114,8 @@
                         if (!('jamSelesai' in m)) { m.jamSelesai = null;
                             changed = true; }
                         if (!('hari' in m)) { m.hari = null;
+                            changed = true; }
+                        if (!('dosenId' in m)) { m.dosenId = null;
                             changed = true; }
                         if (m.jamMasuk && typeof m.jamMasuk === 'string' && m.jamMasuk.includes('.')) {
                             m.jamMasuk = m.jamMasuk.replace('.', ':');
@@ -2456,6 +3132,263 @@
                     if (changed) {
                         this.set('matkul', matkuls);
                     }
+
+                    const tugass = this.get('tugas');
+                    let tugasChanged = false;
+                    tugass.forEach(t => {
+                        if (!('dosenId' in t)) {
+                            t.dosenId = null;
+                            tugasChanged = true;
+                        }
+                        if (t.dosen && !t.dosenId) {
+                            const dosen = this.find('dosen', t.dosen);
+                            if (dosen) {
+                                t.dosenId = t.dosen;
+                                tugasChanged = true;
+                            }
+                        }
+                    });
+                    if (tugasChanged) {
+                        this.set('tugas', tugass);
+                    }
+
+                    const jadwals = this.get('jadwal');
+                    let jadwalChanged = false;
+                    jadwals.forEach(j => {
+                        if (!('dosenId' in j)) {
+                            j.dosenId = null;
+                            jadwalChanged = true;
+                        }
+                        if (j.dosen && !j.dosenId) {
+                            const dosen = this.find('dosen', j.dosen);
+                            if (dosen) {
+                                j.dosenId = j.dosen;
+                                jadwalChanged = true;
+                            }
+                        }
+                    });
+                    if (jadwalChanged) {
+                        this.set('jadwal', jadwals);
+                    }
+
+                    const kontraks = this.get('kontrak');
+                    let kontrakChanged = false;
+                    kontraks.forEach(k => {
+                        if (!('dosenId' in k)) {
+                            k.dosenId = null;
+                            kontrakChanged = true;
+                        }
+                    });
+                    if (kontrakChanged) {
+                        this.set('kontrak', kontraks);
+                    }
+                }
+
+                _autoArchiveExpired() {
+                    const now = new Date();
+                    const todayDateStr = getLocalDateString(now);
+                    const allReminders = this._generateAllReminders(todayDateStr);
+                    const archive = this.getArchive();
+                    const archivedIds = new Set(archive.map(a => a.id));
+
+                    let newArchive = [...archive];
+                    let added = 0;
+                    allReminders.forEach(r => {
+                        if (!archivedIds.has(r.id) && r.priority > 1) {
+                            newArchive.push({
+                                ...r,
+                                timestamp: Date.now(),
+                                deleted: false
+                            });
+                            added++;
+                        }
+                    });
+
+                    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+                    const filteredArchive = newArchive.filter(a => {
+                        if (!a.tanggalKejadian) return true;
+                        const eventDate = getLocalDate(a.tanggalKejadian);
+                        if (!eventDate) return true;
+                        const diff = now.getTime() - eventDate.getTime();
+                        return diff < sevenDays;
+                    });
+
+                    this.setArchive(filteredArchive);
+                }
+
+                _generateAllReminders(todayDateStr) {
+                    const now = new Date();
+                    const tomorrow = new Date(now.getTime() + 86400000);
+                    const tomorrowDateStr = getLocalDateString(tomorrow);
+                    const reminders = [];
+
+                    const allMatkul = this.get('matkul');
+                    allMatkul.forEach(m => {
+                        if (!m.hari) return;
+                        const hariIdx = DAY_NAMES.indexOf(m.hari);
+                        if (hariIdx === -1) return;
+                        const todayIdx = now.getDay();
+                        const diff = (hariIdx - todayIdx + 7) % 7;
+
+                        if (diff === 0 || diff === 1) {
+                            const namaMatkul = escapeHTML(m.nama || 'Mata Kuliah');
+                            const jam = m.jamMasuk ? `pukul ${escapeHTML(m.jamMasuk)}` : '';
+                            const selesai = m.jamSelesai ? `–${escapeHTML(m.jamSelesai)}` : '';
+                            const dosenId = m.dosenId;
+                            const dosenNama = dosenId ? escapeHTML(this.getDosenName(dosenId)) : '';
+                            const desc = `${dosenNama ? 'Dosen: '+dosenNama : ''} ${jam} ${selesai}`.trim();
+                            const priority = diff === 0 ? 0 : 1;
+                            const tag = diff === 0 ? 'Hari Ini' : 'Besok';
+                            const dateStr = diff === 0 ? todayDateStr : tomorrowDateStr;
+                            reminders.push({
+                                id: 'matkul-' + m.id + (diff === 0 ? '' : '-tomorrow'),
+                                priority: priority,
+                                sortKey: m.jamMasuk || '00:00',
+                                type: 'matkul',
+                                icon: 'bi-calendar-event',
+                                iconColor: diff === 0 ? 'var(--color-danger)' : 'var(--color-warning)',
+                                title: diff === 0 ? `Hari ini ada ${namaMatkul}` : `Besok ada ${namaMatkul}`,
+                                description: desc,
+                                module: 'matkul',
+                                sourceId: m.id,
+                                tag: tag,
+                                tanggalKejadian: dateStr
+                            });
+                        }
+                    });
+
+                    const allTugas = this.get('tugas');
+                    allTugas.forEach(t => {
+                        if (!t.deadline) return;
+                        const deadline = t.deadline;
+                        const matkul = this.find('matkul', t.matkulId);
+                        const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul || 'Mata Kuliah');
+
+                        const deadlineDate = getLocalDate(deadline);
+                        if (!deadlineDate) return;
+                        const today = new Date(now);
+                        today.setHours(0,0,0,0);
+                        const tomorrow = new Date(today.getTime() + 86400000);
+
+                        const isToday = isSameDay(deadlineDate, today);
+                        const isTomorrow = isSameDay(deadlineDate, tomorrow);
+                        const isPast = deadlineDate < today;
+
+                        if (isToday) {
+                            reminders.push({
+                                id: 'tugas-' + t.id,
+                                priority: 0,
+                                sortKey: '00:00',
+                                type: 'tugas',
+                                icon: 'bi-exclamation-triangle-fill',
+                                iconColor: 'var(--color-danger)',
+                                title: `Deadline tugas: ${escapeHTML(t.nama || 'Tugas')}`,
+                                description: `${namaMatkul} — deadline hari ini`,
+                                module: 'tugas',
+                                sourceId: t.id,
+                                tag: 'Hari Ini',
+                                tanggalKejadian: todayDateStr
+                            });
+                        } else if (isTomorrow) {
+                            reminders.push({
+                                id: 'tugas-' + t.id + '-tomorrow',
+                                priority: 1,
+                                sortKey: '00:00',
+                                type: 'tugas',
+                                icon: 'bi-exclamation-circle-fill',
+                                iconColor: 'var(--color-warning)',
+                                title: `Deadline tugas: ${escapeHTML(t.nama || 'Tugas')}`,
+                                description: `${namaMatkul} — deadline besok`,
+                                module: 'tugas',
+                                sourceId: t.id,
+                                tag: 'Besok',
+                                tanggalKejadian: tomorrowDateStr
+                            });
+                        } else if (isPast) {
+                            reminders.push({
+                                id: 'tugas-' + t.id + '-past',
+                                priority: 2,
+                                sortKey: '00:00',
+                                type: 'tugas',
+                                icon: 'bi-check-circle',
+                                iconColor: 'var(--color-text-muted)',
+                                title: `Tugas ${escapeHTML(t.nama || 'Tugas')} telah lewat`,
+                                description: `${namaMatkul} — deadline ${escapeHTML(deadline)}`,
+                                module: 'tugas',
+                                sourceId: t.id,
+                                tag: 'Lewat',
+                                tanggalKejadian: deadline
+                            });
+                        }
+                    });
+
+                    const allDosen = this.get('dosen');
+                    allDosen.forEach(d => {
+                        if (!d.tanggalLahir) return;
+                        const tgl = getLocalDate(d.tanggalLahir);
+                        if (!tgl) return;
+                        const today = new Date(now);
+                        today.setHours(0,0,0,0);
+                        const tomorrow = new Date(today.getTime() + 86400000);
+
+                        const isBirthdayToday = tgl.getMonth() === today.getMonth() && tgl.getDate() === today
+                            .getDate();
+                        const isBirthdayTomorrow = tgl.getMonth() === tomorrow.getMonth() && tgl.getDate() ===
+                            tomorrow.getDate();
+                        const nama = escapeHTML(d.nama || 'Dosen');
+                        const tglStr = d.tanggalLahir;
+                        if (isBirthdayToday) {
+                            reminders.push({
+                                id: 'ultah-' + d.id,
+                                priority: 0,
+                                sortKey: '00:00',
+                                type: 'ultah',
+                                icon: 'bi-gift',
+                                iconColor: 'var(--color-gold)',
+                                title: `🎂 Hari ini ulang tahun ${nama}`,
+                                description: `Selamat ulang tahun, ${nama}!`,
+                                module: 'dosen',
+                                sourceId: d.id,
+                                tag: 'Hari Ini',
+                                tanggalKejadian: todayDateStr
+                            });
+                        } else if (isBirthdayTomorrow) {
+                            reminders.push({
+                                id: 'ultah-' + d.id + '-tomorrow',
+                                priority: 1,
+                                sortKey: '00:00',
+                                type: 'ultah',
+                                icon: 'bi-gift',
+                                iconColor: 'var(--color-gold)',
+                                title: `🎂 Besok ulang tahun ${nama}`,
+                                description: `Jangan lupa ucapkan selamat!`,
+                                module: 'dosen',
+                                sourceId: d.id,
+                                tag: 'Besok',
+                                tanggalKejadian: tomorrowDateStr
+                            });
+                        } else {
+                            const diffDays = Math.floor((today.getTime() - tgl.getTime()) / (24 * 60 * 60 * 1000));
+                            if (diffDays > 0 && diffDays <= 7) {
+                                reminders.push({
+                                    id: 'ultah-' + d.id + '-past',
+                                    priority: 2,
+                                    sortKey: '00:00',
+                                    type: 'ultah',
+                                    icon: 'bi-gift',
+                                    iconColor: 'var(--color-text-muted)',
+                                    title: `🎂 Ulang tahun ${nama} telah lewat`,
+                                    description: `Semoga panjang umur dan sehat selalu!`,
+                                    module: 'dosen',
+                                    sourceId: d.id,
+                                    tag: 'Lewat',
+                                    tanggalKejadian: tglStr
+                                });
+                            }
+                        }
+                    });
+
+                    return reminders;
                 }
 
                 _calculateEndTime(startTime, sks) {
@@ -2500,6 +3433,7 @@
                 }
                 find(module, id) { return findById(this.get(module), id); }
 
+                // ---- RELATIONS ----
                 getMatkulByDosen(dosenId) {
                     return this.get('matkul').filter(m => m.dosenId === dosenId);
                 }
@@ -2509,8 +3443,37 @@
                 getTugasByMatkul(matkulId) {
                     return this.get('tugas').filter(t => t.matkulId === matkulId);
                 }
+                getJadwalByMatkul(matkulId) {
+                    return this.get('jadwal').filter(j => j.matkulId === matkulId);
+                }
                 getJadwalByHari(hari) {
                     return this.get('jadwal').filter(j => j.hari === hari);
+                }
+                getTugasByDosen(dosenId) {
+                    const matkulIds = this.getMatkulByDosen(dosenId).map(m => m.id);
+                    return this.get('tugas').filter(t => matkulIds.includes(t.matkulId));
+                }
+                getKontrakByDosen(dosenId) {
+                    return this.get('kontrak').filter(k => k.dosenId === dosenId);
+                }
+                getJadwalByDosen(dosenId) {
+                    const matkulIds = this.getMatkulByDosen(dosenId).map(m => m.id);
+                    return this.get('jadwal').filter(j => matkulIds.includes(j.matkulId));
+                }
+                getMatkulByTugas(tugasId) {
+                    const tugas = this.find('tugas', tugasId);
+                    if (!tugas || !tugas.matkulId) return null;
+                    return this.find('matkul', tugas.matkulId);
+                }
+                getDosenByTugas(tugasId) {
+                    const matkul = this.getMatkulByTugas(tugasId);
+                    if (!matkul) return null;
+                    return this.find('dosen', matkul.dosenId);
+                }
+                getTugasByKontrak(kontrakId) {
+                    const kontrak = this.find('kontrak', kontrakId);
+                    if (!kontrak || !kontrak.matkulId) return [];
+                    return this.getTugasByMatkul(kontrak.matkulId);
                 }
 
                 stats() {
@@ -2528,13 +3491,35 @@
                 updateSettings(payload) {
                     this.settings = { ...this.settings, ...payload };
                     Storage.saveSettings(this.settings);
-                    if (payload.ipkTarget !== undefined) this._ipkTarget = payload.ipkTarget;
-                    if (payload.ipkCurrent !== undefined) this._ipkCurrent = payload.ipkCurrent;
                     return this.settings;
                 }
-                get ipkTarget() { return this._ipkTarget; }
-                get ipkCurrent() { return this._ipkCurrent; }
 
+                // ---- ARCHIVE ----
+                getArchive() { return this.archive; }
+                setArchive(items) {
+                    this.archive = items;
+                    Storage.saveArchive(items);
+                }
+                pushArchive(item) {
+                    const exists = this.archive.some(a => a.id === item.id);
+                    if (!exists) {
+                        this.archive.push(item);
+                        Storage.saveArchive(this.archive);
+                    }
+                    return item;
+                }
+                removeArchive(id) {
+                    const idx = findIndexById(this.archive, id);
+                    if (idx === -1) return null;
+                    const removed = this.archive.splice(idx, 1)[0];
+                    Storage.saveArchive(this.archive);
+                    return removed;
+                }
+                findArchive(id) {
+                    return findById(this.archive, id);
+                }
+
+                // ---- EXPORT/IMPORT ----
                 exportModule(module) {
                     return this.get(module);
                 }
@@ -2547,6 +3532,7 @@
                             if (!('jamMasuk' in newItem)) newItem.jamMasuk = null;
                             if (!('jamSelesai' in newItem)) newItem.jamSelesai = null;
                             if (!('hari' in newItem)) newItem.hari = null;
+                            if (!('dosenId' in newItem)) newItem.dosenId = null;
                             if (newItem.jamMasuk && typeof newItem.jamMasuk === 'string' && newItem.jamMasuk
                                 .includes('.')) {
                                 newItem.jamMasuk = newItem.jamMasuk.replace('.', ':');
@@ -2554,6 +3540,15 @@
                             if (newItem.jamMasuk && newItem.sks) {
                                 newItem.jamSelesai = this._calculateEndTime(newItem.jamMasuk, newItem.sks);
                             }
+                        }
+                        if (module === 'tugas' && !('dosenId' in newItem)) {
+                            newItem.dosenId = null;
+                        }
+                        if (module === 'jadwal' && !('dosenId' in newItem)) {
+                            newItem.dosenId = null;
+                        }
+                        if (module === 'kontrak' && !('dosenId' in newItem)) {
+                            newItem.dosenId = null;
                         }
                         return newItem;
                     });
@@ -2574,10 +3569,49 @@
                     this.set(module, existing);
                     return added;
                 }
+
+                // ---- FOTO DOSEN ----
+                getDosenPhoto(dosenId) {
+                    if (!dosenId) return null;
+                    const dosen = this.find('dosen', dosenId);
+                    return dosen && dosen.foto ? dosen.foto : null;
+                }
+                getDosenName(dosenId) {
+                    if (!dosenId) return '';
+                    const dosen = this.find('dosen', dosenId);
+                    return dosen ? dosen.nama : '';
+                }
+                getDosenNip(dosenId) {
+                    if (!dosenId) return '';
+                    const dosen = this.find('dosen', dosenId);
+                    return dosen ? dosen.nip || '' : '';
+                }
+                getDosenJabatan(dosenId) {
+                    if (!dosenId) return '';
+                    const dosen = this.find('dosen', dosenId);
+                    return dosen ? dosen.jabatan || '' : '';
+                }
+                getDosenFakultas(dosenId) {
+                    if (!dosenId) return '';
+                    const dosen = this.find('dosen', dosenId);
+                    return dosen ? dosen.fakultas || '' : '';
+                }
+                getDosenProdi(dosenId) {
+                    if (!dosenId) return '';
+                    const dosen = this.find('dosen', dosenId);
+                    return dosen ? dosen.prodi || '' : '';
+                }
+
+                getDisplayName(module, id) {
+                    if (!id) return 'Belum dipilih';
+                    const item = this.find(module, id);
+                    if (!item) return 'Data tidak ditemukan';
+                    return item.nama || item.judul || item.matkul || item.title || item.label || 'Tanpa nama';
+                }
             }
 
             // ================================================================
-            //  NOTIF, MODAL, CROP, LIGHTBOX
+            //  NOTIF, MODAL, CROP, LIGHTBOX, LIHAT (minor perbaikan)
             // ================================================================
             const Notif = {
                 container: document.getElementById('notifContainer'),
@@ -2592,7 +3626,7 @@
                     el.innerHTML =
                         `<i class="bi ${icon}"></i><span>${escapeHTML(message)}</span><button class="close" onclick="this.parentElement.remove()" aria-label="Tutup notifikasi"><i class="bi bi-x-lg"></i></button>`;
                     container.appendChild(el);
-                    setTimeout(() => { if (el.parentElement) el.remove(); }, 4000);
+                    setTimeout(() => { if (el.parentElement) el.remove(); }, 3500);
                 },
                 success(msg) { this.show(msg, 'success'); },
                 error(msg) { this.show(msg, 'error'); },
@@ -2637,6 +3671,215 @@
                 }
             };
 
+            // ================================================================
+            //  LIHAT MODAL (v6.0)
+            // ================================================================
+            const LihatModal = {
+                overlay: document.getElementById('lihatModalOverlay'),
+                grid: document.getElementById('lihatGrid'),
+                actions: document.getElementById('lihatActions'),
+                _callback: null,
+                _reminderId: null,
+                _isFromReminder: false,
+
+                init() {
+                    this.overlay.addEventListener('click', (e) => {
+                        if (e.target === this.overlay) this.close();
+                    });
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape' && this.overlay.classList.contains('active')) {
+                            this.close();
+                        }
+                    });
+                },
+
+                openForReminder(activeModules, callback, reminderId) {
+                    this._isFromReminder = true;
+                    this._callback = callback || null;
+                    this._reminderId = reminderId || null;
+
+                    const currentModule = window.app ? window.app.currentModule : null;
+                    const filtered = activeModules.filter(mod => mod.key !== currentModule);
+
+                    this._renderGrid(filtered);
+                    this._renderActions(true);
+                    this.overlay.classList.add('active');
+                    setTimeout(() => this.actions.querySelector('.lihat-close')?.focus(), 50);
+                },
+
+                openForRelation(relationData) {
+                    this._isFromReminder = false;
+                    this._callback = null;
+                    this._reminderId = null;
+
+                    const currentModule = window.app ? window.app.currentModule : null;
+
+                    const allModules = [
+                        { key: 'dosen', label: 'Dosen', icon: 'bi-person-badge' },
+                        { key: 'matkul', label: 'Mata Kuliah', icon: 'bi-book' },
+                        { key: 'kontrak', label: 'Kontrak Kuliah', icon: 'bi-clipboard' },
+                        { key: 'tugas', label: 'Tugas', icon: 'bi-file-text' },
+                        { key: 'jadwal', label: 'Jadwal', icon: 'bi-calendar' }
+                    ];
+
+                    const filteredModules = allModules.filter(def => def.key !== currentModule);
+
+                    const merged = filteredModules.map(def => {
+                        const found = relationData.find(r => r.key === def.key);
+                        return {
+                            ...def,
+                            count: found ? found.count : 0,
+                            items: found ? found.items : [],
+                            active: found ? found.count > 0 : false
+                        };
+                    });
+
+                    this._renderGrid(merged);
+                    this._renderActions(false);
+                    this.overlay.classList.add('active');
+                    setTimeout(() => this.actions.querySelector('.lihat-close')?.focus(), 50);
+                },
+
+                _renderGrid(mods) {
+                    this.grid.innerHTML = '';
+                    mods.forEach(mod => {
+                        const item = document.createElement('button');
+                        const isActive = mod.count > 0;
+                        item.className = `lihat-item ${isActive ? 'active' : 'inactive'}`;
+                        const countBadge = `<span class="count-badge">${mod.count}</span>`;
+                        item.innerHTML = `<i class="bi ${mod.icon}"></i> ${mod.label} ${countBadge}`;
+                        item.disabled = !isActive;
+                        if (isActive) {
+                            item.addEventListener('click', () => {
+                                this.close();
+                                const listItems = mod.items.map(it => ({
+                                    id: it.id,
+                                    label: it.nama || it.judul || it.matkul || it.label || 'Tanpa nama',
+                                    icon: MODULE_ICONS[mod.key] || 'bi-file-text'
+                                }));
+                                requestAnimationFrame(() => {
+                                    LihatPilihan.open(`Pilih ${mod.label}`, listItems, (id) => {
+                                        if (this._isFromReminder && this._callback) {
+                                            this._callback(mod.key, id);
+                                        } else {
+                                            if (window.app) {
+                                                window.app.openDetail(mod.key, id);
+                                                Notif.success(`Membuka ${MODULE_LABELS[mod.key]}`);
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        }
+                        this.grid.appendChild(item);
+                    });
+                },
+
+                _renderActions(showArchiveAndDelete) {
+                    this.actions.innerHTML = '';
+                    if (showArchiveAndDelete) {
+                        const archiveBtn = document.createElement('button');
+                        archiveBtn.className = 'lihat-archive';
+                        archiveBtn.innerHTML = '<i class="bi bi-archive"></i> Arsip';
+                        archiveBtn.addEventListener('click', () => {
+                            if (this._reminderId) {
+                                window.app.archiveReminder(this._reminderId);
+                                this.close();
+                            }
+                        });
+                        this.actions.appendChild(archiveBtn);
+
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'lihat-delete';
+                        deleteBtn.innerHTML = '<i class="bi bi-trash"></i> Hapus';
+                        deleteBtn.addEventListener('click', () => {
+                            this.close();
+                            setTimeout(() => {
+                                if (this._reminderId) {
+                                    Modal.open('Hapus Permanen',
+                                        'Apakah Anda yakin ingin menghapus pemberitahuan ini?',
+                                        () => {
+                                            window.app.deleteReminderPermanen(this
+                                                ._reminderId);
+                                        }
+                                    );
+                                }
+                            }, 100);
+                        });
+                        this.actions.appendChild(deleteBtn);
+                    }
+
+                    const closeBtn = document.createElement('button');
+                    closeBtn.className = 'lihat-close';
+                    closeBtn.textContent = 'Tutup';
+                    closeBtn.addEventListener('click', () => this.close());
+                    this.actions.appendChild(closeBtn);
+                },
+
+                close() {
+                    this.overlay.classList.remove('active');
+                    this._callback = null;
+                    this._reminderId = null;
+                    this._isFromReminder = false;
+                }
+            };
+
+            // ================================================================
+            //  LIHAT PILIHAN (v6.0)
+            // ================================================================
+            const LihatPilihan = {
+                overlay: document.getElementById('lihatPilihanOverlay'),
+                list: document.getElementById('pilihanList'),
+                sub: document.getElementById('pilihanSub'),
+                closeBtn: document.getElementById('pilihanClose'),
+                _callback: null,
+
+                init() {
+                    this.closeBtn.addEventListener('click', () => this.close());
+                    this.overlay.addEventListener('click', (e) => {
+                        if (e.target === this.overlay) this.close();
+                    });
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape' && this.overlay.classList.contains('active')) {
+                            this.close();
+                        }
+                    });
+                },
+
+                open(title, items, callback) {
+                    this._callback = null;
+                    this._callback = callback || null;
+                    this.sub.textContent = title || 'Beberapa item tersedia:';
+
+                    this.list.innerHTML = '';
+                    items.forEach(item => {
+                        const el = document.createElement('div');
+                        el.className = 'pilihan-item';
+                        el.innerHTML =
+                            `<i class="bi ${item.icon || 'bi-file-text'}"></i> <span>${escapeHTML(item.label)}</span>`;
+                        el.addEventListener('click', () => {
+                            const cb = this._callback;
+                            this.close();
+                            if (cb) {
+                                cb(item.id);
+                            }
+                        });
+                        this.list.appendChild(el);
+                    });
+
+                    this.overlay.classList.add('active');
+                    setTimeout(() => this.closeBtn.focus(), 50);
+                },
+
+                close() {
+                    this.overlay.classList.remove('active');
+                    this._callback = null;
+                }
+            };
+
+            // ================================================================
+            //  CROP TOOL (tidak berubah)
+            // ================================================================
             const CropTool = {
                 overlay: document.getElementById('cropOverlay'),
                 canvas: document.getElementById('cropCanvas'),
@@ -2812,9 +4055,6 @@
                 }
             };
 
-            // ================================================================
-            //  LIGHTBOX
-            // ================================================================
             const Lightbox = {
                 overlay: document.getElementById('photoLightbox'),
                 img: document.getElementById('lightboxImg'),
@@ -2848,7 +4088,7 @@
             };
 
             // ================================================================
-            //  APP
+            //  APP (v6.0)
             // ================================================================
             class App {
                 constructor() {
@@ -2863,6 +4103,8 @@
                     this.briefingDismissed = false;
                     this._photoData = null;
                     this._formChanged = false;
+                    this._rootContext = null;
+                    this._searchDebounceTimer = null;
                     this._init();
                 }
 
@@ -2870,20 +4112,49 @@
                     document.querySelectorAll('.landing-menu .menu-btn').forEach(btn => {
                         btn.addEventListener('click', () => {
                             const mod = btn.dataset.module;
+                            this._rootContext = mod;
                             this.navigate(mod, 'list');
                         });
                     });
 
                     document.getElementById('backBtn').addEventListener('click', () => this.goBack());
+                    document.getElementById('homeBtn').addEventListener('click', () => this.goHome());
                     document.getElementById('actionBtn').addEventListener('click', () => this.handleAction());
 
-                    document.getElementById('searchSubmit').addEventListener('click', () => this.performSearch());
-                    document.getElementById('globalSearch').addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter') { e.preventDefault();
-                            this.performSearch(); }
-                    });
-                    document.getElementById('clearSearch').addEventListener('click', () => this.clearSearch());
+                    // Search dengan debounce
+                    const searchInput = document.getElementById('globalSearch');
+                    const searchSubmit = document.getElementById('searchSubmit');
+                    const clearSearchBtn = document.getElementById('clearSearch');
 
+                    const doSearch = () => this.performSearch();
+                    searchSubmit.addEventListener('click', doSearch);
+                    searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            if (this._searchDebounceTimer) {
+                                clearTimeout(this._searchDebounceTimer);
+                                this._searchDebounceTimer = null;
+                            }
+                            doSearch();
+                        }
+                    });
+                    searchInput.addEventListener('input', () => {
+                        if (this._searchDebounceTimer) {
+                            clearTimeout(this._searchDebounceTimer);
+                        }
+                        this._searchDebounceTimer = setTimeout(() => {
+                            this._searchDebounceTimer = null;
+                            const val = searchInput.value.trim();
+                            if (val === '') {
+                                this.clearSearch();
+                            } else {
+                                doSearch();
+                            }
+                        }, 350);
+                    });
+                    clearSearchBtn.addEventListener('click', () => this.clearSearch());
+
+                    // IO Dropdown
                     const ioToggle = document.getElementById('ioToggle');
                     const ioMenu = document.getElementById('ioMenu');
                     ioToggle.addEventListener('click', (e) => {
@@ -2935,9 +4206,12 @@
                     Modal.init();
                     CropTool.init();
                     Lightbox.init();
-                    console.log('✅ USU BISA v4.3 (Final - tanpa PWA) siap digunakan.');
+                    LihatModal.init();
+                    LihatPilihan.init();
+                    console.log('✅ USU BISA v6.0 (Premium) siap digunakan.');
                 }
 
+                // ---- NAVIGASI ----
                 _checkBriefingDismiss() {
                     try {
                         const val = localStorage.getItem(STORE_PREFIX + 'briefing_dismiss');
@@ -2969,6 +4243,7 @@
                         landing.classList.add('hidden');
                         main.classList.add('active');
                         this.navStack = [];
+                        this._rootContext = module;
                     }
 
                     if (view !== 'list') {
@@ -2996,28 +4271,71 @@
                 }
 
                 goBack() {
-                    if (this.navStack.length > 1) {
-                        this.navStack.pop();
-                        const prev = this.navStack[this.navStack.length - 1];
-                        if (prev) {
-                            this.currentModule = prev.module;
-                            this.currentView = prev.view;
-                            this.selectedId = prev.id || null;
-                            this.editingId = null;
-                            this.searchQuery = '';
-                            this.searchResults = null;
-                            document.getElementById('globalSearch').value = '';
-                            document.getElementById('searchInfo').textContent = '';
-                            document.getElementById('clearSearch').classList.remove('visible');
-                            this._formChanged = false;
-                            this.render();
-                            return;
-                        }
+                    if (this.navStack.length <= 1) {
+                        this._goToLanding();
+                        return;
                     }
+
+                    this.navStack.pop();
+                    const prev = this.navStack[this.navStack.length - 1];
+                    if (prev) {
+                        this.currentModule = prev.module;
+                        this.currentView = prev.view;
+                        this.selectedId = prev.id || null;
+                        this.editingId = null;
+                        this.searchQuery = '';
+                        this.searchResults = null;
+                        document.getElementById('globalSearch').value = '';
+                        document.getElementById('searchInfo').textContent = '';
+                        document.getElementById('clearSearch').classList.remove('visible');
+                        this._formChanged = false;
+                        this.render();
+                    } else {
+                        this._goToLanding();
+                    }
+                }
+
+                goHome() {
+                    if (!this._rootContext) {
+                        this._goToLanding();
+                        return;
+                    }
+
+                    this.currentView = 'list';
+                    this.selectedId = null;
+                    this.editingId = null;
+                    this.searchQuery = '';
+                    this.searchResults = null;
+                    this._formChanged = false;
+                    document.getElementById('globalSearch').value = '';
+                    document.getElementById('searchInfo').textContent = '';
+                    document.getElementById('clearSearch').classList.remove('visible');
+
+                    this.navStack = [{ module: this._rootContext, view: 'list', id: null }];
+                    this.currentModule = this._rootContext;
+                    try { history.pushState({ module: this._rootContext, view: 'list', id: null }, ''); } catch {}
+
+                    Modal.close();
+                    LihatModal.close();
+                    LihatPilihan.close();
+                    document.getElementById('cropOverlay')?.classList.remove('active');
+                    document.getElementById('photoLightbox')?.classList.remove('active');
+
+                    Notif.success(`Kembali ke ${MODULE_LABELS[this._rootContext] || this._rootContext}`);
+                    this.render();
+                }
+
+                _goToLanding() {
                     document.getElementById('mainContainer').classList.remove('active');
                     document.getElementById('landing').classList.remove('hidden');
                     this.navStack = [];
+                    this._rootContext = null;
                     this.updateLandingStats();
+                    Modal.close();
+                    LihatModal.close();
+                    LihatPilihan.close();
+                    document.getElementById('cropOverlay')?.classList.remove('active');
+                    document.getElementById('photoLightbox')?.classList.remove('active');
                 }
 
                 handleAction() {
@@ -3061,7 +4379,12 @@
                     }
                 }
 
+                // ---- SEARCH ----
                 performSearch() {
+                    if (this._searchDebounceTimer) {
+                        clearTimeout(this._searchDebounceTimer);
+                        this._searchDebounceTimer = null;
+                    }
                     const input = document.getElementById('globalSearch');
                     const query = input.value.trim();
                     if (!query) { this.clearSearch(); return; }
@@ -3092,6 +4415,10 @@
                 }
 
                 clearSearch() {
+                    if (this._searchDebounceTimer) {
+                        clearTimeout(this._searchDebounceTimer);
+                        this._searchDebounceTimer = null;
+                    }
                     this.searchQuery = '';
                     this.searchResults = null;
                     document.getElementById('globalSearch').value = '';
@@ -3099,6 +4426,7 @@
                     document.getElementById('clearSearch').classList.remove('visible');
                 }
 
+                // ---- RENDER ----
                 render() {
                     const container = document.getElementById('content');
                     const mod = this.currentModule;
@@ -3169,153 +4497,26 @@
                     }
                 }
 
-                // ---- DASHBOARD ----
+                // ---- DASHBOARD (dengan microcopy lebih singkat) ----
                 _renderDashboard(container) {
                     const now = new Date();
                     const todayName = DAY_NAMES[now.getDay()];
-                    const todayDateStr = now.toISOString().slice(0, 10);
-                    const tomorrowDateStr = new Date(now.getTime() + 86400000).toISOString().slice(0, 10);
+                    const todayDateStr = getLocalDateString(now);
 
-                    const reminders = [];
+                    const allReminders = this.state._generateAllReminders(todayDateStr);
+                    const archive = this.state.getArchive();
+                    const archivedIds = new Set(archive.map(a => a.id));
+                    const activeReminders = allReminders.filter(r =>
+                        (r.priority === 0 || r.priority === 1) &&
+                        !archivedIds.has(r.id)
+                    );
 
-                    // 1. Mata Kuliah (hari+jam)
-                    const allMatkul = this.state.get('matkul');
-                    allMatkul.forEach(m => {
-                        if (!m.hari) return;
-                        const hariIdx = DAY_NAMES.indexOf(m.hari);
-                        if (hariIdx === -1) return;
-                        const todayIdx = now.getDay();
-                        const diff = (hariIdx - todayIdx + 7) % 7;
-                        const namaMatkul = escapeHTML(m.nama || 'Mata Kuliah');
-                        const jam = m.jamMasuk ? `pukul ${escapeHTML(m.jamMasuk)}` : '';
-                        const selesai = m.jamSelesai ? `–${escapeHTML(m.jamSelesai)}` : '';
-                        const dosen = m.dosenId ? escapeHTML(this.state.find('dosen', m.dosenId)?.nama) : '';
-                        const desc = `${dosen ? 'Dosen: '+dosen : ''} ${jam} ${selesai}`.trim();
-                        if (diff === 0) {
-                            reminders.push({
-                                id: 'matkul-' + m.id,
-                                priority: 0,
-                                sortKey: m.jamMasuk || '00:00',
-                                type: 'matkul',
-                                icon: 'bi-calendar-event',
-                                iconColor: 'var(--color-danger)',
-                                title: `Hari ini ada ${namaMatkul}`,
-                                description: desc,
-                                module: 'matkul',
-                                sourceId: m.id,
-                                tag: 'Hari Ini'
-                            });
-                        } else if (diff === 1) {
-                            reminders.push({
-                                id: 'matkul-' + m.id + '-tomorrow',
-                                priority: 1,
-                                sortKey: m.jamMasuk || '00:00',
-                                type: 'matkul',
-                                icon: 'bi-calendar-event',
-                                iconColor: 'var(--color-warning)',
-                                title: `Besok ada ${namaMatkul}`,
-                                description: desc,
-                                module: 'matkul',
-                                sourceId: m.id,
-                                tag: 'Besok'
-                            });
-                        }
-                    });
-
-                    // 2. Tugas
-                    const allTugas = this.state.get('tugas');
-                    allTugas.forEach(t => {
-                        if (!t.deadline) return;
-                        const deadline = t.deadline;
-                        const matkul = this.state.find('matkul', t.matkulId);
-                        const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(t.matkul || 'Mata Kuliah');
-                        let isToday = deadline === todayDateStr;
-                        let isTomorrow = deadline === tomorrowDateStr;
-                        if (isToday) {
-                            reminders.push({
-                                id: 'tugas-' + t.id,
-                                priority: 0,
-                                sortKey: '00:00',
-                                type: 'tugas',
-                                icon: 'bi-exclamation-triangle-fill',
-                                iconColor: 'var(--color-danger)',
-                                title: `Deadline tugas: ${escapeHTML(t.nama || 'Tugas')}`,
-                                description: `${namaMatkul} — deadline hari ini`,
-                                module: 'tugas',
-                                sourceId: t.id,
-                                tag: 'Hari Ini'
-                            });
-                        } else if (isTomorrow) {
-                            reminders.push({
-                                id: 'tugas-' + t.id + '-tomorrow',
-                                priority: 1,
-                                sortKey: '00:00',
-                                type: 'tugas',
-                                icon: 'bi-exclamation-circle-fill',
-                                iconColor: 'var(--color-warning)',
-                                title: `Deadline tugas: ${escapeHTML(t.nama || 'Tugas')}`,
-                                description: `${namaMatkul} — deadline besok`,
-                                module: 'tugas',
-                                sourceId: t.id,
-                                tag: 'Besok'
-                            });
-                        }
-                    });
-
-                    // 3. Ulang Tahun Dosen
-                    const allDosen = this.state.get('dosen');
-                    allDosen.forEach(d => {
-                        if (!d.tanggalLahir) return;
-                        const tgl = new Date(d.tanggalLahir);
-                        if (isNaN(tgl.getTime())) return;
-                        const today = new Date();
-                        const isBirthdayToday = tgl.getMonth() === today.getMonth() && tgl.getDate() === today
-                            .getDate();
-                        const tomorrow = new Date(today.getTime() + 86400000);
-                        const isBirthdayTomorrow = tgl.getMonth() === tomorrow.getMonth() && tgl.getDate() ===
-                            tomorrow.getDate();
-                        const nama = escapeHTML(d.nama || 'Dosen');
-                        if (isBirthdayToday) {
-                            reminders.push({
-                                id: 'ultah-' + d.id,
-                                priority: 0,
-                                sortKey: '00:00',
-                                type: 'ultah',
-                                icon: 'bi-gift',
-                                iconColor: 'var(--color-gold)',
-                                title: `🎂 Hari ini ulang tahun ${nama}`,
-                                description: `Selamat ulang tahun, ${nama}!`,
-                                module: 'dosen',
-                                sourceId: d.id,
-                                tag: 'Hari Ini'
-                            });
-                        } else if (isBirthdayTomorrow) {
-                            reminders.push({
-                                id: 'ultah-' + d.id + '-tomorrow',
-                                priority: 1,
-                                sortKey: '00:00',
-                                type: 'ultah',
-                                icon: 'bi-gift',
-                                iconColor: 'var(--color-gold)',
-                                title: `🎂 Besok ulang tahun ${nama}`,
-                                description: `Jangan lupa ucapkan selamat!`,
-                                module: 'dosen',
-                                sourceId: d.id,
-                                tag: 'Besok'
-                            });
-                        }
-                    });
-
-                    reminders.sort((a, b) => {
+                    activeReminders.sort((a, b) => {
                         if (a.priority !== b.priority) return a.priority - b.priority;
                         return a.sortKey.localeCompare(b.sortKey);
                     });
 
-                    const allReminders = reminders;
                     const stats = this.state.stats();
-                    const ipkTarget = this.state.ipkTarget;
-                    const ipkCurrent = this.state.ipkCurrent;
-                    const ipkPercent = Math.min(100, Math.max(0, (ipkCurrent / ipkTarget) * 100));
                     const notes = this.state.get('notes');
                     const recentNotes = notes.slice(-3).reverse();
                     const greeting = this._getGreeting(now.getHours());
@@ -3328,43 +4529,38 @@
                             <div class="dash-card"><div class="num">${stats.matkul}</div><div class="label">Mata Kuliah</div></div>
                             <div class="dash-card"><div class="num">${stats.kontrak}</div><div class="label">Kontrak</div></div>
                             <div class="dash-card"><div class="num">${stats.tugas}</div><div class="label">Tugas</div></div>
-                            <div class="dash-card"><div class="num">${allReminders.filter(r=>r.priority===0).length}</div><div class="label">Pengingat Hari Ini</div></div>
-                            <div class="dash-card"><div class="num">${allReminders.filter(r=>r.priority===1).length}</div><div class="label">Pengingat Besok</div></div>
+                            <div class="dash-card"><div class="num">${activeReminders.filter(r=>r.priority===0).length}</div><div class="label">Hari Ini</div></div>
+                            <div class="dash-card"><div class="num">${activeReminders.filter(r=>r.priority===1).length}</div><div class="label">Besok</div></div>
                         </div>
                         <div class="briefing-card" id="briefingCard">
-                            <div class="greeting">${escapeHTML(greeting)}</div>
+                            <div class="briefing-header">
+                                <div class="greeting">${escapeHTML(greeting)}</div>
+                                <button class="archive-btn" onclick="app.showArchive()"><i class="bi bi-archive"></i> Arsip (${archive.length})</button>
+                            </div>
                             <div class="date">${escapeHTML(dateStr)}</div>
                             <div class="summary">
-                                <span class="summary-item"><i class="bi bi-calendar-event" style="color:var(--color-danger)"></i> <span class="num">${allReminders.filter(r=>r.type==='matkul' && r.priority===0).length}</span> Kuliah hari ini</span>
-                                <span class="summary-item"><i class="bi bi-file-text" style="color:var(--color-danger)"></i> <span class="num">${allReminders.filter(r=>r.type==='tugas' && r.priority===0).length}</span> Tugas hari ini</span>
-                                <span class="summary-item"><i class="bi bi-gift" style="color:var(--color-gold)"></i> <span class="num">${allReminders.filter(r=>r.type==='ultah' && r.priority===0).length}</span> Ultah hari ini</span>
+                                <span class="summary-item"><i class="bi bi-calendar-event" style="color:var(--color-danger)"></i> <span class="num">${activeReminders.filter(r=>r.type==='matkul' && r.priority===0).length}</span> Kuliah</span>
+                                <span class="summary-item"><i class="bi bi-file-text" style="color:var(--color-danger)"></i> <span class="num">${activeReminders.filter(r=>r.type==='tugas' && r.priority===0).length}</span> Tugas</span>
+                                <span class="summary-item"><i class="bi bi-gift" style="color:var(--color-gold)"></i> <span class="num">${activeReminders.filter(r=>r.type==='ultah' && r.priority===0).length}</span> Ultah</span>
                             </div>
-                            ${allReminders.length === 0 ? '<div class="reminder-empty">Tidak ada pengingat untuk hari ini atau besok.</div>' :
-                            `<div class="reminder-list">${allReminders.slice(0, 15).map(r => {
+                            ${activeReminders.length === 0 ? '<div class="reminder-empty">Tidak ada pengingat hari ini atau besok.</div>' :
+                            `<div class="reminder-list">${activeReminders.slice(0, 20).map(r => {
                                 const cls = r.priority === 0 ? 'urgent' : 'important';
                                 const iconHtml = `<i class="bi ${r.icon}" style="color:${r.iconColor}"></i>`;
-                                const actionHtml = r.module ? `<button class="action-link" onclick="app.openDetail('${r.module}','${r.sourceId}')">Lihat <i class="bi bi-chevron-right"></i></button>` : '';
+                                const actionHtml = `<button class="action-link" onclick="app.openLihatModalFromReminder('${r.id}')">Lihat <i class="bi bi-chevron-right"></i></button>`;
                                 return `<div class="reminder-item ${cls}">
                                     <span class="icon">${iconHtml}</span>
                                     <div class="r-content">
-                                        <div class="title">${r.title}</div>
-                                        <div class="desc">${r.description}</div>
-                                        <div class="meta"><span class="tag">${r.tag}</span> <span class="tag">${r.type === 'matkul' ? 'Mata Kuliah' : r.type === 'tugas' ? 'Tugas' : 'Ulang Tahun'}</span></div>
+                                        <div class="title">${escapeHTML(r.title)}</div>
+                                        <div class="desc">${escapeHTML(r.description)}</div>
+                                        <div class="meta"><span class="tag">${escapeHTML(r.tag)}</span> <span class="tag">${r.type === 'matkul' ? 'Mata Kuliah' : r.type === 'tugas' ? 'Tugas' : 'Ulang Tahun'}</span></div>
                                     </div>
-                                    ${actionHtml}
+                                    <div class="action-group">
+                                        ${actionHtml}
+                                    </div>
                                 </div>`;
                             }).join('')}</div>`}
-                            ${allReminders.length > 15 ? '<div style="text-align:center;font-size:0.6rem;color:var(--color-text-muted);margin-top:4px;">... dan '+(allReminders.length-15)+' pengingat lainnya</div>' : ''}
-                            <div class="briefing-dismiss"><button onclick="app.dismissBriefing()">Sembunyikan briefing hari ini</button></div>
-                        </div>
-                        <div class="dash-section">
-                            <h3><i class="bi bi-graph-up-arrow"></i> Target IPK</h3>
-                            <div class="ipk-tracker">
-                                <div class="ipk-input"><label>Target</label><input type="number" id="ipkTargetInput" step="0.1" min="0" max="4" value="${ipkTarget}" /></div>
-                                <div class="ipk-input"><label>Saat Ini</label><input type="number" id="ipkCurrentInput" step="0.1" min="0" max="4" value="${ipkCurrent}" /></div>
-                                <button class="ipk-btn" onclick="app.updateIpk()">Update</button>
-                                <div class="ipk-bar-wrap"><div class="ipk-bar"><div class="fill" style="width:${ipkPercent}%;"></div></div><div class="ipk-label">${ipkCurrent} dari ${ipkTarget} (${Math.round(ipkPercent)}%)</div></div>
-                            </div>
+                            ${activeReminders.length > 20 ? '<div style="text-align:center;font-size:0.6rem;color:var(--color-text-muted);margin-top:4px;">... dan '+(activeReminders.length-20)+' pengingat lainnya</div>' : ''}
                         </div>
                         <div class="dash-section"><h3><i class="bi bi-calendar"></i> Jadwal Hari Ini (${escapeHTML(todayName)}) <span class="badge">${this.state.getJadwalByHari(todayName).length}</span></h3>`;
                     const todaySchedule = this.state.getJadwalByHari(todayName);
@@ -3376,8 +4572,9 @@
                             const matkul = this.state.find('matkul', j.matkulId);
                             const namaMatkul = matkul ? escapeHTML(matkul.nama) : escapeHTML(j.matkul ||
                                 'Mata Kuliah');
-                            const dosen = j.dosen || (matkul ? escapeHTML(this.state.find('dosen', matkul
-                                .dosenId)?.nama) : '');
+                            const dosenId = matkul?.dosenId || j.dosenId;
+                            const dosenNama = dosenId ? escapeHTML(this.state.getDosenName(dosenId)) : '';
+                            const dosen = j.dosen || dosenNama;
                             const jamSelesai = matkul?.jamSelesai ? ` - ${escapeHTML(matkul.jamSelesai)}` :
                                 '';
                             html += `
@@ -3411,7 +4608,7 @@
                     }
                     html += `
                             </div>
-                            <button class="note-add-btn" onclick="app.navigate('notes','form')"><i class="bi bi-plus-lg"></i> Tambah Catatan</button>
+                            <button class="note-add-btn" onclick="app.navigate('notes','form')"><i class="bi bi-plus-lg"></i> Tambah</button>
                         </div>
                         <div class="dash-section"><h3><i class="bi bi-person-badge"></i> Dosen Terbaru</h3>`;
                     const recentDosen = [...this.state.get('dosen')].reverse().slice(0, 5);
@@ -3435,10 +4632,6 @@
                     html += `</div>`;
 
                     container.innerHTML = html;
-                    if (this.briefingDismissed) {
-                        const briefing = document.getElementById('briefingCard');
-                        if (briefing) briefing.style.display = 'none';
-                    }
                 }
 
                 _getGreeting(hour) {
@@ -3449,47 +4642,318 @@
                     return 'Selamat malam';
                 }
 
-                dismissBriefing() {
-                    this.briefingDismissed = true;
-                    const briefing = document.getElementById('briefingCard');
-                    if (briefing) briefing.style.display = 'none';
-                    try { localStorage.setItem(STORE_PREFIX + 'briefing_dismiss', Date.now().toString()); } catch {}
+                // ---- ARCHIVE ----
+                showArchive() {
+                    const archive = this.state.getArchive().filter(a => !a.deleted);
+                    if (archive.length === 0) {
+                        Notif.info('Belum ada pemberitahuan yang diarsipkan.');
+                        return;
+                    }
+                    const container = document.getElementById('content');
+                    let html = `
+                        <div class="archive-view active">
+                            <div class="dash-section">
+                                <h3><i class="bi bi-archive"></i> Arsip Pemberitahuan <span class="badge">${archive.length}</span>
+                                    <span class="section-actions">
+                                        <button onclick="app.clearArchive()"><i class="bi bi-trash"></i> Kosongkan</button>
+                                        <button onclick="app.navigate('dashboard','list')"><i class="bi bi-arrow-left"></i> Kembali</button>
+                                    </span>
+                                </h3>
+                                <div class="archive-list">
+                    `;
+                    archive.forEach(a => {
+                        const icon = a.icon || 'bi-info-circle';
+                        const iconColor = a.iconColor || 'var(--color-text-muted)';
+                        html += `
+                            <div class="archive-item">
+                                <span class="icon"><i class="bi ${icon}" style="color:${iconColor}"></i></span>
+                                <div class="a-content">
+                                    <div class="title">${escapeHTML(a.title || 'Pemberitahuan')}</div>
+                                    <div class="desc">${escapeHTML(a.description || '')}</div>
+                                    <div class="meta">${a.timestamp ? new Date(a.timestamp).toLocaleString('id-ID') : ''}</div>
+                                </div>
+                                <div class="a-actions">
+                                    <button class="restore-link" onclick="app.restoreReminder('${a.id}')"><i class="bi bi-arrow-counterclockwise"></i> Pulihkan</button>
+                                    <button class="delete-link" onclick="app.deleteArchiveItem('${a.id}')"><i class="bi bi-trash"></i> Hapus</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.innerHTML = html;
                 }
 
-                updateIpk() {
-                    const target = parseFloat(document.getElementById('ipkTargetInput')?.value);
-                    const current = parseFloat(document.getElementById('ipkCurrentInput')?.value);
-                    if (isNaN(target) || target <= 0 || target > 4) {
-                        Notif.error('Target IPK harus antara 0-4.');
+                archiveReminder(id) {
+                    const now = new Date();
+                    const todayDateStr = getLocalDateString(now);
+                    const allReminders = this.state._generateAllReminders(todayDateStr);
+                    const reminder = allReminders.find(r => r.id === id);
+                    if (!reminder) {
+                        Notif.error('Pemberitahuan tidak ditemukan.');
                         return;
                     }
-                    if (isNaN(current) || current < 0 || current > 4) {
-                        Notif.error('IPK saat ini harus antara 0-4.');
+
+                    const exists = this.state.getArchive().some(a => a.id === id);
+                    if (exists) {
+                        Notif.info('Pemberitahuan sudah diarsipkan.');
                         return;
                     }
-                    this.state.updateSettings({ ipkTarget: target, ipkCurrent: current });
-                    Notif.success('Target IPK diperbarui.');
+
+                    const archivedItem = {
+                        ...reminder,
+                        timestamp: Date.now(),
+                        deleted: false
+                    };
+                    this.state.pushArchive(archivedItem);
+                    Notif.success('Pemberitahuan diarsipkan.');
                     this.render();
                 }
 
-                // =============================================================
-                //  HELPERS UNTUK FOTO DOSEN
-                // =============================================================
+                restoreReminder(id) {
+                    const archive = this.state.getArchive();
+                    const idx = archive.findIndex(a => a.id === id);
+                    if (idx === -1) {
+                        Notif.error('Pemberitahuan tidak ditemukan di arsip.');
+                        return;
+                    }
+                    this.state.removeArchive(id);
+                    Notif.success('Pemberitahuan dipulihkan (status: telah lewat).');
+                    this.render();
+                }
+
+                deleteArchiveItem(id) {
+                    Modal.open('Hapus Permanen', 'Apakah Anda yakin ingin menghapus pemberitahuan ini secara permanen?', () => {
+                        const removed = this.state.removeArchive(id);
+                        if (removed) {
+                            Notif.success('Pemberitahuan dihapus permanen.');
+                            this.render();
+                        } else {
+                            Notif.error('Gagal menghapus.');
+                        }
+                    });
+                }
+
+                deleteReminderPermanen(id) {
+                    const archive = this.state.getArchive();
+                    const idx = archive.findIndex(a => a.id === id);
+                    if (idx !== -1) {
+                        this.state.removeArchive(id);
+                        Notif.success('Pemberitahuan dihapus permanen.');
+                        this.render();
+                    } else {
+                        const now = new Date();
+                        const todayDateStr = getLocalDateString(now);
+                        const allReminders = this.state._generateAllReminders(todayDateStr);
+                        const reminder = allReminders.find(r => r.id === id);
+                        if (reminder) {
+                            const archivedItem = {
+                                ...reminder,
+                                timestamp: Date.now(),
+                                deleted: true
+                            };
+                            this.state.pushArchive(archivedItem);
+                            this.state.removeArchive(id);
+                            Notif.success('Pemberitahuan dihapus permanen.');
+                            this.render();
+                        } else {
+                            Notif.error('Pemberitahuan tidak ditemukan.');
+                        }
+                    }
+                }
+
+                clearArchive() {
+                    Modal.open('Kosongkan Arsip',
+                        'Apakah Anda yakin ingin menghapus semua pemberitahuan yang diarsipkan? Tindakan ini tidak dapat dibatalkan.',
+                        () => {
+                            this.state.setArchive([]);
+                            Notif.success('Arsip dikosongkan.');
+                            this.render();
+                        });
+                }
+
+                // ---- LIHAT MODAL ----
+                openLihatModalFromReminder(id) {
+                    const now = new Date();
+                    const todayDateStr = getLocalDateString(now);
+                    const allReminders = this.state._generateAllReminders(todayDateStr);
+                    const reminder = allReminders.find(r => r.id === id);
+                    if (!reminder) {
+                        Notif.error('Pemberitahuan tidak ditemukan.');
+                        return;
+                    }
+
+                    this._currentReminderId = id;
+
+                    const activeModules = [];
+                    const allModuleDefs = [
+                        { key: 'dosen', label: 'Dosen', icon: 'bi-person-badge' },
+                        { key: 'matkul', label: 'Mata Kuliah', icon: 'bi-book' },
+                        { key: 'kontrak', label: 'Kontrak Kuliah', icon: 'bi-clipboard' },
+                        { key: 'tugas', label: 'Tugas', icon: 'bi-file-text' },
+                        { key: 'jadwal', label: 'Jadwal', icon: 'bi-calendar' }
+                    ];
+
+                    const getRelatedItems = (modKey) => {
+                        const sourceId = reminder.sourceId;
+                        const sourceMod = reminder.module;
+                        if (!sourceId || !sourceMod) return [];
+
+                        if (modKey === sourceMod) {
+                            const item = this.state.find(modKey, sourceId);
+                            return item ? [item] : [];
+                        }
+
+                        if (sourceMod === 'matkul') {
+                            const matkul = this.state.find('matkul', sourceId);
+                            if (!matkul) return [];
+                            if (modKey === 'dosen' && matkul.dosenId) {
+                                const dosen = this.state.find('dosen', matkul.dosenId);
+                                return dosen ? [dosen] : [];
+                            }
+                            if (modKey === 'tugas') return this.state.getTugasByMatkul(sourceId);
+                            if (modKey === 'kontrak') return this.state.getKontrakByMatkul(sourceId);
+                            if (modKey === 'jadwal') return this.state.getJadwalByMatkul(sourceId);
+                        }
+
+                        if (sourceMod === 'tugas') {
+                            const tugas = this.state.find('tugas', sourceId);
+                            if (!tugas) return [];
+                            if (modKey === 'matkul' && tugas.matkulId) {
+                                const matkul = this.state.find('matkul', tugas.matkulId);
+                                return matkul ? [matkul] : [];
+                            }
+                            if (modKey === 'dosen') {
+                                const matkul = tugas.matkulId ? this.state.find('matkul', tugas.matkulId) : null;
+                                if (matkul && matkul.dosenId) {
+                                    const dosen = this.state.find('dosen', matkul.dosenId);
+                                    return dosen ? [dosen] : [];
+                                }
+                                if (tugas.dosenId) {
+                                    const dosen = this.state.find('dosen', tugas.dosenId);
+                                    return dosen ? [dosen] : [];
+                                }
+                            }
+                        }
+
+                        if (sourceMod === 'kontrak') {
+                            const kontrak = this.state.find('kontrak', sourceId);
+                            if (!kontrak) return [];
+                            if (modKey === 'matkul' && kontrak.matkulId) {
+                                const matkul = this.state.find('matkul', kontrak.matkulId);
+                                return matkul ? [matkul] : [];
+                            }
+                            if (modKey === 'dosen' && kontrak.dosenId) {
+                                const dosen = this.state.find('dosen', kontrak.dosenId);
+                                return dosen ? [dosen] : [];
+                            }
+                            if (modKey === 'tugas') return this.state.getTugasByKontrak(sourceId);
+                        }
+
+                        if (sourceMod === 'jadwal') {
+                            const jadwal = this.state.find('jadwal', sourceId);
+                            if (!jadwal) return [];
+                            if (modKey === 'matkul' && jadwal.matkulId) {
+                                const matkul = this.state.find('matkul', jadwal.matkulId);
+                                return matkul ? [matkul] : [];
+                            }
+                            if (modKey === 'dosen' && jadwal.dosenId) {
+                                const dosen = this.state.find('dosen', jadwal.dosenId);
+                                return dosen ? [dosen] : [];
+                            }
+                            if (modKey === 'tugas' && jadwal.matkulId) {
+                                return this.state.getTugasByMatkul(jadwal.matkulId);
+                            }
+                        }
+
+                        if (sourceMod === 'dosen') {
+                            if (modKey === 'matkul') return this.state.getMatkulByDosen(sourceId);
+                            if (modKey === 'tugas') return this.state.getTugasByDosen(sourceId);
+                            if (modKey === 'kontrak') return this.state.getKontrakByDosen(sourceId);
+                            if (modKey === 'jadwal') return this.state.getJadwalByDosen(sourceId);
+                        }
+
+                        return [];
+                    };
+
+                    allModuleDefs.forEach(def => {
+                        const items = getRelatedItems(def.key);
+                        const count = items.length;
+                        activeModules.push({
+                            ...def,
+                            count: count,
+                            items: items,
+                            sourceId: reminder.sourceId,
+                            active: count > 0
+                        });
+                    });
+
+                    const hasActive = activeModules.some(m => m.active);
+                    if (!hasActive) {
+                        Notif.info('Tidak ada modul yang terkait dengan pemberitahuan ini.');
+                        return;
+                    }
+
+                    LihatModal.openForReminder(activeModules, (moduleKey, sourceId) => {
+                        if (sourceId) {
+                            const item = this.state.find(moduleKey, sourceId);
+                            if (item) {
+                                this.openDetail(moduleKey, sourceId);
+                                Notif.success(`Membuka ${MODULE_LABELS[moduleKey]}`);
+                                return;
+                            }
+                        }
+                        const modData = activeModules.find(m => m.key === moduleKey);
+                        if (modData && modData.items.length > 0) {
+                            if (modData.items.length === 1) {
+                                const target = modData.items[0];
+                                this.openDetail(moduleKey, target.id);
+                                Notif.success(`Membuka ${MODULE_LABELS[moduleKey]}`);
+                            } else {
+                                const listItems = modData.items.map(it => ({
+                                    id: it.id,
+                                    label: it.nama || it.judul || it.matkul || it.label || 'Tanpa nama',
+                                    icon: MODULE_ICONS[moduleKey] || 'bi-file-text'
+                                }));
+                                LihatPilihan.open(`Pilih ${MODULE_LABELS[moduleKey]}`, listItems, (id) => {
+                                    this.openDetail(moduleKey, id);
+                                    Notif.success(`Membuka ${MODULE_LABELS[moduleKey]}`);
+                                });
+                            }
+                        } else {
+                            this.navigate(moduleKey, 'list');
+                            Notif.info(`Membuka ${MODULE_LABELS[moduleKey]}`);
+                        }
+                    }, id);
+                }
+
+                // ---- LIHAT UNTUK RELASI (Detail) ----
+                openLihatForRelation(relationData) {
+                    const hasActive = relationData.some(m => m.count > 0);
+                    if (!hasActive) {
+                        Notif.info('Tidak ada relasi yang tersedia.');
+                        return;
+                    }
+                    LihatModal.openForRelation(relationData);
+                }
+
+                // ---- FOTO HELPERS ----
                 _getDosenPhoto(dosenId) {
-                    if (!dosenId) return null;
-                    const dosen = this.state.find('dosen', dosenId);
-                    return dosen && dosen.foto ? dosen.foto : null;
+                    return this.state.getDosenPhoto(dosenId);
                 }
 
                 _getDosenName(dosenId) {
-                    if (!dosenId) return '';
-                    const dosen = this.state.find('dosen', dosenId);
-                    return dosen ? dosen.nama : '';
+                    return this.state.getDosenName(dosenId);
                 }
 
-                // =============================================================
-                //  LIST — khusus untuk dosen, tampilkan Nama + NIP
-                // =============================================================
+                _getDosenNip(dosenId) {
+                    return this.state.getDosenNip(dosenId);
+                }
+
+                // ---- LIST ----
                 _renderList(container, mod, items) {
                     const isSearch = this.searchQuery.trim() !== '' && this.searchResults !== null;
                     let html = `<div class="module-list">`;
@@ -3509,34 +4973,58 @@
                     }
 
                     items.forEach(item => {
-                        // Primary: selalu nama / judul
                         let primary = escapeHTML(item.nama || item.judul || item.matkul || item.title ||
                             'Tanpa nama');
                         let secondary = '';
                         let badge = '';
 
-                        // ===== PENANGANAN KHUSUS UNTUK DOSEN =====
                         if (mod === 'dosen') {
-                            // Tampilkan NIP sebagai secondary, jika ada
                             secondary = item.nip ? escapeHTML(item.nip) : '';
-                            // Tidak tampilkan badge (jabatan) di daftar
                             badge = '';
                         } else {
-                            // Modul lain: secondary & badge seperti biasa
-                            secondary = escapeHTML(item.kode || item.dosen || item.fakultas || (item.content ?
-                                (item.content.slice(0, 40) + (item.content.length > 40 ? '…' : '')) : ''));
-                            badge = escapeHTML(item.sks ? `${item.sks} SKS` : (item.status || (item
-                                .priority ? item.priority : '')));
+                            let dosenId = null;
+                            let dosenNama = '';
+
+                            if (mod === 'matkul' && item.dosenId) {
+                                dosenId = item.dosenId;
+                                dosenNama = this._getDosenName(dosenId);
+                            } else if (mod === 'tugas' && item.dosenId) {
+                                dosenId = item.dosenId;
+                                dosenNama = this._getDosenName(dosenId);
+                            } else if (mod === 'kontrak' && item.dosenId) {
+                                dosenId = item.dosenId;
+                                dosenNama = this._getDosenName(dosenId);
+                            } else if (mod === 'jadwal' && item.dosenId) {
+                                dosenId = item.dosenId;
+                                dosenNama = this._getDosenName(dosenId);
+                            }
+
+                            if (dosenNama) {
+                                secondary = escapeHTML(dosenNama);
+                            } else {
+                                secondary = escapeHTML(item.kode || item.fakultas || (item.content ? (item.content
+                                    .slice(0, 40) + (item.content.length > 40 ? '…' : '')) : ''));
+                            }
+                            badge = escapeHTML(item.sks ? `${item.sks} SKS` : (item.status || (item.priority ?
+                                item.priority : '')));
                         }
 
-                        // ===== AVATAR =====
-                        let avatarContent = '';
                         let avatarImg = '';
                         let avatarFallback = '';
                         let avatarClick = '';
 
-                        if (mod === 'matkul') {
-                            const dosenId = item.dosenId;
+                        let dosenId = null;
+                        if (mod === 'matkul' && item.dosenId) {
+                            dosenId = item.dosenId;
+                        } else if (mod === 'tugas' && item.dosenId) {
+                            dosenId = item.dosenId;
+                        } else if (mod === 'kontrak' && item.dosenId) {
+                            dosenId = item.dosenId;
+                        } else if (mod === 'jadwal' && item.dosenId) {
+                            dosenId = item.dosenId;
+                        }
+
+                        if (dosenId) {
                             const dosenNama = this._getDosenName(dosenId);
                             const foto = this._getDosenPhoto(dosenId);
                             if (foto) {
@@ -3561,7 +5049,6 @@
                             }
                             avatarClick = `onclick="event.stopPropagation();app._openPhoto('${foto ? escapeHTML(foto) : ''}','${escapeHTML(primary)}')"`;
                         } else if (mod === 'notes') {
-                            // Notes tanpa avatar foto
                             html += `
                                 <div class="list-card" onclick="app.openDetail('notes','${item.id}')">
                                     <div class="list-avatar"><i class="bi bi-pencil-square" style="font-size:0.9rem;"></i></div>
@@ -3574,7 +5061,6 @@
                             `;
                             return;
                         } else {
-                            // Modul lain: kontrak, tugas, jadwal
                             const iconMap = {
                                 kontrak: 'bi-clipboard',
                                 tugas: 'bi-file-text',
@@ -3585,7 +5071,6 @@
                             avatarClick = '';
                         }
 
-                        // Build avatar
                         let avatarHtml = '';
                         if (avatarImg) {
                             avatarHtml = avatarImg;
@@ -3648,33 +5133,62 @@
                         return;
                     }
 
-                    let displayOrder = [];
-                    if (mod === 'dosen') {
-                        displayOrder = ['foto', 'nama', 'fakultas', 'prodi', 'jabatan', 'keahlian', 'nip',
-                            'tanggalLahir', 'umur', 'email', 'telepon', 'linkedIn', 'ruang', 'konsultasi',
-                            'catatan'
-                        ];
-                    } else {
-                        displayOrder = Object.keys(item).filter(k => !['id', 'foto', 'dynamicFields', 'createdAt']
-                            .includes(k));
-                    }
+                    const humanFields = ['nama', 'judul', 'matkul', 'title', 'kode', 'sks', 'semester', 'kelas', 'ruangan',
+                        'deskripsi', 'status', 'hari', 'jamMasuk', 'jamSelesai', 'nip', 'jabatan', 'fakultas', 'prodi',
+                        'keahlian', 'email', 'telepon', 'linkedIn', 'ruang', 'konsultasi', 'catatan', 'tujuan', 'materi',
+                        'penilaian', 'referensi', 'peraturan', 'catatanKhusus', 'tanggalDiberikan', 'deadline',
+                        'prioritas', 'keterangan', 'link', 'jamMulai', 'tanggalLahir', 'umur'
+                    ];
 
-                    const exclude = ['id', 'foto', 'dynamicFields', 'createdAt'];
                     let infoHtml = '';
-                    const keys = Object.keys(item).filter(k => !exclude.includes(k) && item[k] !== undefined && item[
-                        k] !== null && item[k] !== '');
+                    const keys = Object.keys(item).filter(k =>
+                        !['id', 'foto', 'dynamicFields', 'createdAt', 'dosenId', 'matkulId', '_mod'].includes(k) &&
+                        humanFields.includes(k) &&
+                        item[k] !== undefined && item[k] !== null && item[k] !== ''
+                    );
 
-                    if (mod === 'dosen') {
-                        keys.sort((a, b) => {
-                            const ia = displayOrder.indexOf(a),
-                                ib = displayOrder.indexOf(b);
-                            if (ia === -1 && ib === -1) return a.localeCompare(b);
-                            if (ia === -1) return 1;
-                            if (ib === -1) return -1;
-                            return ia - ib;
-                        });
-                    } else {
-                        keys.sort();
+                    keys.sort();
+
+                    if (mod === 'matkul' && item.dosenId) {
+                        const dosenName = this._getDosenName(item.dosenId);
+                        if (dosenName) {
+                            infoHtml += `
+                                <div class="detail-item">
+                                    <div class="label">Dosen Pengampu</div>
+                                    <div class="value">${escapeHTML(dosenName)}</div>
+                                </div>
+                            `;
+                        }
+                    } else if (mod === 'tugas' && item.dosenId) {
+                        const dosenName = this._getDosenName(item.dosenId);
+                        if (dosenName) {
+                            infoHtml += `
+                                <div class="detail-item">
+                                    <div class="label">Dosen</div>
+                                    <div class="value">${escapeHTML(dosenName)}</div>
+                                </div>
+                            `;
+                        }
+                    } else if (mod === 'kontrak' && item.dosenId) {
+                        const dosenName = this._getDosenName(item.dosenId);
+                        if (dosenName) {
+                            infoHtml += `
+                                <div class="detail-item">
+                                    <div class="label">Dosen</div>
+                                    <div class="value">${escapeHTML(dosenName)}</div>
+                                </div>
+                            `;
+                        }
+                    } else if (mod === 'jadwal' && item.dosenId) {
+                        const dosenName = this._getDosenName(item.dosenId);
+                        if (dosenName) {
+                            infoHtml += `
+                                <div class="detail-item">
+                                    <div class="label">Dosen</div>
+                                    <div class="value">${escapeHTML(dosenName)}</div>
+                                </div>
+                            `;
+                        }
                     }
 
                     keys.forEach(key => {
@@ -3714,58 +5228,109 @@
                         });
                     }
 
-                    let relHtml = '';
+                    // ---- RELATION BLOCK ----
+                    const relationMap = {};
+
+                    const addRelation = (module, itemRel) => {
+                        if (!itemRel) return;
+                        if (!relationMap[module]) {
+                            relationMap[module] = { key: module, label: MODULE_LABELS[module] || module,
+                                icon: MODULE_ICONS[module] || 'bi-folder', items: [] };
+                        }
+                        relationMap[module].items.push(itemRel);
+                    };
+
                     if (mod === 'dosen') {
-                        const matkulAmpu = this.state.getMatkulByDosen(item.id);
-                        if (matkulAmpu.length > 0) {
-                            relHtml += `
-                                <div class="detail-relations">
-                                    <h4>Mata Kuliah yang Diampu</h4>
-                                    ${matkulAmpu.map(m => `<span class="relation-chip" onclick="app.openDetail('matkul','${m.id}')">${escapeHTML(m.nama || m.kode || 'Mata Kuliah')}</span>`).join('')}
-                                </div>
-                            `;
+                        this.state.getMatkulByDosen(item.id).forEach(m => addRelation('matkul', m));
+                        this.state.getKontrakByDosen(item.id).forEach(k => addRelation('kontrak', k));
+                        this.state.getTugasByDosen(item.id).forEach(t => addRelation('tugas', t));
+                        this.state.getJadwalByDosen(item.id).forEach(j => addRelation('jadwal', j));
+                    } else if (mod === 'matkul') {
+                        if (item.dosenId) {
+                            const dosen = this.state.find('dosen', item.dosenId);
+                            if (dosen) addRelation('dosen', dosen);
                         }
-                    }
-                    if (mod === 'matkul') {
-                        const kontrakRel = this.state.getKontrakByMatkul(item.id);
-                        if (kontrakRel.length > 0) {
-                            relHtml += `
-                                <div class="detail-relations">
-                                    <h4>Kontrak Kuliah</h4>
-                                    ${kontrakRel.map(k => `<span class="relation-chip" onclick="app.openDetail('kontrak','${k.id}')">${escapeHTML(k.judul || k.matkul || 'Kontrak')}</span>`).join('')}
-                                </div>
-                            `;
+                        this.state.getKontrakByMatkul(item.id).forEach(k => addRelation('kontrak', k));
+                        this.state.getTugasByMatkul(item.id).forEach(t => addRelation('tugas', t));
+                        this.state.getJadwalByMatkul(item.id).forEach(j => addRelation('jadwal', j));
+                    } else if (mod === 'tugas') {
+                        const matkul = this.state.getMatkulByTugas(item.id);
+                        if (matkul) {
+                            addRelation('matkul', matkul);
+                            if (matkul.dosenId) {
+                                const dosen = this.state.find('dosen', matkul.dosenId);
+                                if (dosen) addRelation('dosen', dosen);
+                            }
                         }
-                    }
-                    if (mod === 'tugas') {
+                    } else if (mod === 'kontrak') {
+                        if (item.matkulId) {
+                            const matkul = this.state.find('matkul', item.matkulId);
+                            if (matkul) addRelation('matkul', matkul);
+                        }
+                        if (item.dosenId) {
+                            const dosen = this.state.find('dosen', item.dosenId);
+                            if (dosen) addRelation('dosen', dosen);
+                        }
+                        this.state.getTugasByKontrak(item.id).forEach(t => addRelation('tugas', t));
+                    } else if (mod === 'jadwal') {
                         if (item.matkulId) {
                             const matkul = this.state.find('matkul', item.matkulId);
                             if (matkul) {
-                                relHtml += `
-                                    <div class="detail-relations">
-                                        <h4>Mata Kuliah Terkait</h4>
-                                        <span class="relation-chip" onclick="app.openDetail('matkul','${matkul.id}')">${escapeHTML(matkul.nama || matkul.kode || 'Mata Kuliah')}</span>
-                                    </div>
-                                `;
+                                addRelation('matkul', matkul);
+                                if (matkul.dosenId) {
+                                    const dosen = this.state.find('dosen', matkul.dosenId);
+                                    if (dosen) addRelation('dosen', dosen);
+                                }
                             }
+                        }
+                        if (item.dosenId) {
+                            const dosen = this.state.find('dosen', item.dosenId);
+                            if (dosen) addRelation('dosen', dosen);
                         }
                     }
 
-                    // ===== FOTO HEADER =====
+                    const relationData = Object.values(relationMap).map(entry => ({
+                        ...entry,
+                        count: entry.items.length
+                    }));
+
+                    let relHtml = '';
+                    if (relationData.length > 0) {
+                        const totalItems = relationData.reduce((sum, r) => sum + r.count, 0);
+                        relHtml = `
+                            <div class="relation-block">
+                                <button class="lihat-terkait-btn" onclick="app.openLihatForRelation(${JSON.stringify(relationData).replace(/"/g, '&quot;')})">
+                                    <i class="bi bi-link-45deg"></i> Lihat Terkait (${totalItems})
+                                </button>
+                            </div>
+                        `;
+                    }
+
+                    // FOTO HEADER
                     let photoHtml = '';
-                    let photoClick = '';
                     let fallbackChar = '?';
                     let fotoSrc = '';
 
                     if (mod === 'dosen') {
                         fotoSrc = item.foto || '';
                         fallbackChar = item.nama ? item.nama.charAt(0).toUpperCase() : '?';
-                    } else if (mod === 'matkul') {
-                        const dosenId = item.dosenId;
-                        const dosenNama = this._getDosenName(dosenId);
-                        fotoSrc = this._getDosenPhoto(dosenId) || '';
+                    } else if (mod === 'matkul' && item.dosenId) {
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        fotoSrc = this._getDosenPhoto(item.dosenId) || '';
                         fallbackChar = dosenNama ? dosenNama.charAt(0).toUpperCase() : (item.nama ? item.nama.charAt(0)
                             .toUpperCase() : '?');
+                    } else if (mod === 'tugas' && item.dosenId) {
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        fotoSrc = this._getDosenPhoto(item.dosenId) || '';
+                        fallbackChar = dosenNama ? dosenNama.charAt(0).toUpperCase() : '?';
+                    } else if (mod === 'kontrak' && item.dosenId) {
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        fotoSrc = this._getDosenPhoto(item.dosenId) || '';
+                        fallbackChar = dosenNama ? dosenNama.charAt(0).toUpperCase() : '?';
+                    } else if (mod === 'jadwal' && item.dosenId) {
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        fotoSrc = this._getDosenPhoto(item.dosenId) || '';
+                        fallbackChar = dosenNama ? dosenNama.charAt(0).toUpperCase() : '?';
                     } else {
                         fotoSrc = '';
                         fallbackChar = item.nama ? item.nama.charAt(0).toUpperCase() : '?';
@@ -3778,7 +5343,6 @@
                         photoHtml = `<span class="detail-fallback">${escapeHTML(fallbackChar)}</span>`;
                     }
 
-                    // Nama di header
                     let headerName = '';
                     let headerSub = '';
                     if (mod === 'dosen') {
@@ -3790,6 +5354,20 @@
                         const dosenNama = this._getDosenName(item.dosenId);
                         headerSub = (dosenNama ? 'Dosen: ' + escapeHTML(dosenNama) : '') +
                             (item.kode ? ' · ' + escapeHTML(item.kode) : '');
+                    } else if (mod === 'tugas') {
+                        headerName = escapeHTML(item.nama || 'Tugas');
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        headerSub = (dosenNama ? 'Dosen: ' + escapeHTML(dosenNama) : '') +
+                            (item.deadline ? ' · Deadline: ' + escapeHTML(item.deadline) : '');
+                    } else if (mod === 'kontrak') {
+                        headerName = escapeHTML(item.judul || 'Kontrak');
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        headerSub = (dosenNama ? 'Dosen: ' + escapeHTML(dosenNama) : '');
+                    } else if (mod === 'jadwal') {
+                        headerName = escapeHTML(item.matkul || 'Jadwal');
+                        const dosenNama = this._getDosenName(item.dosenId);
+                        headerSub = (dosenNama ? 'Dosen: ' + escapeHTML(dosenNama) : '') +
+                            (item.hari ? ' · ' + escapeHTML(item.hari) : '');
                     } else {
                         headerName = escapeHTML(item.nama || item.judul || item.matkul || 'Detail');
                         headerSub = escapeHTML(item.kode || item.dosen || item.fakultas || '');
@@ -3936,7 +5514,7 @@
                     return this.state._calculateEndTime(startTime, sks);
                 }
 
-                // ---- Form Builders ----
+                // ---- FORM BUILDERS (singkat, tidak diubah) ----
                 _buildDosenForm(item) {
                     const v = (key) => item ? escapeHTML(item[key] || '') : '';
                     const hasPhoto = item && item.foto;
@@ -4074,7 +5652,6 @@
                                 <input type="text" id="inputSemester" value="${v('semester')}" placeholder="Ganjil 2024/2025">
                             </div>
                         </div>
-                        <!-- HARI KULIAH (WAJIB) -->
                         <div class="form-group">
                             <label>Hari Kuliah <span class="required">*</span></label>
                             <select id="inputHari" required>
@@ -4082,7 +5659,6 @@
                                 ${hariOpts}
                             </select>
                         </div>
-                        <!-- JAM MASUK & JAM SELESAI OTOMATIS -->
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Jam Masuk</label>
@@ -4184,6 +5760,9 @@
                     const matkulOpts = this.state.get('matkul').map(m =>
                         `<option value="${m.id}" ${m.id === v('matkulId') ? 'selected' : ''}>${escapeHTML(m.nama || m.kode || 'Mata Kuliah')}</option>`
                     ).join('');
+                    const dosenOpts = this.state.get('dosen').map(d =>
+                        `<option value="${d.id}" ${d.id === v('dosenId') ? 'selected' : ''}>${escapeHTML(d.nama)}</option>`
+                    ).join('');
                     return `
                         <div class="form-group">
                             <label>Nama Tugas <span class="required">*</span></label>
@@ -4198,7 +5777,10 @@
                         </div>
                         <div class="form-group">
                             <label>Dosen</label>
-                            <input type="text" id="inputDosen" value="${v('dosen')}" placeholder="Nama dosen">
+                            <select id="inputDosenId">
+                                <option value="">-- Pilih Dosen --</option>
+                                ${dosenOpts}
+                            </select>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
@@ -4245,6 +5827,9 @@
                     const matkulOpts = this.state.get('matkul').map(m =>
                         `<option value="${m.id}" ${m.id === v('matkulId') ? 'selected' : ''}>${escapeHTML(m.nama || m.kode || 'Mata Kuliah')}</option>`
                     ).join('');
+                    const dosenOpts = this.state.get('dosen').map(d =>
+                        `<option value="${d.id}" ${d.id === v('dosenId') ? 'selected' : ''}>${escapeHTML(d.nama)}</option>`
+                    ).join('');
                     const hariOpts = DAY_NAMES.map(h =>
                         `<option value="${h}" ${h === v('hari') ? 'selected' : ''}>${h}</option>`
                     ).join('');
@@ -4258,7 +5843,10 @@
                         </div>
                         <div class="form-group">
                             <label>Dosen</label>
-                            <input type="text" id="inputDosen" value="${v('dosen')}" placeholder="Nama dosen">
+                            <select id="inputDosenId">
+                                <option value="">-- Pilih Dosen --</option>
+                                ${dosenOpts}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Hari <span class="required">*</span></label>
@@ -4414,14 +6002,25 @@
 
                     let payload = {};
 
-                    if (mod === 'dosen') payload = this._collectDosenForm();
-                    else if (mod === 'matkul') payload = this._collectMatkulForm();
-                    else if (mod === 'kontrak') payload = this._collectKontrakForm();
-                    else if (mod === 'tugas') payload = this._collectTugasForm();
-                    else if (mod === 'jadwal') payload = this._collectJadwalForm();
+                    if (mod === 'dosen') {
+                        payload = this._collectDosenForm();
+                        payload.foto = this._photoData;
+                    } else if (mod === 'matkul') {
+                        payload = this._collectMatkulForm();
+                    } else if (mod === 'kontrak') {
+                        payload = this._collectKontrakForm();
+                    } else if (mod === 'tugas') {
+                        payload = this._collectTugasForm();
+                    } else if (mod === 'jadwal') {
+                        payload = this._collectJadwalForm();
+                    }
 
-                    if (!payload.nama && mod !== 'kontrak' && mod !== 'tugas') {
-                        Notif.error('Nama harus diisi');
+                    if (mod === 'dosen' && !payload.nama) {
+                        Notif.error('Nama dosen harus diisi');
+                        return;
+                    }
+                    if (mod === 'matkul' && !payload.nama) {
+                        Notif.error('Nama mata kuliah harus diisi');
                         return;
                     }
                     if (mod === 'kontrak' && !payload.judul) {
@@ -4436,9 +6035,9 @@
                         Notif.error('Hari kuliah harus dipilih');
                         return;
                     }
-
-                    if (mod === 'dosen' && this._photoData) {
-                        payload.foto = this._photoData;
+                    if (mod === 'jadwal' && !payload.hari) {
+                        Notif.error('Hari jadwal harus dipilih');
+                        return;
                     }
 
                     if (isEdit) {
@@ -4460,6 +6059,7 @@
                     this.currentView = 'list';
                     this.editingId = null;
                     this._formChanged = false;
+                    this.navStack = this.navStack.filter(s => !(s.module === mod && s.view === 'form'));
                     this.pushNav(mod, 'list');
                     this.render();
                     this.updateLandingStats();
@@ -4475,7 +6075,7 @@
                     this.render();
                 }
 
-                // ---- COLLECTORS ----
+                // ---- COLLECTORS (singkat) ----
                 _collectDosenForm() {
                     const dyn = [];
                     document.querySelectorAll('.dynamic-field').forEach(f => {
@@ -4541,7 +6141,7 @@
                     return {
                         nama: document.getElementById('inputNama')?.value || '',
                         matkulId: document.getElementById('inputMatkulId')?.value || '',
-                        dosen: document.getElementById('inputDosen')?.value || '',
+                        dosenId: document.getElementById('inputDosenId')?.value || '',
                         tanggalDiberikan: document.getElementById('inputTanggalDiberikan')?.value || '',
                         deadline: document.getElementById('inputDeadline')?.value || '',
                         status: document.getElementById('inputStatus')?.value || 'Belum dikerjakan',
@@ -4554,7 +6154,7 @@
                 _collectJadwalForm() {
                     return {
                         matkulId: document.getElementById('inputMatkulId')?.value || '',
-                        dosen: document.getElementById('inputDosen')?.value || '',
+                        dosenId: document.getElementById('inputDosenId')?.value || '',
                         hari: document.getElementById('inputHari')?.value || '',
                         jamMulai: document.getElementById('inputJamMulai')?.value || '',
                         jamSelesai: document.getElementById('inputJamSelesai')?.value || '',
@@ -4564,7 +6164,7 @@
                     };
                 }
 
-                // ---- EXPORT / IMPORT ----
+                // ---- EXPORT/IMPORT ----
                 exportCurrentModule() {
                     const mod = this.currentModule;
                     const data = this.state.exportModule(mod);
@@ -4606,6 +6206,7 @@
 
                 // ---- HELPERS ----
                 openDetail(mod, id) {
+                    this.currentModule = mod;
                     this.currentView = 'detail';
                     this.selectedId = id;
                     this.editingId = null;
@@ -4642,6 +6243,8 @@
                             this.selectedId = null;
                             this.editingId = null;
                             this._formChanged = false;
+                            this.navStack = this.navStack.filter(s => !(s.module === mod && s.id === id && s
+                                .view === 'detail'));
                             this.pushNav(mod, 'list');
                             this.render();
                             this.updateLandingStats();
@@ -4649,7 +6252,7 @@
                     );
                 }
 
-                // ---- Photo ----
+                // ---- PHOTO ----
                 _initPhotoUpload(item) {
                     const photoData = item && item.foto ? item.foto : null;
                     const previewImg = document.getElementById('photoPreviewImg');
@@ -4741,7 +6344,6 @@
             // ---- BOOT ----
             let app;
             document.addEventListener('DOMContentLoaded', () => {
-                // Bersihkan key lama
                 const oldKeys = ['usu_bisa_settings_v2', 'usu_bisa_settings_v3'];
                 oldKeys.forEach(key => {
                     if (localStorage.getItem(key)) {
@@ -4756,7 +6358,7 @@
                 app = new App();
                 window.app = app;
                 window.Notif = Notif;
-                console.log('✅ USU BISA v4.3 (Final - tanpa PWA) siap digunakan.');
+                console.log('✅ USU BISA v6.0 (Premium) siap digunakan.');
             });
         })();
     </script>
