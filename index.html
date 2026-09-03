@@ -3775,7 +3775,7 @@
     <div class="notif-container" id="notifContainer" role="status" aria-live="polite"></div>
 
     <!-- ============================================================
-    JAVASCRIPT — USU BISA v9.3.1 (Arsip & Pengingat Otomatis)
+    JAVASCRIPT — USU BISA v9.3.3 (Perbaikan auto-save checkbox Excel di mode view, tanpa revert snapshot)
     ============================================================ -->
     <script>
         (function() {
@@ -5260,7 +5260,7 @@
                     LihatPilihan.init();
 
                     this._checkMonthlyReminder();
-                    console.log('✅ USU BISA v9.3.1 — Arsip & Pengingat Otomatis.');
+                    console.log('✅ USU BISA v9.3.3 — Perbaikan auto-save checkbox Excel di mode view (tanpa revert snapshot)');
                 }
 
                 _handleGlobalAction(action, target, event) {
@@ -6481,7 +6481,7 @@
                     return 'Selamat malam';
                 }
 
-                // ---- EXCEL (sama seperti sebelumnya, tidak diubah) ----
+                // ---- EXCEL ----
                 openExcelModal() {
                     this._renderExcelList();
                     document.getElementById('excelModalOverlay').classList.add('active');
@@ -6564,6 +6564,7 @@
                     setTimeout(() => document.getElementById('excelTableEditBtn').focus(), 50);
                 }
                 closeExcelTableModal() {
+                    // Jika ada perubahan dan mode edit, tawarkan menyimpan atau membatalkan
                     if (this._excelChanged && this._currentExcelId && this._excelMode === 'edit') {
                         Modal.open(
                             'Perubahan Belum Disimpan',
@@ -6585,14 +6586,20 @@
                         );
                         return;
                     }
-                    this._revertExcelSnapshot();
+                    // Hanya revert jika mode edit, untuk mode view kita tidak perlu revert
+                    if (this._excelMode === 'edit') {
+                        this._revertExcelSnapshot();
+                    } else {
+                        this._excelSnapshot = null;
+                    }
                     document.getElementById('excelTableModalOverlay').classList.remove('active');
                     this._currentExcelId = null;
                     this._excelChanged = false;
                     this._excelSnapshot = null;
                 }
                 _revertExcelSnapshot() {
-                    if (this._excelSnapshot && this._currentExcelId) {
+                    // Hanya revert jika mode edit dan ada snapshot
+                    if (this._excelMode === 'edit' && this._excelSnapshot && this._currentExcelId) {
                         this.state.updateExcel(this._currentExcelId, {
                             rows: this._excelSnapshot.rows,
                             progressColumns: this._excelSnapshot.progressColumns
@@ -6600,6 +6607,8 @@
                         this._excelSnapshot = null;
                         this._excelChanged = false;
                         this._renderExcelTable(this._currentExcelId);
+                    } else {
+                        this._excelSnapshot = null;
                     }
                 }
                 _updateExcelModeBadge() {
@@ -6619,6 +6628,7 @@
                     if (!file) return;
 
                     if (this._excelMode === 'view') {
+                        // Beralih ke edit: buat snapshot dan ubah mode
                         this._excelSnapshot = JSON.parse(JSON.stringify(file));
                         this._excelChanged = false;
                         this._excelMode = 'edit';
@@ -6626,6 +6636,7 @@
                         this._updateExcelModeBadge();
                         this._renderExcelTable(this._currentExcelId);
                     } else {
+                        // Beralih dari edit ke view
                         if (this._excelChanged) {
                             Modal.open(
                                 'Perubahan Belum Disimpan',
@@ -6889,43 +6900,77 @@
                     group.appendChild(saveRow);
                 }
 
+                // ============================================================
+                // PERBAIKAN UTAMA: auto-save checkbox di mode view (langsung simpan, tanpa revert)
+                // ============================================================
                 _toggleExcelCheck(id, rowIdx, colIdx, checkIdx) {
-                    this._collectExcelDataFromDOM(id);
                     const file = this.state.findExcel(id);
-                    if (!file) return;
-                    if (!file.rows[rowIdx]) return;
+                    if (!file) {
+                        Notif.error('File tidak ditemukan.');
+                        return;
+                    }
+                    if (!file.rows[rowIdx]) {
+                        Notif.error('Baris tidak ditemukan.');
+                        return;
+                    }
                     const progress = file.rows[rowIdx].progress || [];
                     if (!progress[colIdx]) progress[colIdx] = [];
-                    if (checkIdx >= progress[colIdx].length) return;
+                    if (checkIdx >= progress[colIdx].length) {
+                        Notif.error('Indeks centang tidak valid.');
+                        return;
+                    }
+                    // Toggle status
                     progress[colIdx][checkIdx] = !progress[colIdx][checkIdx];
                     file.rows[rowIdx].progress = progress;
-                    this._excelChanged = true;
+                    // Simpan langsung ke localStorage
+                    this.state.updateExcel(id, { rows: file.rows, progressColumns: file.progressColumns });
+                    this._excelChanged = true; // tetap tandai, tapi tidak digunakan untuk revert di mode view
+                    // Render ulang tabel agar tampilan sinkron
                     this._renderExcelTable(id);
                 }
+
                 _addExcelCheck(id, rowIdx, colIdx) {
-                    this._collectExcelDataFromDOM(id);
                     const file = this.state.findExcel(id);
-                    if (!file) return;
-                    if (!file.rows[rowIdx]) return;
+                    if (!file) {
+                        Notif.error('File tidak ditemukan.');
+                        return;
+                    }
+                    if (!file.rows[rowIdx]) {
+                        Notif.error('Baris tidak ditemukan.');
+                        return;
+                    }
                     const progress = file.rows[rowIdx].progress || [];
                     if (!progress[colIdx]) progress[colIdx] = [];
                     progress[colIdx].push(false);
                     file.rows[rowIdx].progress = progress;
+                    this.state.updateExcel(id, { rows: file.rows, progressColumns: file.progressColumns });
                     this._excelChanged = true;
                     this._renderExcelTable(id);
                 }
+
                 _removeExcelCheck(id, rowIdx, colIdx) {
-                    this._collectExcelDataFromDOM(id);
                     const file = this.state.findExcel(id);
-                    if (!file) return;
-                    if (!file.rows[rowIdx]) return;
+                    if (!file) {
+                        Notif.error('File tidak ditemukan.');
+                        return;
+                    }
+                    if (!file.rows[rowIdx]) {
+                        Notif.error('Baris tidak ditemukan.');
+                        return;
+                    }
                     const progress = file.rows[rowIdx].progress || [];
-                    if (!progress[colIdx] || progress[colIdx].length === 0) return;
+                    if (!progress[colIdx] || progress[colIdx].length === 0) {
+                        Notif.error('Tidak ada centang untuk dihapus.');
+                        return;
+                    }
                     progress[colIdx].pop();
                     file.rows[rowIdx].progress = progress;
+                    this.state.updateExcel(id, { rows: file.rows, progressColumns: file.progressColumns });
                     this._excelChanged = true;
                     this._renderExcelTable(id);
                 }
+
+                // Sisa fungsi lain tetap sama (tidak diubah)
                 _addExcelRow() {
                     const id = this._currentExcelId;
                     if (!id) return;
@@ -7408,7 +7453,7 @@
                     LihatModal.openForRelation(relationData);
                 }
 
-                // ---- DETAIL & FORM (sama seperti sebelumnya, tidak diubah) ----
+                // ---- DETAIL & FORM ----
                 _renderDetail(container, mod) {
                     const item = this.state.find(mod, this.selectedId);
                     if (!item) {
@@ -7761,7 +7806,7 @@
                     }
                 }
 
-                // ---- FORM BUILDERS (sama) ----
+                // ---- FORM BUILDERS ----
                 _buildDosenForm(item) {
                     const v = (key) => item ? escapeHTML(item[key] || '') : '';
                     const hasPhoto = item && item.foto;
@@ -8602,7 +8647,7 @@
                 app = new App();
                 window.app = app;
                 window.Notif = Notif;
-                console.log('✅ USU BISA v9.3.1 — Arsip & Pengingat Otomatis.');
+                console.log('✅ USU BISA v9.3.3 — Perbaikan auto-save checkbox Excel di mode view (tanpa revert snapshot)');
             });
 
         })();
